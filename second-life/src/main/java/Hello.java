@@ -6,6 +6,7 @@ public class Hello {
 		System.out.println("syso추가");
 		System.out.println("배동호 초딩잼");		
 		System.out.println("배동호 빠가잼");		
-		System.out.println("집에 가고 싶....다^^");		
+		System.out.println("집에 가고 싶....다^^");
+		// 됨??
 	}
 }
