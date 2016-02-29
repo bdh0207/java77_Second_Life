@@ -18,7 +18,8 @@
   "dependencies": {
     "bootstrap": "~3.3.6",
     "jquery": "1.11.3",
-    "blueimp-file-upload": "jquery-file-upload#^9.11.2"
+    "blueimp-file-upload": "jquery-file-upload#^9.11.2",
+    "bootflat":"https://github.com/bootflat/bootflat.github.io.git"
   },
   "install": {
     "path": "src/main/webapp/lib",

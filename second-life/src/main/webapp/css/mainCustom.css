@@ -190,7 +190,7 @@ div#columns:hover figure:not(:hover) {
   padding: 20px;
   background: #fff;
   border-radius: 5px;
-  width: 650px;
+  width: 1000px;
   height: 600px;
   position: relative;
   transition: all 5s ease-in-out;
@@ -217,13 +217,25 @@ div#columns:hover figure:not(:hover) {
   max-height: 30%;
   overflow: auto;
 }
+.hospital-Content{
+	height: 250px;
+}
 .hospital-Img{
 	float: left;
 }
 .hospital-Info{
+	margin-left: 10px;
 	float: left;
 	/* div 폰트설정*/
 }
+
+.doctor-Img,.doctor-Info{
+	float: left;
+}
+.doctor-Info{
+	margin-left: 10px;
+}
+
 .hospital-Info-Detail{
 	/* div 폰트설정*/
 	
