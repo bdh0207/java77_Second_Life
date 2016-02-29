@@ -1,0 +1,162 @@
+@CHARSET "UTF-8";
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+.body-all{
+	font-family: 'Nanum Gothic Coding';
+	font-size: 18px;
+	font-weight:bold;
+	color: black;
+	text-shadow: 3px 3px 2px rgba(150, 150, 150, 1);
+/* 	background: #F8DEBD; */
+}
+.body{
+}
+.body-content{
+	width: 80%;
+	margin-left: 150px;
+ 	margin-top: 0px; 
+/* 	background: #F8DEBD; */
+}
+.panel-footer-grade{
+	clear: both;
+	padding-right: 0px;
+	padding-left: 0px;
+	background: url("../icon/icon_star2.gif") 0px 0px;
+	float: left;
+	padding-bottom: 0px;
+	margin-left:80px;
+	width: 90px;
+	padding-top: 0px;
+	height: 18px;
+	text-align: left;
+}
+.panel-footer-grade p{
+	width: 70%;
+	padding-right: 0px;
+	padding-left: 0px;
+	background: url("../icon/icon_star.gif") 0px 0px;
+	padding-bottom: 0px;
+	margin: 0px;
+	padding-top: 0px;
+	height: 18px;
+}
+
+.Cosmetic-Surgery-Content{
+	float: left;
+	display: inline;
+}
+.panel-heading img:HOVER {
+	opacity: 0.5;
+}
+.part-select {
+	clear: both;
+}
+.part-choice img {
+	border: 2px solid black; 
+	padding: 0px;
+}
+.part-choice img:HOVER {
+		
+}
+.part-content{
+	margin-left:20px;
+	float: left;
+	width: 60px;
+	height: 50px;
+	font: 67.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+}
+.part-content img:HOVER {
+	opacity: 0.5;
+}
+.part-content ul{
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+.part-content li ul{
+	background: rgb(109,109,109);
+	display: none;
+	height: auto;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+	position: absolute;
+	z-index: 200;
+}
+.part-content li ul a{
+	background: rgb(109,109,109);
+	color:#cccccc;
+	display:block;
+	font-weight:normal;
+	line-height:50px;
+	margin:0px;
+	padding:0px 25px;
+	text-align:center;
+	text-decoration:none;
+}
+
+.part-content li ul a:HOVER{
+	background: rgb(71,71,71);
+	color:#FFFFFF;
+	text-decoration:none;
+}
+.part-content li:HOVER ul{
+	display: block;
+}
+.part-img-header{
+	clear: both;
+/* 	border: 1px solid black; */
+	margin-top: 100px;
+}
+.item{
+	width: 140px;
+	height: 210px;
+	float: left;
+	margin: 5px;
+    border: 2px solid #BEB9B5;
+    overflow: hidden;
+    
+    -webkit-box-shadow: 11px 7px 16px 0px rgba(44, 44, 41, 0.65);
+	-moz-box-shadow:    11px 7px 16px 0px rgba(44, 44, 41, 0.65);
+	box-shadow:         11px 7px 16px 0px rgba(44, 44, 41, 0.65);
+	
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+}
+.item img{
+	width: 140px;
+	height: 130px;
+}
+.item img:HOVER {
+	opacity: 0.5;
+}
+.item .itemFile{
+	margin-left: 30px;
+}
+.header{
+	background: black;
+	height: 130px;
+}
+.header-content{
+	width: 80%;
+	margin-left: 100px;
+/* 	margin-top: 30px; */
+}
+.header-content img{
+	margin-top: 25px;
+}
+.counsel-content{
+	border: 5px solid #52df;
+/* 	background: #9F6164; */
+	-webkit-border-radius: 16px;
+	-moz-border-radius: 16px;
+	border-radius: 16px;
+/* 	margin-left: 350px; */
+	width: 60%;
+}
+.counsel-content-detail{
+	width: 75%;
+	margin-left: 30px;
+}
