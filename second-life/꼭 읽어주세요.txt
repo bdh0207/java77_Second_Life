@@ -1,6 +1,6 @@
--SourceTree 순서
+﻿-SourceTree 순서
  ★꼭 지켜주세요
- Pull -> 작업 -> Pull -> Push
+ Pull -> 작업 -> Commit-> Pull -> Push
 
 -그리고 Push가 되면 꼭 알려주세요.(구두로 혹은 메신저)
 
