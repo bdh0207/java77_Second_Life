@@ -1,0 +1,30 @@
+.table-div>.circle {  
+	width: 250px;
+	height: 250px;
+	margin: 15px;
+	margin-top: 50px;
+	display: table-cell;  
+	background-color: #cf2d39;
+	border-radius: 50%;
+	box-shadow: 20px 0px #f1c2c6; 
+	cursor: pointer;   
+} 
+.circle-content1 {   
+	width: 150px;	
+	margin: 0 auto;
+	height: 70px;
+	line-height: 100px;
+	vertical-align: bottom;
+	text-align: center; 
+	color: #ffffff;
+	font-size: 20px;
+	font-weight: bold;
+	border-bottom: 1px solid #ffffff;
+}
+.circle-content2 {   
+	height: 130px;
+	margin-top: 15px;
+	text-align: center; 
+	color: #ffffff;
+	font-size: 15px;  
+}

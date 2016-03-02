@@ -1,0 +1,66 @@
+@CHARSET "UTF-8";
+
+.selectbar{ 
+	width: 50%;
+	height:30px;
+	position: relative; 
+	display: inline;
+	float: left;
+	text-align: center;
+	line-height: 30px;
+	cursor: pointer;
+}
+.selectbar1 {
+	background: #B2B2B2; 
+	height: 30px;
+	width: 50%;
+}
+.selectbar2 {
+	background: #D9D9D9; 
+	height: 30px;
+	width: 50%;
+} 
+
+#info {
+	background-color: #e27f86; 
+	color: #ffffff;
+	padding-left: 20px;
+} 
+
+#title-mylist { margin-bottom: 0px; }
+
+.icon-mylist {
+	padding-top: 15px;
+	padding-bottom: 15px;  
+}
+
+#thumbnail-new {
+	padding: 0px;
+	border-radius: 0px;
+	line-height: 1;
+}
+
+#btn-new {
+	background-color: #cf2d39;
+	color: #ffffff;
+	border:  0px;
+	border-radius: 0px;
+}
+
+#modal-popup { 
+	position: absolute;
+	display: none; 
+	left: 50%;
+}
+		
+.needpopup {
+	border-radius: 6px;
+	box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 1);
+}
+
+.needpopup p {
+	margin: 0;
+}
+.needpopup p + p {
+	margin-top: 10px;
+}			

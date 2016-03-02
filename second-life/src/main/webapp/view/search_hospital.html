@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<script>
+	$(document).ready(function() {
+	    $('#top').load('top.html');
+
+		// 구글맵 연동
+		var myLatlng   = new google.maps.LatLng(37.5640, 126.9751);
+		var mapOptions = {
+							zoom: 12,
+							center: myLatlng,
+							mapTypeId: google.maps.MapTypeId.ROADMAP
+		}
+		var map    = new google.maps.Map(document.getElementById('map_view'), mapOptions);
+		var marker = new google.maps.Marker({
+												position: myLatlng,
+												map: map,
+		});
+	});
+</script>
+</head>
+
+<body>
+	<!-- 상단 -->
+	<div id="top"></div>
+	 
+	<!-- 페이지 소개 -->
+	<div class="title-container table-div">
+		<div class="title"><hr></div>
+		<div class="title text-center">MY PAGE</div>
+		<div class="title"><hr>	</div>
+	</div>
+	
+	<!-- 본문 -->
+	<div class="container documents">
+		<div class="example">
+			<div class="row">
+				<div class="input-group form-search">
+					<input type="text" class="form-control search-query"> <span
+						class="input-group-btn">
+						<button type="submit" class="btn btn-danger" data-type="last">Search</button>
+					</span>
+				</div>
+			</div>
+			<div class="row" id="map_view">
+				 
+			</div>
+		</div>
+	</div>
+</body>
+</html>
