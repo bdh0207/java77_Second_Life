@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
-<link rel="stylesheet" type="text/css" href="../css/JoinCss.css">
-<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="../css/JoinFormCss.css">
+<title>Join Form</title>
 </head>
 <div class="body-content">
 <body>
@@ -14,18 +14,132 @@
   <fieldset>
     <legend><h3 style="color: #cf2d39;">Join a Member</h3></legend>
     <div class="form-group">
-      <label for="inputEmail" class="col-lg-2 control-label">ID</label>
+      <label for="inputEmail" class="col-lg-2 control-label"><span style="color: #cf2d39;">*</span>ID</label>
       <div class="col-lg-10">
-        <input type="text" class="form-control" id="inputEmail" placeholder="ID">
+        <input type="text" class="form-control" id="inputEmail" style="font-size: 9pt;" placeholder="E-mail주소를 입력해 주세요.">
+        <span class="help-block" style="font-size: 7pt; margin-bottom: 5px; color: #cf2d39;"> *사용 가능한 ID입니다.</span>
+        <button type="button" class="btn btn-default buttonGray" data-container="body" data-toggle="popover"
+         data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." 
+         data-original-title="" title="">E-Mail 인증받기</button>
       </div>
     </div>
     <div class="form-group">
-      <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+      <label for="inputPassword" class="col-lg-2 control-label"><span style="color: #cf2d39;">*</span>Password</label>
       <div class="col-lg-10">
-        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+        <input type="password" class="form-control" id="inputPassword" style="font-size: 9pt;" placeholder="영문 대소문자/숫자/특수문자를 혼용하여 8자 이상">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword" class="col-lg-2 control-label"><span style="color: #cf2d39;">*</span>Password Check</label>
+      <div class="col-lg-10">
+        <input type="password" class="form-control" id="inputPassword" style="font-size: 9pt;" placeholder="비밀번호 확인">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail" class="col-lg-2 control-label"><span style="color: #cf2d39;">*</span>Name</label>
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="inputEmail" style="font-size: 9pt;" placeholder="이름">
+      </div>
+    </div>
+    <div class="form-group"  style="margin-bottom: 0px;">
+      <label for="inputEmail" class="col-lg-2 control-label">Nick Name</label>
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="inputEmail" style="font-size: 9pt;" placeholder="별명">
+        <span class="help-block" style="font-size: 7pt; color: #cf2d39;"> *사용 가능한 Nick Name입니다.</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-2 control-label"><span style="color: #cf2d39;">*</span>Gender</label>
+      <div class="col-lg-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="checked">Male
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">Female
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="select" class="col-lg-2 control-label"><span style="color: #cf2d39;">*</span>Date Of Birth</label>
+      <div class="col-lg-10">
+        <select class="form-control boxSize" id="select">
+          <option>1990</option>
+        </select><span style="font-size: 9pt; color: gray;">년&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <select class="form-control boxSize" id="select">
+          <option>01</option>
+        </select><span style="font-size: 9pt; color: gray;">월&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <select class="form-control boxSize" id="select">
+          <option>01</option>
+        </select><span style="font-size: 9pt; color: gray;">일 </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail" class="col-lg-2 control-label"><span style="color: #cf2d39;">*</span>Address</label>
+      <div class="col-lg-10">
+        <input type="text" class="form-control addressBox" id="inputEmail" style="font-size: 9pt;"><span style="color: gray;"> - </span>
+        <input type="text" class="form-control addressBox" id="inputEmail" style="font-size: 9pt;">
+        <button type="button" class="btn btn-default buttonGray" data-container="body" data-toggle="popover"
+         data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." 
+         data-original-title="" title="">우편번호 검색</button>
+        <input type="text" class="form-control" id="inputEmail" style="font-size: 9pt;">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail" class="col-lg-2 control-label"><span style="color: #cf2d39;">*</span>Phone</label>
+      <div class="col-lg-10">
+        <input type="text" class="form-control addressBox" id="inputEmail" style="font-size: 9pt;"><span style="color: gray;"> - </span>
+        <input type="text" class="form-control addressBox" id="inputEmail" style="font-size: 9pt;"><span style="color: gray;"> - </span>
+        <input type="text" class="form-control addressBox" id="inputEmail" style="font-size: 9pt;">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword" class="col-lg-2 control-label">Interest</label>
+      <div class="col-lg-10">
         <div class="checkbox">
           <label>
-            <input type="checkbox"> Checkbox
+            <input type="checkbox"> 눈
+            <span style="display: inline-block; width: 30px"></span>
+            <input type="checkbox"> 코
+            <span style="display: inline-block; width: 30px"></span>
+            <input type="checkbox"> 턱
+            <span style="display: inline-block; width: 30px"></span>
+            <input type="checkbox"> 광대
+            <span style="display: inline-block; width: 30px"></span>
+            <input type="checkbox"> 윤곽
+            <span style="display: inline-block; width: 30px"></span>
+            <input type="checkbox"> 양악
+            <span style="display: inline-block; width: 30px"></span>
+            <input type="checkbox"> 가슴
+            <span style="display: inline-block; width: 30px"></span>
+            <input type="checkbox"> 지방흡입
+            <span style="display: inline-block; width: 30px"></span>
+            <input type="checkbox"> 쁘띠성형
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-2 control-label">News Mail</label>
+      <div class="col-lg-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios2" id="optionsRadios1" value="option1" checked="checked">받겠습니다.
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="optionsRadios2" id="optionsRadios1" value="option1">받지 않습니다.
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="col-lg-2 control-label">SMS안내</label>
+      <div class="col-lg-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios3" id="optionsRadios1" value="option1" checked="checked">받겠습니다.
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="optionsRadios3" id="optionsRadios1" value="option1">받지 않습니다.
           </label>
         </div>
       </div>
@@ -38,46 +152,9 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-lg-2 control-label">Radios</label>
-      <div class="col-lg-10">
-        <div class="radio">
-          <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-            Option one is this
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-            Option two can be something else
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="select" class="col-lg-2 control-label">Selects</label>
-      <div class="col-lg-10">
-        <select class="form-control" id="select">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-        <br>
-        <select multiple="" class="form-control">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
     	<div class="modal-footer paddingZero" >
-			<button type="button" class="btn btn-default buttonColor" data-dismiss="modal">Cancle</button>
-			<button type="button" class="btn btn-default buttonColor" data-dismiss="modal">Join</button>
+			<button type="button" class="btn btn-default buttonWhite" data-dismiss="modal">Cancel</button>
+			<button type="button" class="btn btn-default buttonWhite" data-dismiss="modal">Join</button>
 		</div>
     </div>
   	</fieldset>

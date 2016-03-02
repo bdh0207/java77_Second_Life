@@ -1,0 +1,51 @@
+@CHARSET "UTF-8";
+
+.body-content{
+	width: 80%;
+	margin-left: 150px;
+	margin-right: 150px;
+}
+
+.paddingZero {
+	padding-bottom: 0px;
+	padding-right: 0px;
+}
+
+.joinAlink {
+	color: #595959;
+	font-size: 8pt;
+	padding-right: 0px;
+}
+
+.buttonWhite {
+	background-color: white;
+	color: #cf2d39;
+}
+
+.buttonGray {
+ 	margin: 0px;
+ 	padding: 5px;
+	font-size: 8pt;
+}
+
+.boxSize {
+	width: 90px;
+	height: 35px;
+	font-size: 10pt;
+	display: inline;
+	padding-top: 5px;	
+}
+
+.addressBox {
+	width: 50px;
+	height: 28px;
+	font-size: 10pt;
+	display: inline;
+	padding-top: 5px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+
+
+
