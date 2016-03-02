@@ -5,22 +5,31 @@
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
 <title>Insert title here</title>
-	<link rel="stylesheet" href="../css/bootstrap_yeti.css" type="text/css">
+	
 	<link rel="stylesheet" type="text/css" href="../css/mainCustom.css" />
 	<link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
 	<link rel="stylesheet" type="text/css" href="../css/header.css" />
+	<!-- Bootflat css  -->
+	<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
+<!--  	<link rel="stylesheet" href="../css/bootstrap_yeti.css" type="text/css" /> -->
 	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	
+	
+	<!-- jQuery.js -->
 	<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script>
-	
-	<script src="../js/jquery.menu-aim.js" type="text/javascript"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- jQuery 최신버전 -->
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="../js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="../js/isotope-docs.min.js" type="text/javascript"></script>
 	<script src="../js/isotope.pkgd.js" type="text/javascript"></script>
+	
+	
+	<!-- bootstrap.min.js -->
+<!-- 	<script src="../lib/bootflat/js/bootstrap.min.js"></script> -->
+	<script src="../lib/bootstrap/js/bootstrap.min.js"></script>
+	<!-- 모달창 관련 -->
 	<script src="http://googledrive.com/host/0B-QKv6rUoIcGREtrRTljTlQ3OTg"></script><!-- ie10-viewport-bug-workaround.js -->
 	<script src="http://googledrive.com/host/0B-QKv6rUoIcGeHd6VV9JczlHUjg"></script><!-- holder.js -->
-
+	
 	<script type="text/javascript">
 
 		$(document).ready(function() {	
@@ -52,8 +61,11 @@
 			
 			
 			
-			$(".item").draggable({ revert: "invalid" });
+// 			$(".item").draggable({ revert: "invalid" });
 			
+// 			$('#myModal').on('shown.bs.modal', function () {
+// 				  $('#myInput').focus()
+// 			});
 		});
 		
 	</script>
@@ -96,9 +108,9 @@
 			<figure>
 				<a href="user_review.html"><img src="../images/event1.jpg" /></a>
 				<figcaption>
-					<div class="hReview"><a data-target="#layerpop" data-toggle="modal" href="#layerpop><img src="../images/Hospital1.jpg" width="50" height="50" /><span>오 성형외과</span></a></div>
+					<div class="hReview"><a data-toggle="modal" data-target="#myModal" href="#myModal"><img src="../images/Hospital1.jpg" width="50" height="50" /><span>오 성형외과</span></a></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -111,7 +123,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>지 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -124,7 +136,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital3.jpg" width="50" height="50" /><span>고 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -137,7 +149,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital1.jpg" width="50" height="50" /><span>또 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -150,7 +162,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>오 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -163,7 +175,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital3.jpg" width="50" height="50" /><span>졌 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -176,7 +188,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital1.jpg" width="50" height="50" /><span>다 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -189,7 +201,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>인 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -202,7 +214,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital3.jpg" width="50" height="50" /><span>정 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -215,7 +227,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital1.jpg" width="50" height="50" /><span>? 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -228,7 +240,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>굳 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -242,7 +254,7 @@
 				<figcaption>
 					<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>굳 성형외과</span></div>
 					<hr />
-					<div class="footer">
+					<div class="masonry-footer">
 						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
 						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
 					</div>
@@ -252,76 +264,15 @@
 		
 		</div>
 	</div>
-	<!-- masonry end-->
-	<div class="modal" id="layerpop">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&close;</button>
-	        <h4 class="modal-title">Modal title</h4>
-	      </div>
-	      <div class="modal-body">
-	        <p>One fine body…</p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
-<!-- 	<div id="popup1" class="overlay"> -->
-<!-- 	<div class="popup"> -->
-<!-- 		<h2>오 성형외과</h2> -->
-<!-- 		<a class="close" href="#">&times;</a> -->
-<!-- 		<div class="hospital-Content"> -->
-<!-- 			<div class="hospital-Img"><img src="../images/Hospital1.jpg" width="150" height="200" /></div> -->
-<!-- 			<div class="hospital-Info"> -->
-<!-- 				<div class="list-group" style="width: 700px"> -->
-<!-- 				  <a href="#" class="list-group-item active"> -->
-<!-- 				   주소 : 서울특별시 관악구 신림동 1234-123 -->
-<!-- 				  </a> -->
-<!-- 				  <br /> -->
-<!-- 				  <a href="#" class="list-group-item active"> -->
-<!-- 				   TEL : 02-1234-1234 -->
-<!-- 				  </a> -->
-<!-- 				  <br /> -->
-<!-- 				  <a href="#" class="list-group-item active"> -->
-<!-- 				   성형가능부위 : 눈, 양악, 돌려깎기 -->
-<!-- 				  </a> -->
-<!-- 				  <br /> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-			  
-<!-- 		</div> -->
-		
-<!-- 		<div class="doctor-Content"> -->
-<!-- 			<div class="doctor-Img"><img src="../images/doctor.png" width="150" height="200" /></div> -->
-<!-- 			<div class="doctor-Info"> -->
-<!-- 				<div class="list-group" style="width: 700px"> -->
-<!-- 				  <a href="#" class="list-group-item active"> -->
-<!-- 				   양악 전문의 배동호 -->
-<!-- 				  </a> -->
-<!-- 				  <br /> -->
-<!-- 				  <a href="#" class="list-group-item active"> -->
-<!-- 				   비트컴퓨터학원 출신 -->
-<!-- 				  </a> -->
-<!-- 				  <br /> -->
-<!-- 				  <a href="#" class="list-group-item active"> -->
-<!-- 				   26년의 화려한 경력 -->
-<!-- 				  </a> -->
-<!-- 				  <br /> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
-<!-- 	</div> -->
+	<!-- masonry end-->	
 	
 	
 	</div>
+	<!-- body-content end -->
+	
+	
 	<div id="body-right">
-	  <h1 class="ui-widget-header">Hospital Wish Items</h1>
+	  <h3 class="ui-widget-header">Hospital Wish Items</h3>
 	  <div class="ui-widget-content">
 	    <ol>
       		<li class="placeholder">Add your items here</li>
@@ -329,6 +280,86 @@
   	</div>
    </div>
 	
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">오 성형외과</h4>
+	      </div>
+	      
+	      <div class="modal-body">
+	      
+	      	<div class="row">
+			  <div class="col-sm-9" style="width: 100%;">
+			    <h2>Hospital Information</h2>
+			    <div class="row" style="margin-left: 15px;">
+			    
+			    <div class="col-md-9 col-md-push-3" style="width: 70%;">
+					<address>
+					  <strong>Oh Hospital, Inc.</strong><br>
+					  서울시특별시 관악구 신림동 1234-123<br>
+					  성형가능부위 : 눈, 양악, 돌려깎기<br>
+					  <abbr title="Phone">TEL:</abbr> (02) 123-1234
+					</address>					
+			    </div>
+  				<div class="col-md-3 col-md-pull-9" style="width: 30%; margin-left: 0px;">
+			    	<img src="../images/Hospital1.jpg" class="img-thumbnail" width="170" height="230" />
+				</div>
+				
+			    </div>
+			  </div>
+			</div>
+			
+			
+	      	<div class="row">
+			  <div class="col-sm-9" style="width: 100%;">
+			    <h2>Doctor Information</h2>
+			    <div class="row" style="margin-left: 15px;">
+			    
+			    <div class="col-md-9 col-md-push-3" style="width: 70%;">					
+					<ul>
+					  <li>양악 전문의 홍길동</li>
+					  <li>비트컴퓨터학원출신</li>
+					  <li>26년의 화려한 경력</li>
+					</ul>
+			    </div>
+  				<div class="col-md-3 col-md-pull-9" style="width: 30%; margin-left: 0px;">
+			    	<img src="../images/doctor.png" class="img-circle" width="130" height="150" />
+				</div>
+				
+			    </div>
+			  </div>
+			</div>
+	      	<div class="row" style="width: 90%; margin-left: 10px">
+			  <div class="panel panel-danger">
+	            <div class="panel-heading">
+	              <h3 class="panel-title">Hospital Introduce</h3>
+	            </div>
+	            <div class="panel-body">
+	            <blockquote>
+	              <p>중저음의 달콤한 목소리의 의사선생님과 함께 고통없이 마취를!
+	              	 양악 전문의 홍길동 선생님 한번 믿어보세요*^^*
+	              	 
+	              	 ****************************이번달 EVENT****************************
+	              	 양악 + 쌍수 = 완전변신 프로그램 참여시
+	              	 완전 새사람으로 태어날 수 있습니다.
+	              </p>
+				</blockquote>
+	            </div>
+	          </div>
+			</div>
+	        
+	      </div>
+	      
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 	
 </body>
