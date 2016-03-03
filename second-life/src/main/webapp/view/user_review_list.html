@@ -25,13 +25,83 @@
 <style type="text/css">
 	#body-all{
 		width: 100%;
-		height: 100%;
 	}
 	#body-content{
 		width: 80%;
 		margin-left: 180px;
 	}
+	.col-xs-12,.col-md-8,.col-md-3,.col-md-pull-9{
+		text-align: left;
+	}
+	..col-xs-12,.col-md-8{
+		text-overflow:ellipsis;
+		overflow: hidden;
+	}
+	.col-md-8{
+		font-family: "HY견고딕";
+		color: rgb(127,127,127);
+		text-overflow:ellipsis;
+		overflow: hidden;
+	}
+	.col-md-8-title{
+		font-family: "HY견고딕";
+		font-weight: bold;
+		color: rgb(89,89,89);
+		text-overflow:ellipsis;
+		overflow: hidden;
+		
+	}
+	.col-xs-6,.col-md-4{
+		text-align: right;
+		margin-top: 17px;
+	}
+	.col-md-3,.col-md-pull-9{
+		padding-left: 0px;
+	}
+	.col-md-4-bottom-right{
+		
+	}
+	.row-main{
+		border: 3px solid #a6a6a6;
+	}
+	#bottom-fix{
+		position:fixed; 
+		left:0; 
+		bottom:0; 
+		z-index:2; 
+		width:100%;
+	}
+	#bottom-content-left{
+		width:1090px;
+		margin-top: 33px;
+		text-align: center;
+	}
+	#bottom-content-middle{
+		text-align: center;
+	}
+	#bottom-content-right{
+		margin-top:33px;
+		margin-left: 25px;
+		width: 130px;
+		text-align: right;
+	}
+	
+
 </style>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		var container = document.querySelector('#masonry');
+		var msnry = new Masonry(container,{
+			itemSelector:'.item',
+			columnWidth:930,
+			percentPosition:true
+		});
+		imagesLoaded(container).on('progress', function(){
+			msnry.layout();
+		})
+	});
+</script>
 </head>
 <body>
 	<!-- Header -->
@@ -96,7 +166,7 @@
 			    </div>
 			  </div>
 
-			  <div class="row" style="width: 100%;">
+			  <div class="row" style="width: 100%; height: 170px;">
 			  <div class="col-sm-9" style="text-align: center; width: 100%; margin-top:15px;">
 			  		<br />
 			  		<br />
@@ -104,17 +174,81 @@
 			    	<h2 style="color:#a6a6a6;">REVIEW LIST</h2>
 			    	<hr />
 			    
-			    <div class="row">
-				    <div class="col-md-9 col-md-push-3"><span><h3>쌍수 한지 3달째</h3></span><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></div>
-  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main1.jpg" width="170" height="150" /></div>
+			    <!-- Content -->
+			    <div id="masonry">
+			    <div id="columns">
+			    <div class="item">
+			    <div class="row row-main">
+				    <div class="col-md-9 col-md-push-3">
+				    	<div class="row">
+						  <div class="col-xs-12 col-md-8 col-md-8-title"><h3>쌍수 한지 3달째!! 정말정말 좋아요~!</h3></div>
+						  <div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />23534</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />1983</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />2016.02.25</span></div>
+						</div>
+						<div class="row">
+							<div class="col-md-8">쌍수한지 3개월째 새우우웅곡 멋있어ㄹㄹㄹㄹㅅ샷좋아asdsadnjxzcnklxzcklvnxklcvnklxcnklvxcnklvnklxcnvlkxcnvlkxcnvklxcnlkvnxcklnvklxcnvcklxndfgfdgfdgndfkgndfklngldfngl</div>
+   							<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger">MORE+</span></h2></div>
+						</div>
+
+				    </div>
+  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main1.jpg" width="250" height="170" /></div>
+			    </div>
 			    </div>
 			    
+			    <div class="item">
+			    <div class="row row-main">
+				    <div class="col-md-9 col-md-push-3">
+				    	<div class="row">
+						  <div class="col-xs-12 col-md-8 col-md-8-title"><h3>엄청좋네요~! 인생 바꼈네요 취직도되고</h3></div>
+						  <div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />15023</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />2016.02.27</span></div>
+						</div>
+						<div class="row">
+							<div class="col-md-8">아직은 세상은 살만한가 봅니다 허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허 갸꿀</div>
+   							<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger">MORE+</span></h2></div>
+						</div>
+
+				    </div>
+  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main2.jpg" width="250" height="170" /></div>
+			    </div>
+			    </div>
+			    
+			    <div class="item">
+			    <div class="row row-main">
+				    <div class="col-md-9 col-md-push-3">
+				    	<div class="row">
+						  <div class="col-xs-12 col-md-8 col-md-8-title"><h3>엄청좋네요~! 인생 바꼈네요 취직도되고</h3></div>
+						  <div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />15023</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />2016.02.27</span></div>
+						</div>
+						<div class="row">
+							<div class="col-md-8">아직은 세상은 살만한가 봅니다 허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허 갸꿀</div>
+   							<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger">MORE+</span></h2></div>
+						</div>
+				    </div>
+  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main3.jpg" width="250" height="170" /></div>
+			    </div>
+			    </div>
+			    <!-- Content end -->
+			    </div>
+			    <!-- Columns end -->
+			    </div>
+			    <!-- Masonry end -->
+				
+				<div class="row">
+						<div class="col-md-4"></div>
+						<div class="col-md-4" id="bottom-content-middle"><h1><span class="label label-danger">더 보기</span></h1></div>
+						<div class="col-md-4"><h1><span class="label label-default">WRITE</span></h1></div>
+				 </div>
+				
 			  </div>
 			  
+			  
 			</div>
+			
+			
 		</div>
-		
+	
+	
     </div>
     
+    </div>
 </body>
 </html>
