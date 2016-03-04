@@ -4,6 +4,7 @@
 	width: 80%;
 	margin-left: 150px;
 	margin-right: 150px;
+	overflow: hidden;
 }
 
 .float {
@@ -20,15 +21,34 @@
 	margin-top: 20px;
 }
 
-.paddingZero {
-	padding-bottom: 0px;
-	padding-right: 0px;
+.fontStyle {
+	font-size: 7pt;
 }
 
-.joinAlink {
-	color: #595959;
-	font-size: 8pt;
-	padding-right: 0px;
+.boxSize {
+	height: 30px;
+}
+
+.textMargin {
+	margin: 0px;
+}
+
+.file_input_textbox {
+	float: left;
+}
+
+.file_input_div {
+	position: relative;
+	width: 100px;
+	height: 23px;
+	overflow: hidden;
+}
+
+.file_input_hidden {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	opacity: 0;
 }
 
 .buttonWhite {
@@ -40,26 +60,6 @@
  	margin: 0px;
  	padding: 5px;
 	font-size: 8pt;
-}
-
-.boxSize {
-	width: 90px;
-	height: 35px;
-	font-size: 10pt;
-	display: inline;
-	padding-top: 5px;	
-}
-
-.addressBox {
-	width: 80px;
-	height: 28px;
-	font-size: 10pt;
-	display: inline;
-	padding: 3px;
-	padding-left: 8px;
-	margin-bottom: 5px;
-	margin-top: 5px;
-	
 }
 
 
