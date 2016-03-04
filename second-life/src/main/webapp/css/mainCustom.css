@@ -112,11 +112,17 @@ div#columns figure figcaption.wish {
 
 .viewCount{
 	float: left;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
 }
 
 .recom{
 	margin-left: 10px;
 	float: left;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
 }
 .hRecom{
 	float: left;

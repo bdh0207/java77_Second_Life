@@ -16,13 +16,13 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> <!-- marsonry -->
 <script src="https://npmcdn.com/flickity@1.1/dist/flickity.pkgd.min.js"></script><!-- flickity -->
-<script src="../js/isotope-docs.min.js" type="text/javascript"></script> <!-- istope -->
-<script src="../js/isotope.pkgd.js" type="text/javascript"></script>
+<!-- <script src="../js/isotope-docs.min.js" type="text/javascript"></script> istope -->
+<!-- <script src="../js/isotope.pkgd.js" type="text/javascript"></script> -->
 <script src="../lib/bootstrap/js/bootstrap.min.js"></script> <!-- Bootstrap.js -->
 
 
 
-<style type="text/css">
+<style type="text/css" media="screen">
 	#body-all{
 		width: 100%;
 	}
@@ -49,7 +49,6 @@
 		color: rgb(89,89,89);
 		text-overflow:ellipsis;
 		overflow: hidden;
-		
 	}
 	.col-xs-6,.col-md-4{
 		text-align: right;
@@ -91,15 +90,52 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		var container = document.querySelector('#masonry');
-		var msnry = new Masonry(container,{
+// 		var container = document.querySelector('#masonry');
+		$('#masonry').masonry({
 			itemSelector:'.item',
-			columnWidth:930,
+			columnWidth:968,
 			percentPosition:true
 		});
-		imagesLoaded(container).on('progress', function(){
-			msnry.layout();
-		})
+		$('#masonry').imagesLoaded(function() {
+			$container.layout('layout');
+		});
+// 		var msnry = new Masonry(container,{
+// 			itemSelector:'.item',
+// 			columnWidth:968,
+// 			percentPosition:true
+// 		});
+// 		imagesLoaded(container).on('progress', function(){
+// 			msnry.layout();
+// 		});
+		$('#listMore').on('click',function() {
+			var div ='<div class="item">';
+			    div += '<div class="row row-main">';
+		    	div += '<div class="col-md-9 col-md-push-3">';
+		    	div += '<div class="row">'
+				div +=  '<div class="col-xs-12 col-md-8 col-md-8-title"><h3>엄청좋네요~! 인생 바꼈네요 취직도되고</h3></div>'
+				div +=  '<div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />15023</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />2016.02.27</span></div>';
+				div += '</div>';
+				div += '<div class="row">';
+				div += '<div class="col-md-8">아직은 세상은 살만한가 봅니다 허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허 갸꿀</div>';
+				div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger">MORE+</span></h2></div>';
+				div += '</div>';
+				div	+= '</div>';
+				div += '<div class="col-md-3 col-md-pull-9"><img src="../images/review_main4.jpg" width="250" height="170" /></div>';
+	    		div += '</div>';
+	    		div	+= '</div>';
+	    	var $elem = $(div);
+	    		console.log($elem);
+	    	$('#masonry').append($elem).masonry('appended',$elem);
+		});
+// 		$('#masonry').each(function(){
+// 			var oWidth = $(this).width();
+// 			console.log(oWidth);
+// 			var oHeight = $(this).height();
+// 			$(this).css({
+// 				'max-width' : oWidth+'px',
+// 				'width' : '100%'
+// 			});
+// 		});
 	});
 </script>
 </head>
@@ -175,8 +211,8 @@
 			    	<hr />
 			    
 			    <!-- Content -->
-			    <div id="masonry">
-			    <div id="columns">
+			    <div id="masonry" style="min-width: 967px; max-width: 1266px;">
+<!-- 			    <div id="columns"> -->
 			    <div class="item">
 			    <div class="row row-main">
 				    <div class="col-md-9 col-md-push-3">
@@ -227,14 +263,14 @@
 			    </div>
 			    </div>
 			    <!-- Content end -->
-			    </div>
+<!-- 			    </div> -->
 			    <!-- Columns end -->
 			    </div>
 			    <!-- Masonry end -->
 				
 				<div class="row">
 						<div class="col-md-4"></div>
-						<div class="col-md-4" id="bottom-content-middle"><h1><span class="label label-danger">더 보기</span></h1></div>
+						<div class="col-md-4" id="bottom-content-middle"><h1><span class="label label-danger" id="listMore">더 보기</span></h1></div>
 						<div class="col-md-4"><h1><span class="label label-default">WRITE</span></h1></div>
 				 </div>
 				

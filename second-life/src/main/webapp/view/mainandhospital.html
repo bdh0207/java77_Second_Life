@@ -8,7 +8,6 @@
 	
 	<link rel="stylesheet" type="text/css" href="../css/mainCustom.css" />
 	<link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
-	<link rel="stylesheet" type="text/css" href="../css/header.css" />
 	<!-- Bootflat css  -->
 	<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <!--  	<link rel="stylesheet" href="../css/bootstrap_yeti.css" type="text/css" /> -->
@@ -32,7 +31,8 @@
 	
 	<script type="text/javascript">
 
-		$(document).ready(function() {	
+		$(document).ready(function() {
+			$('#top').load('top.html').trigger('pagecreate');
 			var container = document.querySelector('#masonry');
 			var msnry = new Masonry(container,{
 				itemSelector:'.item',
@@ -70,23 +70,9 @@
 	</script>
 </head>
 <body>
-
-	<div id="bar"></div>			
-	<div id="menu1">  
-        <div class="menu"><a href="Counsel.html">상담신청</a></div>
-        <div class="menu"><a href="user_review2.html">유저리뷰</a></div>
-        <div class="menu">병원찾기</div> 
-        <div style="width:60px; margin: 0 auto;"><img src="../images/logo.gif" width="60" /></div> 
-        <div class="menu">문의하기</div>
-        <div class="menu">고객센터</div>
-        <div class="menu">로그인</div> 
-    </div>
-     
-    <div style="width: 100%;"> 
-        <h5 style="text-align: center;">BE A BEAUTIFUL GIRL</h5>
-        <h1 style="text-align: center;"><a href="mainandreview.html">SECOND LIFE</a></h1>
-        </div>  
-    </div> 
+	<!-- top -->
+	<div data-role="page" id="top"></div>
+	
 
   	<div id="body-all">
   	<div id="body-contents">
@@ -110,8 +96,15 @@
 					<div class="hReview"><a data-toggle="modal" data-target="#myModal" href="#myModal"><img src="../images/Hospital1.jpg" width="50" height="50" /><span>오 성형외과</span></a></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -123,8 +116,15 @@
 					<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>지 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -136,8 +136,15 @@
 					<div class="hReview"><img src="../images/Hospital3.jpg" width="50" height="50" /><span>고 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -149,8 +156,15 @@
 					<div class="hReview"><img src="../images/Hospital1.jpg" width="50" height="50" /><span>또 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -162,8 +176,15 @@
 					<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>오 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -175,8 +196,15 @@
 					<div class="hReview"><img src="../images/Hospital3.jpg" width="50" height="50" /><span>졌 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -188,8 +216,15 @@
 					<div class="hReview"><img src="../images/Hospital1.jpg" width="50" height="50" /><span>다 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -201,8 +236,15 @@
 					<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>인 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -214,8 +256,15 @@
 					<div class="hReview"><img src="../images/Hospital3.jpg" width="50" height="50" /><span>정 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -227,8 +276,15 @@
 					<div class="hReview"><img src="../images/Hospital1.jpg" width="50" height="50" /><span>? 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -240,8 +296,15 @@
 					<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>굳 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -254,8 +317,15 @@
 					<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>굳 성형외과</span></div>
 					<hr />
 					<div class="masonry-footer">
-						<div class="hRecom"><img src="../images/good_icon.png" width="30" height="28" alt="" />0</div>
-						<div class="hWish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						<div class="row">
+						  <div class="col-xs-12 col-md-8">
+						    <div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
+							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
+						  </div>
+						  <div class="col-xs-6 col-md-4">
+						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  </div>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
