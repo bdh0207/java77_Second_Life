@@ -15,31 +15,7 @@
 	margin-left: 150px;
  	margin-top: 0px; 
 /* 	background: #F8DEBD; */
-}
-.panel-footer-grade{
-	clear: both;
-	padding-right: 0px;
-	padding-left: 0px;
-	background: url("../icon/icon_star2.gif") 0px 0px;
-	float: left;
-	padding-bottom: 0px;
-	margin-left:80px;
-	width: 90px;
-	padding-top: 0px;
-	height: 18px;
-	text-align: left;
-}
-.panel-footer-grade p{
-	width: 70%;
-	padding-right: 0px;
-	padding-left: 0px;
-	background: url("../icon/icon_star.gif") 0px 0px;
-	padding-bottom: 0px;
-	margin: 0px;
-	padding-top: 0px;
-	height: 18px;
-}
-
+}  
 .Cosmetic-Surgery-Content{
 	float: left;
 	display: inline;

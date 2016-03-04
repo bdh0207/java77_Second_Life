@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+
+/* counsel.html ------------------------ */
+#thumbnail-new {
+	padding: 0px;
+	border-radius: 0px;
+	line-height: 1;
+}
+
+#thumbnail-new > img {
+	height: 191px;
+}
+
+.panel-footer-grade{
+	background: url("../icon/icon_star2.gif") 0px 0px;
+	width: 90px;
+	height: 18px;
+}
+.panel-footer-grade p{
+	width: 70%;
+	background: url("../icon/icon_star.gif") 0px 0px;
+	height: 18px;
+}
+
+
+
+/* search_hopital.html ------------------------ */
+.search-result {
+	border: 1px solid #aab2bd;
+	margin-right: -10px;
+	height: 400px;
+}
+
+.font-new {
+	font-family: 'Nanum Gothic', serif;
+}
