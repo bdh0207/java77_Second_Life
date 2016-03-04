@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
-<link rel="stylesheet" type="text/css" href="../css/JoinFormCss.css">
+<link rel="stylesheet" type="text/css" href="../css/joinformCss.css">
 <title>Join Form</title>
 </head>
 <div class="body-content">
@@ -79,16 +79,19 @@
       <div class="col-lg-10">
         <input type="text" class="form-control addressBox" id="inputEmail" style="font-size: 9pt;"><span style="color: gray;"> - </span>
         <input type="text" class="form-control addressBox" id="inputEmail" style="font-size: 9pt;">
-        <button type="button" class="btn btn-default buttonGray" data-container="body" data-toggle="popover"
+        <button type="button" class="btn btn-default buttonGray" style="margin-bottom: 1px;" data-container="body" data-toggle="popover"
          data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." 
          data-original-title="" title="">우편번호 검색</button>
         <input type="text" class="form-control" id="inputEmail" style="font-size: 9pt;">
       </div>
     </div>
     <div class="form-group">
-      <label for="inputEmail" class="col-lg-2 control-label"><span style="color: #cf2d39;">*</span>Phone</label>
+      <label for="inputEmail" class="col-lg-2 control-label">Phone</label>
       <div class="col-lg-10">
-        <input type="text" class="form-control addressBox" id="inputEmail" style="font-size: 9pt;"><span style="color: gray;"> - </span>
+        <select class="form-control addressBox" style="margin-bottom: 0px;" id="select">
+          <option>010</option>
+        </select>
+        <span style="color: gray;"> - </span>
         <input type="text" class="form-control addressBox" id="inputEmail" style="font-size: 9pt;"><span style="color: gray;"> - </span>
         <input type="text" class="form-control addressBox" id="inputEmail" style="font-size: 9pt;">
       </div>
@@ -145,10 +148,10 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="textArea" class="col-lg-2 control-label">Textarea</label>
+      <label for="textArea" class="col-lg-2 control-label">인사말</label>
       <div class="col-lg-10">
         <textarea class="form-control" rows="3" id="textArea"></textarea>
-        <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
+        <span class="help-block"></span>
       </div>
     </div>
     <div class="form-group">
