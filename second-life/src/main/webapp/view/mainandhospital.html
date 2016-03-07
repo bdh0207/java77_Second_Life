@@ -23,7 +23,6 @@
 	
 	
 	<!-- bootstrap.min.js -->
-<!-- 	<script src="../lib/bootflat/js/bootstrap.min.js"></script> -->
 	<script src="../lib/bootstrap/js/bootstrap.min.js"></script>
 	<!-- 모달창 관련 -->
 	<script src="http://googledrive.com/host/0B-QKv6rUoIcGREtrRTljTlQ3OTg"></script><!-- ie10-viewport-bug-workaround.js -->
@@ -34,37 +33,47 @@
 		$(document).ready(function() {
 			$('#top').load('top.html').trigger('pagecreate');
 			var container = document.querySelector('#masonry');
-			var msnry = new Masonry(container,{
+			$('#columns').masonry({
 				itemSelector:'.item',
-				columnWidth: 379,
+				columnWidth: 378,
  				percentPosition: true
+			});
+			$('#columns').imagesLoaded(function() {
 				
 			});
-			imagesLoaded(container).on('progress', function() {
-				  // layout Masonry after each image loads
-				  msnry.layout();
+			$(window).scroll(function() {
+				var scrollHeight=$(window).scrollTop()+$(window).height();
+				var documentHeight = $(document).height();
+				console.log(scrollHeight);
+				console.log(documentHeight);
+				if(scrollHeight==documentHeight){
+					for(var i=0; i<10; i++){
+						var div = '<div class="item">	                                                                                        ';
+							div +=	  '<figure>                                                                                                     ';
+							div +=	  '<a href="user_review.html"><img src="../images/event11.jpg" /></a>                                           ';
+							div +=	  '<figcaption>                                                                                                 ';
+							div +=	  '<div class="hReview"><img src="../images/Hospital2.jpg" width="50" height="50" /><span>굳 성형외과</span></div>';
+							div +=	  '<hr />                                                                                                       ';
+							div +=	  '<div class="masonry-footer">                                                                                 ';
+							div +=	  '<div class="row">                                                                                            ';
+							div +=	  '<div class="col-xs-12 col-md-8">                                                                             ';
+							div +=	  '<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>            ';
+							div +=	  '<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>                ';
+							div +=	  '</div>                                                                                                       ';
+							div +=	  '<div class="col-xs-6 col-md-4">                                                                              ';
+							div +=	  '<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>                       ';
+							div +=	  '</div>                                                                                                       ';
+							div +=	  '</div>                                                                                                       ';
+							div +=	  '</div>                                                                                                       ';
+							div +=	  '</figcaption>                                                                                                ';
+							div +=	  '</figure>                                                                                                    ';
+							div +=	  '</div>                                                                                                       ';
+						var $elem = $(div);
+				    	$('#columns').append($elem).masonry('appended',$elem);
+				    	$('#columns').masonry('reloadItems');
+					}
+				}
 			});
-// 			var $item = new Masonry(container,{
-// 				columnWidth: 369,
-// 				itemSelector: '.item'
-// 			});
-// 			$item.reloadItems();
-// 			$('#masonry').isotope({
-// 				itemSelector:'.item',
-// 				layoutMode:'masonry',
-// 				percentPosition: true,
-// 				masonry:{
-// 					columnWidth: 360
-// 				}
-// 			});
-			
-			
-			
-// 			$(".item").draggable({ revert: "invalid" });
-			
-// 			$('#myModal').on('shown.bs.modal', function () {
-// 				  $('#myInput').focus()
-// 			});
 		});
 		
 	</script>
