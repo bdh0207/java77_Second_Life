@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
 <title>User Review List</title>
@@ -55,7 +56,7 @@
 		margin-top: 17px;
 	}
 	.col-md-3,.col-md-pull-9{
-		padding-left: 0px;
+		padding-left: 0px !important;
 	}
 	.col-md-4-bottom-right{
 		
@@ -84,29 +85,38 @@
 		width: 130px;
 		text-align: right;
 	}
+	.item{
+		width: 1300px;
+	}
 	
+	@media screen and (max-width:1024px) {
+      .item{
+      	 width: 791px;
+      	 float: none;
+      	 font-size: small;
+      }
+      .col-md-pull-9{
+      	padding-left: 0px;
+      }
+      .col-md-pull-9 img{
+      	width: 180px;
+      	height: 197px;
+      }
+    }
 
 </style>
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		$('#top').load('top.html').trigger('pagecreate');
 // 		var container = document.querySelector('#masonry');
 		$('#masonry').masonry({
 			itemSelector:'.item',
-			columnWidth:968,
-			percentPosition:true
+			columnWidth:10
 		});
 		$('#masonry').imagesLoaded(function() {
 			$container.layout('layout');
 		});
-// 		var msnry = new Masonry(container,{
-// 			itemSelector:'.item',
-// 			columnWidth:968,
-// 			percentPosition:true
-// 		});
-// 		imagesLoaded(container).on('progress', function(){
-// 			msnry.layout();
-// 		});
 		$('#listMore').on('click',function() {
 			var div ='<div class="item">';
 			    div += '<div class="row row-main">';
@@ -140,23 +150,8 @@
 </script>
 </head>
 <body>
-	<!-- Header -->
-	<div id="bar"></div>			
-	<div id="menu1">  
-        <div class="menu"><a href="Counsel.html">상담신청</a></div>
-        <div class="menu"><a href="user_review2.html">유저리뷰</a></div>
-        <div class="menu">병원찾기</div> 
-        <div style="width:60px; margin: 0 auto;"><img src="../images/logo.gif" width="60" /></div> 
-        <div class="menu">문의하기</div>
-        <div class="menu">고객센터</div>
-        <div class="menu">로그인</div> 
-    </div>
-     
-    <div style="width: 100%;"> 
-        <h5 style="text-align: center;">BE A BEAUTIFUL GIRL</h5>
-        <h1 style="text-align: center;"><a href="mainandreview.html">SECOND LIFE</a></h1>
-        </div>  
-    </div>
+	<!-- top -->
+	<div data-role="page" id="top"></div>
     
     <!-- content -->
     <div id="body-all">
@@ -211,7 +206,8 @@
 			    	<hr />
 			    
 			    <!-- Content -->
-			    <div id="masonry" style="min-width: 967px; max-width: 1266px;">
+			    <!-- style="min-width: 967px; max-width: 1266px; -->
+			    <div id="masonry">
 <!-- 			    <div id="columns"> -->
 			    <div class="item">
 			    <div class="row row-main">
