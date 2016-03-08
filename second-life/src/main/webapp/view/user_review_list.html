@@ -8,7 +8,6 @@
 <title>User Review List</title>
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
-<link rel="stylesheet" type="text/css" href="../css/header.css" />
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://npmcdn.com/flickity@1.1/dist/flickity.min.css">
 
@@ -17,8 +16,8 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> <!-- marsonry -->
 <script src="https://npmcdn.com/flickity@1.1/dist/flickity.pkgd.min.js"></script><!-- flickity -->
-<!-- <script src="../js/isotope-docs.min.js" type="text/javascript"></script> istope -->
-<!-- <script src="../js/isotope.pkgd.js" type="text/javascript"></script> -->
+<script src="../js/isotope-docs.min.js" type="text/javascript"></script> istope
+<script src="../js/isotope.pkgd.js" type="text/javascript"></script>
 <script src="../lib/bootstrap/js/bootstrap.min.js"></script> <!-- Bootstrap.js -->
 
 
@@ -86,10 +85,10 @@
 		text-align: right;
 	}
 	.item{
-		width: 1300px;
+		width: 1280px;
 	}
 	
-	@media screen and (max-width:1024px) {
+	@media screen and (max-width:768px) {
       .item{
       	 width: 791px;
       	 float: none;
@@ -103,20 +102,26 @@
       	height: 197px;
       }
     }
+    
 
 </style>
 <script type="text/javascript">
-
+	
+	$(window).load(function(){
+		$('#masonry').masonry({
+			itemSelector:'.item',
+			columnWidth:1266,
+			isAnimated: true,
+			isFitWidth: true
+		});
+		$('#masonry').imagesLoaded(function() {
+			$('#masonry').masonry();
+		});
+	});
 	$(document).ready(function(){
 		$('#top').load('top.html').trigger('pagecreate');
 // 		var container = document.querySelector('#masonry');
-		$('#masonry').masonry({
-			itemSelector:'.item',
-			columnWidth:10
-		});
-		$('#masonry').imagesLoaded(function() {
-			$('#masonry').layout('layout');
-		});
+
 		$('#listMore').on('click',function() {
 			var div ='<div class="item">';
 			    div += '<div class="row row-main">';
@@ -130,22 +135,21 @@
 				div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger">MORE+</span></h2></div>';
 				div += '</div>';
 				div	+= '</div>';
-				div += '<div class="col-md-3 col-md-pull-9"><img src="../images/review_main4.jpg" width="250" height="170" /></div>';
+				div += '<div class="col-md-3 col-md-pull-9"><img src="../images/review_main4.jpg" width="250" height="215" /></div>';
 	    		div += '</div>';
 	    		div	+= '</div>';
 	    	var $elem = $(div);
 	    		console.log($elem);
 	    	$('#masonry').append($elem).masonry('appended',$elem);
+	    	
+	    	$('#masonry').imagesLoaded(function() {
+				$('#masonry').masonry();
+			});
 		});
-// 		$('#masonry').each(function(){
-// 			var oWidth = $(this).width();
-// 			console.log(oWidth);
-// 			var oHeight = $(this).height();
-// 			$(this).css({
-// 				'max-width' : oWidth+'px',
-// 				'width' : '100%'
-// 			});
-// 		});
+		
+		$('#writeBtn').click(function(event) {
+			location.href = "reviewForm.html";
+		});
 	});
 </script>
 </head>
@@ -207,7 +211,7 @@
 			    
 			    <!-- Content -->
 			    <!-- style="min-width: 967px; max-width: 1266px; -->
-			    <div id="masonry">
+			    <div id="masonry" style="height: 100%;">
 <!-- 			    <div id="columns"> -->
 			    <div class="item">
 			    <div class="row row-main">
@@ -222,7 +226,7 @@
 						</div>
 
 				    </div>
-  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main1.jpg" width="250" height="170" /></div>
+  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main1.jpg" width="250" height="215" /></div>
 			    </div>
 			    </div>
 			    
@@ -239,7 +243,7 @@
 						</div>
 
 				    </div>
-  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main2.jpg" width="250" height="170" /></div>
+  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main2.jpg" width="250" height="215" /></div>
 			    </div>
 			    </div>
 			    
@@ -255,7 +259,7 @@
    							<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger">MORE+</span></h2></div>
 						</div>
 				    </div>
-  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main3.jpg" width="250" height="170" /></div>
+  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main3.jpg" width="250" height="215" /></div>
 			    </div>
 			    </div>
 			    <!-- Content end -->
@@ -266,8 +270,8 @@
 				
 				<div class="row">
 						<div class="col-md-4"></div>
-						<div class="col-md-4" id="bottom-content-middle"><h1><span class="label label-danger" id="listMore">더 보기</span></h1></div>
-						<div class="col-md-4"><h1><span class="label label-default">WRITE</span></h1></div>
+						<div class="col-md-4" id="bottom-content-middle"><h1><span class="label label-danger" id="listMore" style="cursor: pointer;">더 보기</span></h1></div>
+						<div class="col-md-4"><h1><span class="label label-default" id="writeBtn" style="cursor: pointer;">WRITE</span></h1></div>
 				 </div>
 				
 			  </div>

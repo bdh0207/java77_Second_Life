@@ -24,23 +24,8 @@
 	
 	
 	<script type="text/javascript">
-		
-		$(document).ready(function() {	
-			$('#top').load('top.html').trigger('pagecreate');
-			var container = document.querySelector('#masonry');
-
-			/*
-			var msnry = new Masonry(container,{
-				itemSelector:'.item',
-				columnWidth: 379,
- 				percentPosition: true
-				
-			});
-			
-			imagesLoaded(container).on('progress', function() {
-				  msnry.layout();
-			});
-			*/
+		$(window).load(function() {
+			var container = document.querySelector('#columns');
 			$('#columns').masonry({
 				itemSelector:'.item',
 				columnWidth: 378,
@@ -49,7 +34,9 @@
 			$('#columns').imagesLoaded(function() {
 				
 			});
-			
+		});
+		$(document).ready(function() {	
+			$('#top').load('top.html').trigger('pagecreate');
 			
 			$(window).scroll(function() {
 				var scrollHeight=$(window).scrollTop()+$(window).height();
