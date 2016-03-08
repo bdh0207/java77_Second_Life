@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
 
-/* counsel.html ------------------------ */
+/* counsel.html ======================================== */
 #thumbnail-new {
 	padding: 0px;
 	border-radius: 0px;
@@ -9,6 +9,16 @@
 
 #thumbnail-new > img {
 	height: 191px;
+}
+ 
+.close-new {
+	position: absolute;
+	float: right;
+	top: 5px;
+	right: 25px;
+	color: #ffffff;
+	font-weight: bold;
+	cursor: pointer;
 }
 
 .panel-footer-grade{
@@ -22,9 +32,22 @@
 	height: 18px;
 }
 
+.bg-black {
+	background: #000000;
+	border-color: #000000;
+}
+
+.file-div {
+	width: 100%;
+	margin-bottom: 15px;
+}
+.file-img {
+	width: 100%;
+	height: 160px;
+}
 
 
-/* search_hopital.html ------------------------ */
+/* search_hopital.html ======================================== */
 .search-result {
 	border: 1px solid #aab2bd;
 	margin-right: -10px;
@@ -33,4 +56,7 @@
 
 .font-new {
 	font-family: 'Nanum Gothic', serif;
+}
+.font-bold {
+	font-weight: bold;
 }
