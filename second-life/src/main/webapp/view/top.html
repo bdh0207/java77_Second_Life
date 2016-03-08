@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="../css/site.min.css" type="text/css">
-<link rel="stylesheet" href="../css/bootstrap_yeti.css" type="text/css">
+<link rel="stylesheet" href="../lib/bootflat/css/site.min.css" type="text/css">
 <link rel="stylesheet" href="../css/common.css" type="text/css">
 <style>@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);</style>
 <style type="text/css">
@@ -21,8 +20,7 @@
 	padding-right: 20px;
 	background-color: #cf2d39;
 	color: #ffffff; 
-/* 	FONT-FAMILY: HY견고딕;  */
-	font-family: 'Nanum Gothic', serif;
+	font-family: 'Nanum Gothic', serif; 
 	font-weight: bold;
 	-webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -45,6 +43,7 @@ span {
 }
 
 #menu2 { 
+	margin: 0 10px;
 	float: right; 
 	cursor: pointer;
 }
@@ -90,7 +89,10 @@ span {
 		<div id="menu1">
 			<span>USER REVIEW</span>
 			<span>SEARCH HOSPITAL</span>
+			<span>COUNSELING</span>
 		</div>
+		<div id="menu2" onclick="location.href='login.html'">LOGIN</div>
+		<div id="menu2" onclick="location.href='joinForm.html'">REGISTER</div>
 		<div id="menu2" onclick="location.href='mypage.html'">MY PAGE</div>
 	</div>
 </body>
