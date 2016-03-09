@@ -5,6 +5,11 @@
 <title>Insert title here</title>
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
+<style>
+	.starClick {
+		opacity: 0.4;
+	}
+</style>
 <!-- 	<link rel="stylesheet" href="../css/bootstrap_yeti.css" type="text/css"> -->
 	<link rel="stylesheet" type="text/css" href="../css/mainCustom.css" />
 	<link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
@@ -24,6 +29,29 @@
 	
 	
 	<script type="text/javascript">
+		$(document).ready(function() {	
+			$('#top').load('top.html').trigger('pagecreate');
+			var container = document.querySelector('#masonry');
+
+			$(".starClick").click(function() {
+		        if($(this).css("opacity") == "0.4") {
+		           $(this).css("opacity", "1.0");
+		        } else {
+		           $(this).css("opacity", "0.4");
+		        }
+		     });
+			/*
+			var msnry = new Masonry(container,{
+				itemSelector:'.item',
+				columnWidth: 379,
+ 				percentPosition: true
+				
+			});
+			
+			imagesLoaded(container).on('progress', function() {
+				  msnry.layout();
+			});
+			*/
 		$(window).load(function() {
 			var container = document.querySelector('#columns');
 			$('#columns').masonry({
@@ -106,7 +134,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28"  /></div>
 						  </div>
 						</div>
 					</div>
@@ -126,7 +154,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 						  </div>
 						</div>
 					</div>
@@ -146,7 +174,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 						  </div>
 						</div>
 					</div>
@@ -166,7 +194,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 						  </div>
 						</div>
 					</div>
@@ -186,7 +214,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 						  </div>
 						</div>
 					</div>
@@ -206,7 +234,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 						  </div>
 						</div>
 					</div>
@@ -226,7 +254,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 						  </div>
 						</div>
 					</div>
@@ -246,7 +274,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 						  </div>
 						</div>
 					</div>
@@ -266,7 +294,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 						  </div>
 						</div>
 					</div>
@@ -286,7 +314,7 @@
 						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 					  </div>
 					  <div class="col-xs-6 col-md-4">
-					  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+					  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 					  </div>
 					</div>
 					</div>
@@ -307,7 +335,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 						  </div>
 						</div>
 					</div>
@@ -328,7 +356,7 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>
+						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
 						  </div>
 						</div>
 					</div>
