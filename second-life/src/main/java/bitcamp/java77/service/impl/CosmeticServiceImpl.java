@@ -1,5 +1,8 @@
 package bitcamp.java77.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +20,21 @@ public class CosmeticServiceImpl implements CosmeticService {
 	
 	@Override
 	@Transactional
-	public int insertReview(CosmeticReview cosmeticReview) {
+	public int insertReview(CosmeticReview cosmeticReview) throws Exception {
 		return cosmeticDao.insertReview(cosmeticReview);
 	}
 
 	@Override
 	@Transactional
-	public void insertReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto) {
+	public void insertReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto) throws Exception {
 		cosmeticDao.insertReviewPhoto(cosmeticReviewPhoto);
+	}
+
+	@Override
+	@Transactional
+	public List<CosmeticReview> selectReviewList() throws Exception {
+		
+		return cosmeticDao.selectReviewList();
 	}
 	
 	
