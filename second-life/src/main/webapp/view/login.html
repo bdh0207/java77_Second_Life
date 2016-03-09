@@ -5,9 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" type="text/css" href="../css/loginCss.css">
 <title>Login</title>
-<script>
-	
-</script>
 <style>
 	#square {
 		 background-color: #f3c9cc;
@@ -19,8 +16,19 @@
 		 padding-right: 70px;
 	}
 </style>
+<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script>
+	$(document).ready(function() {
+		// top 적용
+		$('#top').load('top.html');
+	});
+</script>
 </head>
+
 <body>
+	<!-- top -->
+	<div id="top"></div>
+	
 	<div class="body-content">
 		<div align="center"><img src="..\images\로그인로고.png"/></div>
 		<div id="square">

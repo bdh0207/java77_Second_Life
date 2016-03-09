@@ -2,13 +2,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Join Form</title>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" type="text/css" href="../css/joinformCss.css">
-<title>Join Form</title>
+<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script>
+	$(document).ready(function() {
+		// top 적용
+		$('#top').load('top.html');
+	});
+</script>
 </head>
-<div class="body-content">
+
 <body>
-	<div align="center"><img src="..\images\회원가입로고.png"/></div>
+<!-- top -->
+<div id="top"></div>
+	
+<div class="body-content">
+	<div align="center" id="join-logo">
+		<img src="..\images\회원가입로고.png"/>
+	</div>
 	<div style="width: 700px; height: 900px; margin: auto; margin-top: 50px;" >
 	<form class="form-horizontal">
   <fieldset>
