@@ -16,4 +16,29 @@
  		insert into review_phot(rno,fil_path)
  		values(#{reviewNo},#{filePath})
  	</insert>
+ 	
+ 	<select id="selectReviewList" resultMap="reviewResultMap">
+ 		select a.rno as reviewNo, mno as memberNo, a.hno as hospitalNo, a.title as title, a.cont as content, a.vcnt as viewCnt, a.spart as sugeryPart, a.stat as status,b.fil_path as filePath, a.reg_date as regDate
+		from review a inner join review_phot b
+		on a.rno = b.rno
+ 	</select>
+ 	
+ 	<resultMap id="reviewResultMap" type="cosmeticReview">
+ 		<result property="reviewNo" column="reviewNo" />
+ 		<result property="memberNo" column="memberNo" />
+ 		<result property="hospitalNo" column="hospitalNo" />
+ 		<result property="title" column="title" />
+ 		<result property="content" column="content" />
+ 		<result property="viewCnt" column="viewCnt" />
+ 		<result property="sugeryPart" column="sugeryPart" />
+ 		<result property="status" column="status" />
+ 		<result property="regDate" column="regDate" />
+ 		<collection property="reviewPhoto" column="filePath"  resultMap="reviewPhotoMap" ofType="cosmeticReviewPhoto" javaType="ArrayList"></collection>
+ 	</resultMap>
+ 	
+ 	<resultMap id="reviewPhotoMap" type="cosmeticReviewPhoto">
+ 		<result property="filePath" column="filePath" />
+ 	</resultMap>
+ 	
+ 	
 </mapper>

@@ -2,6 +2,7 @@ package bitcamp.java77.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class CosmeticReview implements Serializable {
 	protected int reviewNo;
@@ -13,6 +14,14 @@ public class CosmeticReview implements Serializable {
 	protected String sugeryPart;
 	protected char status;
 	protected Date regDate;
+	protected List<CosmeticReviewPhoto> reviewPhoto;
+	
+	public List<CosmeticReviewPhoto> getReviewPhoto() {
+		return reviewPhoto;
+	}
+	public void setReviewPhoto(List<CosmeticReviewPhoto> reviewPhoto) {
+		this.reviewPhoto = reviewPhoto;
+	}
 	
 	public int getReviewNo() {
 		return reviewNo;
