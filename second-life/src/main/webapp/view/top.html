@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="../lib/bootflat/css/site.min.css" type="text/css">
-<link rel="stylesheet" href="../css/common.css" type="text/css">
 <style>@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);</style>
 <style type="text/css">
 * {
@@ -30,6 +29,7 @@
 #logo {  
 	float: left; 
 	font-size: 2em;
+	cursor: pointer;
 }
 
 #menu1 {   
@@ -40,6 +40,7 @@
 span { 
 	margin-left: 10px; 
 	margin-right: 10px;
+	cursor: pointer;
 }
 
 #menu2 { 
@@ -85,11 +86,11 @@ span {
 
 <body>
 	<div id="top">
-		<div id="logo">SECOND LIFE</div>
+		<div id="logo" onclick="location.href='mainandreview.html'">SECOND LIFE</div>
 		<div id="menu1">
-			<span>USER REVIEW</span>
-			<span>SEARCH HOSPITAL</span>
-			<span>COUNSELING</span>
+			<span onclick="location.href='user_review_list.html'">USER REVIEW</span>
+			<span onclick="location.href='search_hospital.html'">SEARCH HOSPITAL</span>
+			<span onclick="location.href='counsel.html'">COUNSEL</span>
 		</div>
 		<div id="menu2" onclick="location.href='login.html'">LOGIN</div>
 		<div id="menu2" onclick="location.href='joinForm.html'">REGISTER</div>

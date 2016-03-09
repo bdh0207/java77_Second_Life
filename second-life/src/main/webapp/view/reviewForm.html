@@ -2,14 +2,25 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" type="text/css" href="../css/reviewFormCss.css">
+
+<script type="text/javascript" src="../lib/jquery/jquery.js"></script>
+<script src="../lib/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="../lib/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="../lib/blueimp-file-upload/js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <title>Review</title>
 <script>
+	$(document).ready(function() {
+		$('#top').load('top.html').trigger('pagecreate');
+	});
+	
 	function checkDisable(frm)
 	{
 	    if( frm.share.checked == true ){
-		   frm.eyes.disabled = false;
+	       frm.eyes.disabled = false;
 		   frm.nose.disabled = false;
 		   frm.chin.disabled = false;
 		   frm.cheekbone.disabled = false;
@@ -23,7 +34,8 @@
 		   frm.doctor.disabled = false;
 		   frm.price.disabled = false;
 		   frm.date.disabled = false;
-		} else 
+		} 
+	    else 
 		{
 		   frm.eyes.disabled = true;
 		   frm.nose.disabled = true;
@@ -41,12 +53,74 @@
 		   frm.date.disabled = true;
 		}
 	}
+	
+function ckSubmit() {
+		
+		console.log(contextRoot);
+		
+		var checkBoxValues = [];
+		
+		$('#sugeryPart:checked').each(function(i) {
+			checkBoxValues.push($(this).val());
+		});
+		
+		var allData = {};
+		
+		if($('input:checkbox[id="status"]').is(':checked') == true){
+			allData = {
+					title : $('#title').val(),
+					content : $('#content').val(),
+					fileName : $('#fileName').val()
+					
+			};
+		}else{
+			allData = {
+					memberNo : 1,
+					title : $('#title').val(),
+					content : $('#content').val(),
+					fileName : $('#fileName')[0].files[0],
+					sugeryPart : "눈,코",
+					status : "1"
+					
+			};
+			
+		}
+		console.log(allData);
+		
+		return false;
+	}
+	
+	
 </script>
+<style type="text/css">
+	.checkData{
+		width: 70px !important;
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+		font-size: 9pt;
+	}
+	.checkBox{
+		padding-left: 15px; 
+	}
+	@media screen and (max-width: 1024px) {
+		.floatForm {
+			float: left;
+			width: 380px;
+			height: 700px;
+			margin-left: auto;
+			margin-left: 30px;
+			margin-top: 20px;
+		}
+	}
+</style>
 </head>
 <body>
+	<!-- top -->
+	<div data-role="page" id="top"></div>
+	
 <div class="body-content">
-	<div style="width: 1100px; height: 800px; margin: auto; margin-top: 50px;" >
-<form class="form-horizontal">
+	<div class="body-detail">
+<form id="mForm" class="form-horizontal" enctype="multipart/form-data">
 	<fieldset>
 	    <legend><h3 style="color: #cf2d39;">Review</h3></legend>
 	    <div class="float">
@@ -56,22 +130,22 @@
 	    <div class="form-group">
 	      <label for="inputEmail" class="col-lg-2 control-label">제　　목</label>
 	      <div class="col-lg-10">
-	        <input type="text" class="form-control fontStyle" id="inputEmail" placeholder="Title">
+	        <input type="text" class="form-control fontStyle" id="title" placeholder="Title">
 	      </div>
 	    </div>
 	    <div class="form-group">
 	      <label for="textArea" class="col-lg-2 control-label">후　　기</label>
 	      <div class="col-lg-10">
-	        <textarea class="form-control fontStyle" rows="8" id="textArea" placeholder="Review"></textarea>
+	        <textarea class="form-control fontStyle" rows="8" id="content" placeholder="Review"></textarea>
 	        <span class="help-block" style="font-size: 6pt; color: gray;">*자신의 변화에 대한 상세한 후기를 적어주세요.</span>
 	      </div>
 	    </div>
 	    <div class="form-group">
 	      <label for="inputEmail" class="col-lg-2 control-label">사　　진</label>
 	      <div class="col-lg-10">
-	      <input type="text" id="fileName" class="file_input_textbox" readonly="readonly"/>
+	      <input type="text" class="file_input_textbox" readonly="readonly"/>
 	      <div class="file_input_div">
-	      <input type="file" class="fontStyle">
+	      <input type="file" id="ffile" name="files" class="fontStyle" multiple>
 	      </div>
 	      </div>
 	    </div>
@@ -80,7 +154,7 @@
 	      <div class="col-lg-10">
 	        <div class="checkbox">
 	          <label>
-	            <input type="checkbox" checked="checked" name="share" onclick="checkDisable(this.form)">
+	            <input id="ckStatus" type="checkbox" checked="checked" name="share" onclick="checkDisable(this.form)">
 				<span style="font-size: 9pt;">당신의 성형 정보를 공유 하시겠습니까?</span>
 	          </label>
 	          <span class="help-block textMargin" style="font-size: 6pt; color: #cf2d39;"> *공유하지 않는다면, 다른 이용자들의 정보 요청 쪽지 세례를 받으실 수 있습니다.</span>
@@ -90,37 +164,36 @@
 	    <div class="form-group">
 	      <label for="inputPassword" class="col-lg-2 control-label">수술 부위</label>
 	      <div class="col-lg-10">
-	        <div class="checkbox">
-	          <label>
-	            <input name="eyes" type="checkbox">
-	            <span style="font-size: 9pt;">눈</span>
-	            <span style="display: inline-block; width: 30px"></span>
-	            <input name="nose" type="checkbox">
-	            <span style="font-size: 9pt;">코</span>
-	            <span style="display: inline-block; width: 30px"></span>
-	            <input name="chin" type="checkbox">
-	            <span style="font-size: 9pt;">턱</span>
-	            <span style="display: inline-block; width: 30px"></span>
-	            <input name="cheekbone" type="checkbox">
-	            <span style="font-size: 9pt;">광대</span>
-	            <span style="display: inline-block; width: 30px"></span>
-	            <input name="outline" type="checkbox">
-	            <span style="font-size: 9pt;">윤곽</span>
-	            <span style="display: inline-block; width: 30px"></span>
-	            <input name="bimaxillary" type="checkbox">
-	            <span style="font-size: 9pt;">양악</span>
-	            <span style="display: inline-block; width: 30px"></span>
-	            <input name="breast" type="checkbox">
-	            <span style="font-size: 9pt;">가슴</span>
-	            <span style="display: inline-block; width: 30px"></span>
-	            <input name="liposuction" type="checkbox">
-	            <span style="font-size: 9pt;">지방흡입</span>
-	            <span style="display: inline-block; width: 30px"></span>
-	            <input name="injection" type="checkbox">
-	            <span style="font-size: 9pt;">쁘띠성형</span>
-	          </label>
-	          <span class="help-block textMargin" style="font-size: 6pt; color: #cf2d39;"> *수술받은 부위를 체크해주세요.　(중복가능)</span>
-	        </div>
+	      <div class="row checkBox">
+	      	  <div class="col-md-1 checkData">
+	      	  	<input id="sugeryPart" name="eyes" type="checkbox" />눈
+	      	  </div>
+			  <div class="col-md-1 checkData">
+			  	<input id="sugeryPart" name="nose" type="checkbox">코
+			  </div>
+			  <div class="col-md-1 checkData">
+				<input id="sugeryPart" name="chin" type="checkbox" />턱	
+			  </div>
+			  <div class="col-md-1 checkData">
+				<input id="sugeryPart" name="cheekbone" type="checkbox" />광대
+			  </div>
+			  <div class="col-md-1 checkData">
+				<input id="sugeryPart" name="outline" type="checkbox" />윤곽
+			  </div>
+			  <div class="col-md-1 checkData">
+			  	<input id="sugeryPart" name="bimaxillary" type="checkbox" />양악
+			  </div>
+			  <div class="col-md-1 checkData">
+			  	<input id="sugeryPart" name="breast" type="checkbox" />가슴
+			  </div>
+			  <div class="col-md-1 checkData">
+			  	<input id="sugeryPart" name="liposuction" type="checkbox" />지방흡입
+			  </div>
+			  <div class="col-md-1 checkData">
+			  	<input id="sugeryPart" name="injection" type="checkbox">쁘띠성형
+			  </div>
+	      </div>
+			  <span class="help-block textMargin" style="font-size: 8pt; color: #cf2d39;"> *수술받은 부위를 체크해주세요.　(중복가능)</span>
 	      </div>
 	    </div>
 	    
@@ -158,12 +231,43 @@
 	</div>
 	    <div class="form-group">
 	    	<div class="modal-footer paddingZero" >
-				<button type="button" class="btn btn-default buttonWhite" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-default buttonWhite" data-dismiss="modal">Join</button>
+				<button type="button" id="cancelBtn" class="btn btn-default buttonWhite" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-primary" id="writeBtn">Write</button>
 			</div>
 		</div>
 	</fieldset>
 </form>
 </div>
+<script type="text/javascript">
+$('#ffile').fileupload({
+	url: contextRoot + '/cosmetic/ajax/reviewAdd.do',
+	dataType: 'json',
+	singleFileUploads: false, // 서버에 한 번만 요청을 보내라.
+	add: function (e, data) {
+    //data.context = $('<p/>').text('Uploading...').appendTo(document.body);
+    console.log("파일을 추가하였음...");
+    
+    $('#writeBtn').click(function(event) {
+    	  console.log("서버에 전송함...");
+	    	data.formData = {
+	    			memberNo: 1,
+	    			title: $('#title').val(),
+	    			content: $('#content').val(),
+	    			sugeryPart : "눈,코",
+					status : "0"
+	    	};
+     	data.submit();
+    });
+  },
+  done: function (e, data) {
+	  console.log(data.result.ajaxResult);
+	  location.href = 'user_review_list.html';
+  }
+});
+$('#cancelBtn').click(function() {
+	location.href = 'user_review_list.html';
+});
+
+</script>
 </body>
 </html>
