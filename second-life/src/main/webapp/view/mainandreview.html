@@ -6,9 +6,17 @@
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
 <style>
-	.starClick {
+	.starOpa {
 		opacity: 0.4;
 	}
+	@media screen and (max-width:1024px) {
+      #columns {
+      	width: 800px !important;
+      }
+      .h3, h3 {
+		font-size: 17px !important ;
+	  }
+    }
 </style>
 <!-- 	<link rel="stylesheet" href="../css/bootstrap_yeti.css" type="text/css"> -->
 	<link rel="stylesheet" type="text/css" href="../css/mainCustom.css" />
@@ -16,16 +24,18 @@
 	<!-- Bootflat css  -->
 	<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<!-- 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
 	
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- jQuery 최신버전 -->
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	
 	<script src="../js/jquery.menu-aim.js" type="text/javascript"></script>
 	<script src="../js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="../js/isotope-docs.min.js" type="text/javascript"></script>
-	<script src="../js/isotope.pkgd.js" type="text/javascript"></script>
+<!-- 	<script src="../js/isotope-docs.min.js" type="text/javascript"></script> -->
+<!-- 	<script src="../js/isotope.pkgd.js" type="text/javascript"></script> -->
 	<script src="../js/masonry-docs.min.js" type="text/javascript"></script>
+	<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> <!-- marsonry -->
+	<script src="../js/common.js" type="text/javascript"></script>
 	
 	
 	<script type="text/javascript">
@@ -33,13 +43,33 @@
 			$('#top').load('top.html').trigger('pagecreate');
 			var container = document.querySelector('#masonry');
 
-			$(".starClick").click(function() {
-		        if($(this).css("opacity") == "0.4") {
-		           $(this).css("opacity", "1.0");
-		        } else {
-		           $(this).css("opacity", "0.4");
-		        }
-		     });
+			/* 찜하기 함수  */
+			$(".starOpa").click(function() {
+				var x = '<img class="x" alt="" src="../images/X.png" width="15px" height="15px">';
+				if($(this).css("opacity") == 0.4){
+					$(this).css({opacity: "1.0"});
+					$("#zzim").append($(".item .review1").clone()
+							  .css({width: "100px", height: "100px"})).append(x);
+				}
+				else if($(this).css("opacity") == 1.0){
+					alert("이미 찜한 후기입니다.");
+				}
+				
+				$(".review1").hover(function () {
+					$("#zzim .review1").css({opacity: "0.4"});
+					
+				}, function () {
+					$("#zzim .review1").css({opacity: "1.0"});
+				});
+			
+				$(".x").click(function () {
+					$("#zzim .review1").remove();
+					$(".x").remove();
+					$(".starOpa").css("opacity", "0.4");
+				});
+				
+			});
+		});
 			/*
 			var msnry = new Masonry(container,{
 				itemSelector:'.item',
@@ -52,7 +82,9 @@
 				  msnry.layout();
 			});
 			*/
+		
 		$(window).load(function() {
+			$('#top').load('top.html').trigger('pagecreate');
 			var container = document.querySelector('#columns');
 			$('#columns').masonry({
 				itemSelector:'.item',
@@ -63,8 +95,8 @@
 				
 			});
 		});
+		
 		$(document).ready(function() {	
-			$('#top').load('top.html').trigger('pagecreate');
 			
 			$(window).scroll(function() {
 				var scrollHeight=$(window).scrollTop()+$(window).height();
@@ -76,7 +108,7 @@
 							div += '<figure>';
 							div += '<a href="user_review2.html"><img src="../images/review_main12.jpg" /></a>'
 							div += '<figcaption>';
-							div += '<div class="review">오지고 또 오졌다. 인정?</div>';
+							div += '<div class="review">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div>';
 							div +=	'<hr />';
 							div +=	'<div class="footers">';
 							div +=	'<div class="row">';
@@ -92,8 +124,16 @@
 							div += '</figcaption>';
 							div += '</figure>';
 							div	+= '</div>';
+						
+						// 추가할 엘리먼트 jquery 객체화
 						var $elem = $(div);
+						// masonry 추가
 				    	$('#columns').append($elem).masonry('appended',$elem);
+				    	// 추가되고 다시 재배치 해줌
+				    	$('#columns').imagesLoaded(function() {
+							$('#columns').masonry();
+						});
+				    	// 다시 리로드
 				    	$('#columns').masonry('reloadItems');
 					}
 				}
@@ -123,7 +163,7 @@
 		<div id="columns">
 		<div class="item">	
 			<figure>
-				<a href="user_review2.html"><img src="../images/review_main1.jpg" /></a>
+				<a href="user_review2.html"><img class="review1" src="../images/review_main1.jpg" /></a>
 				<figcaption>
 					<div class="review.html">전에는 정말 살기싫었는데 지금은 계속 살고싶네요</div>
 					<hr />
@@ -134,7 +174,9 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28"  /></div>
+						  	<div class="wish">
+						  	<img class="starOpa" src="../images/star.png" width="30" height="28"  />
+						  	</div>
 						  </div>
 						</div>
 					</div>
@@ -371,15 +413,105 @@
 	<div id="body-right">
 	  <h3 class="ui-widget-header">Review Wish list</h3>
 	  <div class="ui-widget-content">
-	    <ol>
-      <li class="placeholder">Add your items here</li>
-    </ol>
-  	</div>
+		<div id="zzim">
+    	</div>
+  	  </div>
    </div>
 	
 	
 	
 	</div>
+<script type="text/javascript">
+	$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do',function(resultObj){
+		for(var list of resultObj.reviewList){
+			var beforePath = '';
+			var afterPath = '';
+			
+			for(var photoList of list.reviewPhoto){
+				var index = 1;
+				if(index ==1){
+					beforePath += photoList.filePath;
+				}
+				else{
+					afterPath += photoList.filePath;
+				}
+				index++;
+			}
+			
+			var div = '<div class="item">';	
+				div +=	'<figure>';
+				div +=	'<a class="detailLnk" href="#"><img src="' + beforePath + '" reviewNo="' + list.reviewNo + '" /></a>									';
+				div +=	'<figcaption>																														';
+				div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
+				div +=	'				<hr />                                                                                                              ';
+				div +=	'				<div class="footers">                                                                                               ';
+				div +=	'					<div class="row">                                                                                               ';
+				div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
+				div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
+				div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
+				div +=	'					  </div>                                                                                                        ';
+				div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
+				div +=	'					  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28"  /></div>          ';
+				div +=	'					  </div>                                                                                                        ';
+				div +=	'					</div>                                                                                                          ';
+				div +=	'				</div>                                                                                                              ';
+				div +=	'			</figcaption>                                                                                                           ';
+				div +=	'		</figure>                                                                                                                   ';
+				div +=	'	</div>                                                                                                                          ';
+				
+				var $elem = $(div);
+				
+				$('#columns').append($elem).masonry('appended',$elem);
+				
+				$('#columns').imagesLoaded(function() {
+					$('#columns').masonry();
+				});
+				
+				$('a.detailLnk').click(clickDetailLnk);
+				
+		}
+	});
 	
+	$(".starClick").click(function() {
+        if($(this).css("opacity") == "0.4") {
+           $(this).css("opacity", "1.0");
+        } else {
+           $(this).css("opacity", "0.4");
+        }
+     });
+	
+	function clickDetailLnk(event) {
+		event.preventDefault();
+		location.href = 'user_review2.html?reviewNo=' + $(event.target).attr('reviewNo');
+	}
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
