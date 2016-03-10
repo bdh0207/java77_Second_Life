@@ -6,7 +6,7 @@
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
 <style>
-	.starClick {
+	.starOpa {
 		opacity: 0.4;
 	}
 </style>
@@ -33,13 +33,33 @@
 			$('#top').load('top.html').trigger('pagecreate');
 			var container = document.querySelector('#masonry');
 
-			$(".starClick").click(function() {
-		        if($(this).css("opacity") == "0.4") {
-		           $(this).css("opacity", "1.0");
-		        } else {
-		           $(this).css("opacity", "0.4");
-		        }
-		     });
+			/* 찜하기 함수  */
+			$(".starOpa").click(function() {
+				var x = '<img class="x" alt="" src="../images/X.png" width="15px" height="15px">';
+				if($(this).css("opacity") == 0.4){
+					$(this).css({opacity: "1.0"});
+					$("#zzim").append($(".item .review1").clone()
+							  .css({width: "100px", height: "100px"})).append(x);
+				}
+				else if($(this).css("opacity") == 1.0){
+					alert("이미 찜한 후기입니다.");
+				}
+				
+				$(".review1").hover(function () {
+					$("#zzim .review1").css({opacity: "0.4"});
+					
+				}, function () {
+					$("#zzim .review1").css({opacity: "1.0"});
+				});
+			
+				$(".x").click(function () {
+					$("#zzim .review1").remove();
+					$(".x").remove();
+					$(".starOpa").css("opacity", "0.4");
+				});
+				
+			});
+		});
 			/*
 			var msnry = new Masonry(container,{
 				itemSelector:'.item',
@@ -52,6 +72,7 @@
 				  msnry.layout();
 			});
 			*/
+		
 		$(window).load(function() {
 			var container = document.querySelector('#columns');
 			$('#columns').masonry({
@@ -123,7 +144,7 @@
 		<div id="columns">
 		<div class="item">	
 			<figure>
-				<a href="user_review2.html"><img src="../images/review_main1.jpg" /></a>
+				<a href="user_review2.html"><img class="review1" src="../images/review_main1.jpg" /></a>
 				<figcaption>
 					<div class="review.html">전에는 정말 살기싫었는데 지금은 계속 살고싶네요</div>
 					<hr />
@@ -134,7 +155,9 @@
 							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
 						  </div>
 						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28"  /></div>
+						  	<div class="wish">
+						  	<img class="starOpa" src="../images/star.png" width="30" height="28"  />
+						  	</div>
 						  </div>
 						</div>
 					</div>
@@ -371,10 +394,9 @@
 	<div id="body-right">
 	  <h3 class="ui-widget-header">Review Wish list</h3>
 	  <div class="ui-widget-content">
-	    <ol>
-      <li class="placeholder">Add your items here</li>
-    </ol>
-  	</div>
+		<div id="zzim">
+    	</div>
+  	  </div>
    </div>
 	
 	
