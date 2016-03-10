@@ -9,7 +9,6 @@
 <title>꽃보다 아름다운</title>  
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" href="../css/flexslider.css" type="text/css">
-<link rel="stylesheet" type="text/css" href="../css/header.css" />
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>  
 <style>
 a, h3, td { font-family: 'Jeju Gothic', serif; }
@@ -40,43 +39,18 @@ $(window).load(function() {
     //controlNav: "thumbnails"
   });
 });
+
+$(document).ready(function() {
+	$('#top').load('top.html').trigger('pagecreate');
+});
 </script>
 </head>
 
 <body>
-	<!-- top --> 
-    <div id="bar"></div>			
-	<div id="menu1">  
-        <div class="menu"><a href="Counsel.html">상담신청</a></div>
-        <div class="menu"><a href="user_review2.html">유저리뷰</a></div>
-        <div class="menu">병원찾기</div> 
-        <div style="width:60px; margin: 0 auto;"><img src="../images/logo.gif" width="60" /></div> 
-        <div class="menu">문의하기</div>
-        <div class="menu">고객센터</div>
-        <div class="menu">로그인</div> 
-    </div>
-     
-    <div style="width: 100%;"> 
-        <h5 style="text-align: center;">BE A BEAUTIFUL GIRL</h5>
-        <h1 style="text-align: center;"><a href="mainandreview.html">SECOND LIFE</a></h1>
-        </div>  
-    </div>
+	<!-- top -->
+	<div data-role="page" id="top"></div>
     
     <div class="body-content"> 
-    	<!--
-      	<ul class="breadcrumb">
-          <li class="active"><a href="#">전체</a></li>
-          <li><a href="#">눈</a></li>
-          <li><a href="#">코</a></li>
-          <li><a href="#">턱</a></li>
-          <li><a href="#">광대</a></li>
-          <li><a href="#">돌려깎기</a></li>
-          <li><a href="#">양악</a></li>
-          <li><a href="#">가슴</a></li>
-          <li><a href="#">지방흡입</a></li>
-          <li><a href="#">쁘띠성형</a></li>   
-        </ul>	 
-        -->
     	<!-- 본문_좌 --> 
         <div class="left">
         	<div class="panel panel-default">
