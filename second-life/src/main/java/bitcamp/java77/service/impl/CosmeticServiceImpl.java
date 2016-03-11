@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import bitcamp.java77.dao.CosmeticDao;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
+import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
+import bitcamp.java77.domain.CosmeticSearch;
 import bitcamp.java77.service.CosmeticService;
 
 @Service
@@ -33,9 +35,20 @@ public class CosmeticServiceImpl implements CosmeticService {
 
 	@Override
 	@Transactional
-	public List<CosmeticReview> selectReviewList() throws Exception {
-		
-		return cosmeticDao.selectReviewList();
+	public CosmeticReview selectReviewListDetail(int reviewNo) throws Exception {
+		return cosmeticDao.selectReviewListDetail(reviewNo);
+	}
+
+	@Override
+	@Transactional
+	public List<CosmeticReviewComment> selectReviewComment(int reviewNo) throws Exception {
+		return cosmeticDao.selectReviewComment(reviewNo);
+	}
+
+	@Override
+	@Transactional
+	public List<CosmeticReviewPhoto> selectReviewPhoto(int reviewNo) throws Exception {
+		return cosmeticDao.selectReviewPhoto(reviewNo);
 	}
 
 	@Override
@@ -47,7 +60,11 @@ public class CosmeticServiceImpl implements CosmeticService {
 	public void insertMember(CosmeticMember cosmeticMember) throws Exception {
 		cosmeticDao.insertMember(cosmeticMember);
 	}
+
+	@Override
+	public List<CosmeticReview> selectReviewList(CosmeticSearch search) throws Exception {
+		return cosmeticDao.selectReviewList(search);
+	}
 	
 	
- 
 }

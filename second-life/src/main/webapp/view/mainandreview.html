@@ -39,6 +39,7 @@
 	
 	
 	<script type="text/javascript">
+		var pageIdx = 2;
 		$(document).ready(function() {	
 			$('#top').load('top.html').trigger('pagecreate');
 			var container = document.querySelector('#masonry');
@@ -103,39 +104,63 @@
 				var documentHeight = $(document).height();
 				
 				if(scrollHeight==documentHeight){
-					for(var i=0; i<10; i++){
-						var div = '<div class="item">';	
-							div += '<figure>';
-							div += '<a href="user_review2.html"><img src="../images/review_main12.jpg" /></a>'
-							div += '<figcaption>';
-							div += '<div class="review">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div>';
-							div +=	'<hr />';
-							div +=	'<div class="footers">';
-							div +=	'<div class="row">';
-							div +=  '<div class="col-xs-12 col-md-8">';
-							div	+=	'<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>';
-							div	+=  '<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>';
-							div	+=	'</div>';
-							div	+=	'<div class="col-xs-6 col-md-4">';
-							div +=  '<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>';
-							div +=	'</div>';
-							div +=	'</div>';
-							div +=	'</div>';
-							div += '</figcaption>';
-							div += '</figure>';
-							div	+= '</div>';
+					$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do?pageNo='+pageIdx, function(resultObj) {
+						for(var list of resultObj.reviewList){
+							if(resultObj.reviewList.length != 0) pageIdx++;
+							
+							var beforePath = '';
+							var afterPath = '';
+								
+							for(var photoList of list.reviewPhoto){
+								var index = 1;
+								if(index ==1){
+									beforePath += photoList.filePath;
+								}
+								else{
+									afterPath += photoList.filePath;
+								}
+								index++;
+							}
+								
+							var div = '<div class="item">';	
+								div +=	'<figure>';
+								div +=	'<a class="detailLnk" href="#"><img src="' + beforePath + '" reviewNo="' + list.reviewNo + '" /></a>									';
+								div +=	'<figcaption>																														';
+								div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
+								div +=	'				<hr />                                                                                                              ';
+								div +=	'				<div class="footers">                                                                                               ';
+								div +=	'					<div class="row">                                                                                               ';
+								div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
+								div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
+								div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
+								div +=	'					  </div>                                                                                                        ';
+								div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
+								div +=	'					  	<div class="wish"><img class="starOpa" src="../images/star.png" width="30" height="28"  /></div>          ';
+								div +=	'					  </div>                                                                                                        ';
+								div +=	'					</div>                                                                                                          ';
+								div +=	'				</div>                                                                                                              ';
+								div +=	'			</figcaption>                                                                                                           ';
+								div +=	'		</figure>                                                                                                                   ';
+								div +=	'	</div>';
+								
+								// 추가할 엘리먼트 jquery 객체화
+								var $elem = $(div);
+								// masonry 추가
+						    	$('#columns').append($elem).masonry('appended',$elem);
+						    	// 추가되고 다시 재배치 해줌
+						    	$('#columns').imagesLoaded(function() {
+									$('#columns').masonry();
+								});
+						    	// 다시 리로드
+						    	$('#columns').masonry('reloadItems');
+						    	
+						    	$('a.detailLnk').click(clickDetailLnk);
+						}
 						
-						// 추가할 엘리먼트 jquery 객체화
-						var $elem = $(div);
-						// masonry 추가
-				    	$('#columns').append($elem).masonry('appended',$elem);
-				    	// 추가되고 다시 재배치 해줌
-				    	$('#columns').imagesLoaded(function() {
-							$('#columns').masonry();
-						});
-				    	// 다시 리로드
-				    	$('#columns').masonry('reloadItems');
-					}
+						
+					});
+					
+					
 				}
 			});
 			

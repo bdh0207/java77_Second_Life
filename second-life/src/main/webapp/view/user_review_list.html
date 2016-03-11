@@ -90,7 +90,7 @@
 		width: 1280px;
 	}
 	
-	@media screen and (max-width:768px) {
+	@media screen and (max-width:1024px) {
       .item{
       	 width: 791px;
       	 float: none;
@@ -115,6 +115,8 @@
 
 </style>
 <script type="text/javascript">
+	// 페이징 인덱스
+	var pageIdx = 2;
 	
 	$(window).load(function(){
 		$('#masonry').masonry({
@@ -132,28 +134,59 @@
 // 		var container = document.querySelector('#masonry');
 
 		$('#listMore').on('click',function() {
-			var div ='<div class="item">';
-			    div += '<div class="row row-main">';
-		    	div += '<div class="col-md-9 col-md-push-3">';
-		    	div += '<div class="row">'
-				div +=  '<div class="col-xs-12 col-md-8 col-md-8-title"><h3>엄청좋네요~! 인생 바꼈네요 취직도되고</h3></div>'
-				div +=  '<div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />15023</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />2016.02.27</span></div>';
-				div += '</div>';
-				div += '<div class="row">';
-				div += '<div class="col-md-8">아직은 세상은 살만한가 봅니다 허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허 갸꿀</div>';
-				div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger">MORE+</span></h2></div>';
-				div += '</div>';
-				div	+= '</div>';
-				div += '<div class="col-md-3 col-md-pull-9"><img src="../images/review_main4.jpg" width="250" height="215" /></div>';
-	    		div += '</div>';
-	    		div	+= '</div>';
-	    	var $elem = $(div);
-	    		console.log($elem);
-	    	$('#masonry').append($elem).masonry('appended',$elem);
-	    	
-	    	$('#masonry').imagesLoaded(function() {
-				$('#masonry').masonry();
+			$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do?pageNo=' + pageIdx,function(resultObj){
+				
+				if(resultObj.reviewList.length != 0) pageIdx++;
+				
+				for(var list of resultObj.reviewList){
+					
+					var beforePath = '';
+		 			var afterPath = '';
+		 			
+		 			for(var photoList of list.reviewPhoto){
+		 				var index = 1;
+		 				if(index == 1){
+		 					beforePath = photoList.filePath;
+		 				}
+		 				else{
+		 					afterPath = photoList.filePath;
+		 				}
+		 				index++;
+		 			}
+					
+		 			// 날짜 변환
+		 			var formattedDate = new Date(list.regDate);
+					var years = formattedDate.getFullYear();
+					var months = formattedDate.getMonth() + 1;
+					var days = formattedDate.getDate();
+					var regDate = years + '.' + months +'.'+ days;
+		 			
+					var div ='<div class="item">';
+					    div += '<div class="row row-main">';
+				    	div += '<div class="col-md-9 col-md-push-3">';
+				    	div += '<div class="row">'
+						div +=  '<div class="col-xs-12 col-md-8 col-md-8-title"><h3>'+ list.title +'</h3></div>'
+						div +=  '<div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />' + list.viewCnt +'</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />'+regDate+'</span></div>';
+						div += '</div>';
+						div += '<div class="row">';
+						div += '<div class="col-md-8">'+list.content+'</div>';
+						div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger" style="cursor: pointer;"><a class="detailLnk" href="#" reviewNo="'+list.reviewNo+'">MORE+</a></span></h2></div>';
+						div += '</div>';
+						div	+= '</div>';
+						div += '<div class="col-md-3 col-md-pull-9"><img src="'+ beforePath +'" width="250" height="215" /></div>';
+						div += '</div>';
+						div	+= '</div>';
+			    	var $elem = $(div);
+			    	$('#masonry').append($elem).masonry('appended',$elem);
+			    	
+			    	$('#masonry').imagesLoaded(function() {
+						$('#masonry').masonry();
+					});
+			    	$('a.detailLnk').click(clickDetailLnk);
+				}
+				
 			});
+			
 		});
 		
 		$('#writeBtn').click(function(event) {
@@ -222,57 +255,6 @@
 			    <!-- style="min-width: 967px; max-width: 1266px; -->
 			    <div id="masonry" style="height: 100%;">
 				<!-- 			    <div id="columns"> -->
-				<!--
-			    <div class="item">
-			    <div class="row row-main">
-				    <div class="col-md-9 col-md-push-3">
-				    	<div class="row">
-						  <div class="col-xs-12 col-md-8 col-md-8-title"><h3>쌍수 한지 3달째!! 정말정말 좋아요~!</h3></div>
-						  <div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />23534</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />1983</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />2016.02.25</span></div>
-						</div>
-						<div class="row">
-							<div class="col-md-8">쌍수한지 3개월째 새우우웅곡 멋있어ㄹㄹㄹㄹㅅ샷좋아asdsadnjxzcnklxzcklvnxklcvnklxcnklvxcnklvnklxcnvlkxcnvlkxcnvklxcnlkvnxcklnvklxcnvcklxndfgfdgfdgndfkgndfklngldfngl</div>
-   							<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger"><a class="detailLink" href="#" reviewNo="1">MORE+</a></span></h2></div>
-						</div>
-
-				    </div>
-  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main1.jpg" width="250" height="215" /></div>
-			    </div>
-			    </div>
-			    
-			    <div class="item">
-			    <div class="row row-main">
-				    <div class="col-md-9 col-md-push-3">
-				    	<div class="row">
-						  <div class="col-xs-12 col-md-8 col-md-8-title"><h3>엄청좋네요~! 인생 바꼈네요 취직도되고</h3></div>
-						  <div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />15023</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />2016.02.27</span></div>
-						</div>
-						<div class="row">
-							<div class="col-md-8">아직은 세상은 살만한가 봅니다 허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허 갸꿀</div>
-   							<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger">MORE+</span></h2></div>
-						</div>
-
-				    </div>
-  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main2.jpg" width="250" height="215" /></div>
-			    </div>
-			    </div>
-			    
-			    <div class="item">
-			    <div class="row row-main">
-				    <div class="col-md-9 col-md-push-3">
-				    	<div class="row">
-						  <div class="col-xs-12 col-md-8 col-md-8-title"><h3>엄청좋네요~! 인생 바꼈네요 취직도되고</h3></div>
-						  <div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />15023</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />2016.02.27</span></div>
-						</div>
-						<div class="row">
-							<div class="col-md-8">아직은 세상은 살만한가 봅니다 허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허허 갸꿀</div>
-   							<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger">MORE+</span></h2></div>
-						</div>
-				    </div>
-  					<div class="col-md-3 col-md-pull-9"><img src="../images/review_main3.jpg" width="250" height="215" /></div>
-			    </div>
-			    </div>
-			    -->
 			    
 			    <!-- Content end -->
 <!-- 			    </div> -->
