@@ -10,7 +10,7 @@ public class CosmeticMember implements Serializable {
 	protected String name;
 	protected String email;
 	protected String gender;
-	protected int birrh;
+	protected int birth;
 	protected String posNo;
 	protected String addrDef;
 	protected String addrDet;
@@ -56,11 +56,12 @@ public class CosmeticMember implements Serializable {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public int getBirrh() {
-		return birrh;
+	
+	public int getBirth() {
+		return birth;
 	}
-	public void setBirrh(int birrh) {
-		this.birrh = birrh;
+	public void setBirth(int birth) {
+		this.birth = birth;
 	}
 	public String getPosNo() {
 		return posNo;

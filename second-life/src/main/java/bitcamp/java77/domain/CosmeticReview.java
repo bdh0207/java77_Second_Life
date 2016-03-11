@@ -15,7 +15,21 @@ public class CosmeticReview implements Serializable {
 	protected char status;
 	protected Date regDate;
 	protected List<CosmeticReviewPhoto> reviewPhoto;
+	protected List<CosmeticReviewComment> reviewComment;
+	protected CosmeticMember member;
 	
+	public CosmeticMember getMember() {
+		return member;
+	}
+	public void setMember(CosmeticMember member) {
+		this.member = member;
+	}
+	public List<CosmeticReviewComment> getReviewComment() {
+		return reviewComment;
+	}
+	public void setReviewComment(List<CosmeticReviewComment> reviewComment) {
+		this.reviewComment = reviewComment;
+	}
 	public List<CosmeticReviewPhoto> getReviewPhoto() {
 		return reviewPhoto;
 	}
