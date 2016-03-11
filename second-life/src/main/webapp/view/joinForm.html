@@ -198,24 +198,31 @@
 	</div>
 	
 <script type="text/javascript">
+	var idChk;
 	$("#idCheck").click(function() {
 		$.getJSON(contextRoot + "/cosmetic/ajax/idCheck.do", { "id" : $('#inputId').val() },
 			  	function(resultObj) {
 					alert(resultObj.ajaxResult.data);
+					idChk = resultObj.ajaxResult.data;
 				}
 		)
 	});
 	
 	$("#joinBtn").click(function() {
-        $("#joinForm").ajaxSubmit({
-			type : "POST",
-			url : contextRoot + "/cosmetic/ajax/join.do",
-// 			data : { birth : $("input[name=year]").val()+$("input[name=month]").val()+$("input[name=day]").val() },
-			dataType : "json",
-			success : function(resultObj) {
-				location.href = 'mainandreview.html?id='+resultObj.ajaxResult.data;
-			}
-        });
+		if(idChk == '사용 가능한 ID 입니다.'){
+	        $("#joinForm").ajaxSubmit({
+				type : "POST",
+				url : contextRoot + "/cosmetic/ajax/join.do",
+	// 			data : { birth : $("input[name=year]").val()+$("input[name=month]").val()+$("input[name=day]").val() },
+				dataType : "json",
+				success : function(resultObj) {
+					location.href = 'mainandreview.html';
+				}
+	        });	
+		}
+		else{
+			alert('ID 중복체크를 다시 확인해 주세요.');
+		}
 	});
 	
 	function applyBefore() {
