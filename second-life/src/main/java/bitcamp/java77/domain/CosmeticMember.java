@@ -10,13 +10,13 @@ public class CosmeticMember implements Serializable {
 	protected String name;
 	protected String email;
 	protected String gender;
-	protected int birrh;
-	protected String posNo;
-	protected String addrDef;
-	protected String addrDet;
-	protected String tel;
-	protected String cPart;
-	protected char recEmail;
+	protected int birth;
+	protected String posNo;		// 우편번호
+	protected String addrDef; 	// 기본주소
+	protected String addrDet; 	// 상세주소
+	protected String tel;		// 전화
+	protected String cPart;		// 관심부위
+	protected String recEmail;
 	protected String cont;
 	protected Date regDate;
 	
@@ -56,11 +56,11 @@ public class CosmeticMember implements Serializable {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public int getBirrh() {
-		return birrh;
+	public int getBirth() {
+		return birth;
 	}
-	public void setBirrh(int birrh) {
-		this.birrh = birrh;
+	public void setBirth(int birth) {
+		this.birth = birth;
 	}
 	public String getPosNo() {
 		return posNo;
@@ -92,10 +92,10 @@ public class CosmeticMember implements Serializable {
 	public void setcPart(String cPart) {
 		this.cPart = cPart;
 	}
-	public char getRecEmail() {
+	public String getRecEmail() {
 		return recEmail;
 	}
-	public void setRecEmail(char recEmail) {
+	public void setRecEmail(String recEmail) {
 		this.recEmail = recEmail;
 	}
 	public String getCont() {

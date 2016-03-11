@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import bitcamp.java77.domain.AjaxResult;
+import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
 import bitcamp.java77.service.CosmeticService;
@@ -35,6 +36,25 @@ public class CosmeticController {
 	CosmeticService cosmeticService;
 	@Autowired
 	ServletContext servletContext;
+	
+	@RequestMapping(value="join")
+	public void join(CosmeticMember cosmeticMember) throws Exception {
+		cosmeticService.insertMember(cosmeticMember);
+	}
+	
+	@RequestMapping(value="idCheck")
+	public AjaxResult idCheck(CosmeticMember cosmeticMember) throws Exception {
+		int num    = cosmeticService.searchID(cosmeticMember.getId());
+		String msg = "";
+		
+		if(num == 0) {
+			msg = "사용 가능한 ID 입니다.";
+		} else {
+			msg = "이미 사용중인 ID 입니다.";
+		}
+		
+		return new AjaxResult("success", msg);
+	}
 	
 	@RequestMapping(value="reviewList")
 	public Object reviewList() throws Exception{
