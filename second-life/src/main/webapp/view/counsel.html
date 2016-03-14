@@ -8,10 +8,21 @@
 <title>상담신청</title>
 <link rel="stylesheet" type="text/css" href="../css/common.css">
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="../js/common.js" type="text/javascript"></script>
 <script>
 	$(document).ready(function() {
 		// top 적용
 		$('#top').load('top.html');
+		
+		$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+			var ajaxResult = resultObj.ajaxResult;
+			var member = ajaxResult.data;
+			if(member != null){
+				console.log(member.id);
+				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+				$('.changeValue2').html('Hello '+member.id).removeAttr('onclick');
+			}
+		});
 	});
 </script>
 </head>
