@@ -19,7 +19,7 @@
     "bootstrap": "~3.3.6",
     "jquery": "1.11.3",
     "blueimp-file-upload": "jquery-file-upload#^9.11.2",
-    "bootflat":"https://github.com/bootflat/bootflat.github.io.git"
+    "bootflat":"https://github.com/bootflat/bootflat.github.io.git",
   },
   "install": {
     "path": "src/main/webapp/lib",
@@ -27,7 +27,7 @@
       "bootstrap": "bower_components/bootstrap/dist/**",
       "jquery": "bower_components/jquery/dist/**",
       "blueimp-file-upload": "bower_components/blueimp-file-upload/**",
-      "bootflat": "bower_components/bootflat/**"
+      "bootflat": "bower_components/bootflat/**",
     }
   }
 }

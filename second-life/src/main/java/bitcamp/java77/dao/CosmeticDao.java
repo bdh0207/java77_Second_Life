@@ -17,5 +17,6 @@ public interface CosmeticDao {
 	CosmeticReview selectReviewListDetail(int reviewNo); // 리뷰 상세조회
 	List<CosmeticReviewComment> selectReviewComment(int reviewNo); // 리뷰 댓글 조회
 	List<CosmeticReviewPhoto> selectReviewPhoto(int reviewNo); //리뷰 사진 조회
-
+	int selectLogin(CosmeticMember member); // 로그인
+	CosmeticMember selectMember(int no);
 }

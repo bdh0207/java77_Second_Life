@@ -17,6 +17,7 @@
 	}
 </style>
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="../js/common.js"></script>
 <script>
 	$(document).ready(function() {
 		// top 적용
@@ -42,7 +43,7 @@
 				<input class="form-control input-sm" type="password" id="inputSmall">
 				</div>
 				<div class="modal-footer paddingZero" >
-			        <button type="button" class="btn btn-default buttonColor" data-dismiss="modal">Login</button>
+			        <button type="button" id="loginBtn" class="btn btn-default buttonColor" data-dismiss="modal">Login</button>
 			    </div>
 			    <div style="float: right;">
 				    <a href="#" class="btn btn-link joinAlink">아이디|비번찾기</a>
@@ -51,5 +52,27 @@
 			</div>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+		$('#loginBtn').click(function() {
+			$.post(contextRoot+'/cosmetic/ajax/login.do',
+				{
+					id : $('input[type="text"]').val(),
+					password : $('input[type="password"]').val()
+				},
+				function(resultObj){
+					var ajaxResult = resultObj.ajaxResult;
+					var status = ajaxResult.status;
+					console.log(status);
+					if(status == 'success'){
+						alert('로그인 성공');
+						location.href = "mainandreview.html";
+					}
+					else{
+						alert('로그인 정보를 다시 확인해 주세요');
+					}
+			},"json");
+		});
+	</script>
 </body>
 </html>

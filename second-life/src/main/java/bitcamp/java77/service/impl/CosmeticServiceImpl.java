@@ -65,6 +65,16 @@ public class CosmeticServiceImpl implements CosmeticService {
 	public List<CosmeticReview> selectReviewList(CosmeticSearch search) throws Exception {
 		return cosmeticDao.selectReviewList(search);
 	}
+
+	@Override
+	public int selectLogin(CosmeticMember member) throws Exception {
+		return cosmeticDao.selectLogin(member);
+	}
+
+	@Override
+	public CosmeticMember selectMember(int no) throws Exception {
+		return cosmeticDao.selectMember(no);
+	}
 	
 	
 }
