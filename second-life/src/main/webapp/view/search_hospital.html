@@ -64,6 +64,8 @@
 				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
 				$('.changeValue2').html('Hello '+member.id).removeAttr('onclick');
 			}
+		}).error(function(error) {
+			window.location.href='login.html';
 		});
 	});
 	

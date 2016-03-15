@@ -123,13 +123,18 @@ public class CosmeticController {
 	}
 	
 	@RequestMapping(value="reviewAdd",method=RequestMethod.POST)
-	public AjaxResult reviewAdd(CosmeticReview cosmeticReview, @RequestParam("files") MultipartFile[] files) throws Exception{
+	public AjaxResult reviewAdd(CosmeticReview cosmeticReview, @RequestParam("files") MultipartFile[] files,MultipartHttpServletRequest mRequest) throws Exception{
 		CosmeticReviewPhoto cosmeticReviewPhoto = new CosmeticReviewPhoto();
 		
 		// reviewNo 추출
 		cosmeticService.insertReview(cosmeticReview);
      	int reviewNo = cosmeticReview.getReviewNo();
 		
+     	Iterator<String> file1 = mRequest.getFileNames();
+     	while(file1.hasNext()){
+     		String fName = file1.next();
+     		MultipartFile file = mRequest.getFile(fName);
+     	}
 	    for (MultipartFile file : files) {
 	      if (file.getSize() > 0) {
 	        String newFileName = MultipartHelper.generateFilename(file.getOriginalFilename());

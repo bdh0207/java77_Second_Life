@@ -3,23 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" type="text/css" href="../css/reviewFormCss.css">
 
-<script type="text/javascript" src="../lib/jquery/jquery.js"></script>
+<script src="../lib/jquery/jquery.js"></script>
 <script src="../lib/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
 <script src="../lib/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
 <script src="../lib/blueimp-file-upload/js/jquery.fileupload.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
+<script src="../js/common.js"></script>
 <title>Review</title>
 <script>
 	$(document).ready(function() {
 		$('#top').load('top.html').trigger('pagecreate');
 	});
 	
+	// 성형정보 공유 disabled
 	function checkDisable(frm)
 	{
 	    if( frm.share.checked == true ){
+	       /*
 	       frm.eyes.disabled = false;
 		   frm.nose.disabled = false;
 		   frm.chin.disabled = false;
@@ -29,6 +32,7 @@
 		   frm.breast.disabled = false;
 		   frm.liposuction.disabled = false;
 		   frm.injection.disabled = false;
+		   */
 		   frm.way.disabled = false;
 		   frm.hsName.disabled = false;
 		   frm.doctor.disabled = false;
@@ -37,6 +41,7 @@
 		} 
 	    else 
 		{
+	    	/*
 		   frm.eyes.disabled = true;
 		   frm.nose.disabled = true;
 		   frm.chin.disabled = true;
@@ -46,6 +51,7 @@
 		   frm.breast.disabled = true;
 		   frm.liposuction.disabled = true;
 		   frm.injection.disabled = true;
+		   */
 		   frm.way.disabled = true;
 		   frm.hsName.disabled = true;
 		   frm.doctor.disabled = true;
@@ -57,7 +63,7 @@
 function ckSubmit() {
 		
 		console.log(contextRoot);
-		
+		/*
 		var checkBoxValues = [];
 		
 		$('#sugeryPart:checked').each(function(i) {
@@ -88,6 +94,7 @@ function ckSubmit() {
 		console.log(allData);
 		
 		return false;
+		*/
 	}
 	
 	
@@ -112,7 +119,26 @@ function ckSubmit() {
 			margin-top: 20px;
 		}
 	}
+	.ffile{
+		display: none !important; 
+	}
 </style>
+<script>
+$(document).ready(function() {
+	$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+		var ajaxResult = resultObj.ajaxResult;
+		var member = ajaxResult.data;
+		if(member != null){
+			console.log(member.id);
+			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+			$('.changeValue2').html('Hello '+member.id).removeAttr('onclick');
+		}
+	}).error(function(error) {
+		window.location.href='login.html';
+	});
+});
+
+</script>
 </head>
 <body>
 	<!-- top -->
@@ -142,13 +168,84 @@ function ckSubmit() {
 	    </div>
 	    <div class="form-group">
 	      <label for="inputEmail" class="col-lg-2 control-label">사　　진</label>
+	      
+	     <div class="row">
+	     
+		  <div class="col-md-4">
+		  <div class="panel panel-default">
+			  <div class="panel-body">
+			    <img style="max-width:110px; max-height: 100px; width: auto; height: auto;" id="file-img1" name="path" src="http://www.randomlengthsnews.com/wp-content/themes/gonzo/images/no-image-blog-one.png"/>
+			    <input type="file" name="files" id="ffile1" class="ffile" multiple />
+			  </div>
+			  <div class="panel-footer">BEFORE</div>
+			</div>
+		</div>
+		
+		  <div class="col-md-4">
+		  <div class="panel panel-default">
+			  <div class="panel-body">
+			    <img style="max-width:110px; max-height: 100px; width: auto; height: auto;" id="file-img2" name="path" src="http://www.randomlengthsnews.com/wp-content/themes/gonzo/images/no-image-blog-one.png"/>
+			    <input type="file" name="files" id="ffile2" class="ffile" multiple>
+			  </div>
+			  <div class="panel-footer">AFTER</div>
+			</div>
+		  </div>
+		
+		</div>
+	      	
+			
+		<!--
 	      <div class="col-lg-10">
+	      <div class="panel panel-default">
+			  <div class="panel-body">
+			    Panel content
+			  </div>
+			  <div class="panel-footer">Panel footer</div>
+			</div>
 	      <input type="text" class="file_input_textbox" readonly="readonly"/>
 	      <div class="file_input_div">
 	      <input type="file" id="ffile" name="files" class="fontStyle" multiple>
 	      </div>
 	      </div>
+	      -->
 	    </div>
+	    
+	    <div class="form-group">
+	      <label for="inputPassword" class="col-lg-2 control-label">수술 부위</label>
+	      <div class="col-lg-10">
+	      <div class="row checkBox">
+	      	  <div class="col-md-1 checkData">
+	      	  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="눈" />눈
+	      	  </div>
+			  <div class="col-md-1 checkData">
+			  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="코">코
+			  </div>
+			  <div class="col-md-1 checkData">
+				<input class="sugeryPart" name="sPartCk" type="checkbox" value="턱"/>턱	
+			  </div>
+			  <div class="col-md-1 checkData">
+				<input class="sugeryPart" name="sPartCk" type="checkbox" value="광대"/>광대
+			  </div>
+			  <div class="col-md-1 checkData">
+				<input class="sugeryPart" name="sPartCk" type="checkbox" value="윤곽"/>윤곽
+			  </div>
+			  <div class="col-md-1 checkData">
+			  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="양악"/>양악
+			  </div>
+			  <div class="col-md-1 checkData">
+			  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="가슴"/>가슴
+			  </div>
+			  <div class="col-md-1 checkData">
+			  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="지방흡입"/>지방흡입
+			  </div>
+			  <div class="col-md-1 checkData">
+			  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="쁘띠성형"/>쁘띠성형
+			  </div>
+	      </div>
+			  <span class="help-block textMargin" style="font-size: 8pt; color: #cf2d39;"> *수술받은 부위를 체크해주세요.　(중복가능)</span>
+	      </div>
+	    </div>
+	    
 	    <div class="form-group">
 	      <label for="inputPassword" class="col-lg-2 control-label">공유 여부</label>
 	      <div class="col-lg-10">
@@ -161,41 +258,7 @@ function ckSubmit() {
 	        </div>
 	      </div>
 	    </div>
-	    <div class="form-group">
-	      <label for="inputPassword" class="col-lg-2 control-label">수술 부위</label>
-	      <div class="col-lg-10">
-	      <div class="row checkBox">
-	      	  <div class="col-md-1 checkData">
-	      	  	<input id="sugeryPart" name="eyes" type="checkbox" />눈
-	      	  </div>
-			  <div class="col-md-1 checkData">
-			  	<input id="sugeryPart" name="nose" type="checkbox">코
-			  </div>
-			  <div class="col-md-1 checkData">
-				<input id="sugeryPart" name="chin" type="checkbox" />턱	
-			  </div>
-			  <div class="col-md-1 checkData">
-				<input id="sugeryPart" name="cheekbone" type="checkbox" />광대
-			  </div>
-			  <div class="col-md-1 checkData">
-				<input id="sugeryPart" name="outline" type="checkbox" />윤곽
-			  </div>
-			  <div class="col-md-1 checkData">
-			  	<input id="sugeryPart" name="bimaxillary" type="checkbox" />양악
-			  </div>
-			  <div class="col-md-1 checkData">
-			  	<input id="sugeryPart" name="breast" type="checkbox" />가슴
-			  </div>
-			  <div class="col-md-1 checkData">
-			  	<input id="sugeryPart" name="liposuction" type="checkbox" />지방흡입
-			  </div>
-			  <div class="col-md-1 checkData">
-			  	<input id="sugeryPart" name="injection" type="checkbox">쁘띠성형
-			  </div>
-	      </div>
-			  <span class="help-block textMargin" style="font-size: 8pt; color: #cf2d39;"> *수술받은 부위를 체크해주세요.　(중복가능)</span>
-	      </div>
-	    </div>
+	    
 	    
 	    <div class="form-group">
 	      <label for="inputEmail" class="col-lg-2 control-label">수술 방법</label>
@@ -239,21 +302,39 @@ function ckSubmit() {
 </form>
 </div>
 <script type="text/javascript">
-$('#ffile').fileupload({
+
+$('.ffile').fileupload({
 	url: contextRoot + '/cosmetic/ajax/reviewAdd.do',
+	type : 'POST',
 	dataType: 'json',
 	singleFileUploads: false, // 서버에 한 번만 요청을 보내라.
 	add: function (e, data) {
     //data.context = $('<p/>').text('Uploading...').appendTo(document.body);
+	var ckIdx = 1;
+	var sPart ='';
+	var length = $('input:checkbox[name="sPartCk"]:checked').length;
+	
+    $('input:checkbox[name="sPartCk"]').each(function() {
+		if(this.checked){
+			if(ckIdx == 1){
+				sPart += this.value;
+				ckIdx++;
+			}
+			else{
+				sPart += ','+this.value;
+				ckIdx++;
+			}
+		}
+	});
     console.log("파일을 추가하였음...");
-    
     $('#writeBtn').click(function(event) {
+    	  console.log(data);
     	  console.log("서버에 전송함...");
 	    	data.formData = {
 	    			memberNo: 1,
 	    			title: $('#title').val(),
 	    			content: $('#content').val(),
-	    			sugeryPart : "눈,코",
+	    			sugeryPart : sPart,
 					status : "0"
 	    	};
      	data.submit();
@@ -264,9 +345,50 @@ $('#ffile').fileupload({
 	  location.href = 'user_review_list.html';
   }
 });
+
 $('#cancelBtn').click(function() {
 	location.href = 'user_review_list.html';
 });
+
+// 파일 미리보기 부분
+$('#file-img1').click(function() {
+	$('#ffile1').trigger('click');
+});
+
+$('#file-img2').click(function() {
+	$('#ffile2').trigger('click');
+});
+
+$('.panel-body').find('.ffile').change(function() {
+	readURL(this);
+});
+/*
+$('.panel-body').find('[name=files2]').change(function() {
+	console.log(this);
+	readURL(this);
+});
+*/
+function readURL(input) {
+	if(input.files && input.files[0]){
+		var reader = new FileReader();//파일을 읽기 위한 FileReader 객체생성
+		reader.onload = function (e) {
+			var inputId = $(input).prev().context.id;
+			
+			switch (inputId) {
+			case 'ffile1':
+				$('#file-img1').attr('src',e.target.result);
+				break;
+			case 'ffile2':
+				$('#file-img2').attr('src',e.target.result);
+				break;
+			}
+			// 파일 읽어들이기를 성공했을때 호출되는 이벤트 핸들러
+			// 이미지 Tag의 src속성에 읽어들인 File 내용을 지정
+			// 아래코드에서 읽어들인 dataURL형식
+		};
+		reader.readAsDataURL(input.files[0]);
+	}
+}
 
 </script>
 </body>

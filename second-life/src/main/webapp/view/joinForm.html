@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Join Form</title>
+
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" type="text/css" href="../css/joinformCss.css">
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
@@ -13,6 +14,11 @@
 	$(document).ready(function() {
 		// top 적용
 		$('#top').load('top.html');
+		
+		
+// 		$('#inputId').keyup(function(){
+// 			console.log('키업 이벤트발생');
+// 		});
 	});
 </script>
 </head>
@@ -36,7 +42,7 @@
 							<span>*</span>ID
 						</label>
 						<div class="col-lg-8">
-							<input type="text" class="form-control" id="inputId"  name="id">
+							<input type="text" class="form-control" id="inputId"  name="id"><span id="idCheckText"></span>
 						</div>
 						<div class="col-lg-2">
 							<button type="button" class="btn btn-default buttonGray" id="idCheck"
@@ -195,16 +201,15 @@
 				</fieldset>
 			</form>
 		</div>
-	</div>
-	
+	</div>	
 <script type="text/javascript">
 	var idChk;
 	$("#idCheck").click(function() {
 		$.getJSON(contextRoot + "/cosmetic/ajax/idCheck.do", { "id" : $('#inputId').val() },
-			  	function(resultObj) {
-					alert(resultObj.ajaxResult.data);
-					idChk = resultObj.ajaxResult.data;
-				}
+			  function(resultObj) {
+				alert(resultObj.ajaxResult.data);
+				idChk = resultObj.ajaxResult.data;
+			  }
 		)
 	});
 	
@@ -278,6 +283,8 @@
             }
         }).open();
     }
-</script>	
+
+</script>
+<script type="text/javascript" src="../js/duplicationcheck.js"></script>	
 </body>
 </html>
