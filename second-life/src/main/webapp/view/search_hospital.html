@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>병원찾기</title>
-<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=true" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- jQuery 최신버전 -->
+
+<script src="../js/common.js"></script>
 </head>
 
 <body>
@@ -48,11 +49,23 @@
 			</div>
 		</div>
 	</div>
+<script src="http://maps.googleapis.com/maps/api/js?v=3&sensor=true" type="text/javascript"></script>
 <script>
 	$(document).ready(function() {
 	    $('#top').load('top.html');
 	});
-      
+    
+	$(window).load(function() {
+		$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+			var ajaxResult = resultObj.ajaxResult;
+			var member = ajaxResult.data;
+			if(member != null){
+				console.log(member.id);
+				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+				$('.changeValue2').html('Hello '+member.id).removeAttr('onclick');
+			}
+		});
+	});
 	
 	function initialize() {
 

@@ -41,7 +41,6 @@
 	<script type="text/javascript">
 		var pageIdx = 2;
 		$(document).ready(function() {	
-			$('#top').load('top.html').trigger('pagecreate');
 			var container = document.querySelector('#masonry');
 
 			/* 찜하기 함수  */
@@ -85,7 +84,8 @@
 			*/
 		
 		$(window).load(function() {
-			$('#top').load('top.html').trigger('pagecreate');
+			
+		
 			var container = document.querySelector('#columns');
 			$('#columns').masonry({
 				itemSelector:'.item',
@@ -98,13 +98,69 @@
 		});
 		
 		$(document).ready(function() {	
+			$('#top').load('top.html').trigger('pagecreate');
+			$.getJSON(contextRoot + '/cosmetic/ajax/mainReview.do',function(resultObj){
+				// 로그인 헤더 처리
+				if(resultObj.member != null){
+					$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+					$('.changeValue2').html('Hello '+ resultObj.member.id).removeAttr('onclick');
+				}
+				
+				for(var list of resultObj.reviewList){
+					var beforePath = '';
+					var afterPath = '';
+					
+					for(var photoList of list.reviewPhoto){
+						var index = 1;
+						if(index ==1){
+							beforePath += photoList.filePath;
+						}
+						else{
+							afterPath += photoList.filePath;
+						}
+						index++;
+					}
+					
+					var div = '<div class="item">';	
+						div +=	'<figure>';
+						div +=	'<a class="detailLnk" href="#"><img src="' + beforePath + '" reviewNo="' + list.reviewNo + '" /></a>									';
+						div +=	'<figcaption>																														';
+						div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
+						div +=	'				<hr />                                                                                                              ';
+						div +=	'				<div class="footers">                                                                                               ';
+						div +=	'					<div class="row">                                                                                               ';
+						div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
+						div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
+						div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
+						div +=	'					  </div>                                                                                                        ';
+						div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
+						div +=	'					  	<div class="wish"><img class="starOpa" src="../images/star.png" width="30" height="28"  /></div>          ';
+						div +=	'					  </div>                                                                                                        ';
+						div +=	'					</div>                                                                                                          ';
+						div +=	'				</div>                                                                                                              ';
+						div +=	'			</figcaption>                                                                                                           ';
+						div +=	'		</figure>                                                                                                                   ';
+						div +=	'	</div>                                                                                                                          ';
+						
+						var $elem = $(div);
+						
+						$('#columns').append($elem).masonry('appended',$elem);
+						
+						$('#columns').imagesLoaded(function() {
+							$('#columns').masonry();
+						});
+						
+						$('a.detailLnk').click(clickDetailLnk);
+
+				}
+			});
 			
 			$(window).scroll(function() {
 				var scrollHeight=$(window).scrollTop()+$(window).height();
 				var documentHeight = $(document).height();
 				
 				if(scrollHeight==documentHeight){
-					$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do?pageNo='+pageIdx, function(resultObj) {
+					$.getJSON(contextRoot + '/cosmetic/ajax/mainReview.do?pageNo='+pageIdx, function(resultObj) {
 						for(var list of resultObj.reviewList){
 							if(resultObj.reviewList.length != 0) pageIdx++;
 							
@@ -448,56 +504,6 @@
 	
 	</div>
 <script type="text/javascript">
-	$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do',function(resultObj){
-		for(var list of resultObj.reviewList){
-			var beforePath = '';
-			var afterPath = '';
-			
-			for(var photoList of list.reviewPhoto){
-				var index = 1;
-				if(index ==1){
-					beforePath += photoList.filePath;
-				}
-				else{
-					afterPath += photoList.filePath;
-				}
-				index++;
-			}
-			
-			var div = '<div class="item">';	
-				div +=	'<figure>';
-				div +=	'<a class="detailLnk" href="#"><img src="' + beforePath + '" reviewNo="' + list.reviewNo + '" /></a>									';
-				div +=	'<figcaption>																														';
-				div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
-				div +=	'				<hr />                                                                                                              ';
-				div +=	'				<div class="footers">                                                                                               ';
-				div +=	'					<div class="row">                                                                                               ';
-				div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
-				div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
-				div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
-				div +=	'					  </div>                                                                                                        ';
-				div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
-				div +=	'					  	<div class="wish"><img class="starOpa" src="../images/star.png" width="30" height="28"  /></div>          ';
-				div +=	'					  </div>                                                                                                        ';
-				div +=	'					</div>                                                                                                          ';
-				div +=	'				</div>                                                                                                              ';
-				div +=	'			</figcaption>                                                                                                           ';
-				div +=	'		</figure>                                                                                                                   ';
-				div +=	'	</div>                                                                                                                          ';
-				
-				var $elem = $(div);
-				
-				$('#columns').append($elem).masonry('appended',$elem);
-				
-				$('#columns').imagesLoaded(function() {
-					$('#columns').masonry();
-				});
-				
-				$('a.detailLnk').click(clickDetailLnk);
-				
-		}
-	});
-	
 	$(".starClick").click(function() {
         if($(this).css("opacity") == "0.4") {
            $(this).css("opacity", "1.0");

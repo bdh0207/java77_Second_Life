@@ -22,13 +22,17 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -132,7 +136,9 @@ public class CosmeticController {
 	}
 	
 	@RequestMapping(value="reviewList",method=RequestMethod.GET)
-	public Object reviewList(@RequestParam(name="pageNo",defaultValue="0")int pageNo) throws Exception{
+	public Object reviewList(@RequestParam(name="pageNo",defaultValue="0")int pageNo,HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
 		
 		pageNo = (pageNo == 0) ? 1 : pageNo;
 		
@@ -145,12 +151,38 @@ public class CosmeticController {
 		HashMap<String, Object> resultMap = new HashMap<>();
 		resultMap.put("reviewList", list);
 		resultMap.put("status", "success");
+		resultMap.put("member", member);
+		
+		return resultMap;
+	}
+	
+	@RequestMapping(value="mainReview",method=RequestMethod.GET)
+	public Object mainReview(@RequestParam(name="pageNo",defaultValue="0")int pageNo,HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
+		
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+		
+		CosmeticSearch search = new CosmeticSearch();
+		search.setStart((pageNo - 1) * 6); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 6);
+		
+		
+		List<CosmeticReview> list = cosmeticService.selectReviewList(search);
+		HashMap<String, Object> resultMap = new HashMap<>();
+		resultMap.put("reviewList", list);
+		resultMap.put("member", member);
+		resultMap.put("status", "success");
 		
 		return resultMap;
 	}
 	
 	@RequestMapping(value="reviewListDetail",method=RequestMethod.GET)
-	public AjaxResult reviewListDetail(int reviewNo) throws Exception{
+	public AjaxResult reviewListDetail(int reviewNo,HttpServletRequest req) throws Exception{
+		// 로그인 세션정보 가져오기
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
 		HashMap<String, Object> resultMap = new HashMap<>();
 		CosmeticReview review = cosmeticService.selectReviewListDetail(reviewNo);
 		List<CosmeticReviewComment> comment  = cosmeticService.selectReviewComment(reviewNo);
@@ -158,6 +190,7 @@ public class CosmeticController {
 		resultMap.put("review", review);
 		resultMap.put("comment", comment);
 		resultMap.put("photo", reviewPhoto);
+		resultMap.put("member", member);
 		
 		return new AjaxResult("success", resultMap);
 	}
@@ -201,5 +234,39 @@ public class CosmeticController {
 		
 	    
 		return new AjaxResult("success",null);
+	}
+
+	@RequestMapping(value="login", method=RequestMethod.POST)
+	public AjaxResult login(HttpServletRequest req) throws Exception {
+		CosmeticMember member = new CosmeticMember();
+		member.setId(req.getParameter("id"));
+		member.setPwd(req.getParameter("password"));
+		int no = cosmeticService.selectLogin(member);
+		
+		String msg = "fail";
+		member =cosmeticService.selectMember(no);
+		HttpSession session = null;
+		
+		if(member != null){
+			// 세션에 로그인 객체를 등록
+			session = req.getSession();
+			msg = "success";
+			session.setAttribute("loginuser", member);
+		}
+		return new AjaxResult(msg,member);
+	}
+	
+	@RequestMapping(value="logout", method=RequestMethod.POST)
+	public AjaxResult logout(HttpSession session) throws Exception{
+		session.invalidate();
+		return new AjaxResult("success", null);
+	}
+	
+	@RequestMapping(value="loginCheck", method=RequestMethod.GET)
+	public AjaxResult loginCheck(HttpServletRequest req) throws Exception{
+		// 세션정보 가져오기
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		return new AjaxResult("success", member);
 	}
 }

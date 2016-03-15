@@ -18,4 +18,6 @@ public interface CosmeticService {
 	public CosmeticReview selectReviewListDetail(int reviewNo) throws Exception;
 	public List<CosmeticReviewComment> selectReviewComment(int reviewNo) throws Exception;
 	public List<CosmeticReviewPhoto> selectReviewPhoto(int reviewNo) throws Exception;
+	public int selectLogin(CosmeticMember member) throws Exception; 
+	public CosmeticMember selectMember(int no) throws Exception;
 }

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" name="viewport" content="width=device-width, initial-scale=1">
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
 <title>User Review List</title>
@@ -130,8 +130,75 @@
 		});
 	});
 	$(document).ready(function(){
+		
 		$('#top').load('top.html').trigger('pagecreate');
 // 		var container = document.querySelector('#masonry');
+		
+		
+		$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do',function(resultObj){
+			if(resultObj.member != null){
+				console.log(resultObj.member.id);
+				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+				$('.changeValue2').html('Hello '+ resultObj.member.id).removeAttr('onclick');
+			}
+			
+			for(var list of resultObj.reviewList){
+			
+			var beforePath = '';
+			var afterPath = '';
+			
+			// 유저리스트 상세쪽 Before - After사진만 올릴수 있게하고 이 로직은 나중에 바꿔야 됩니다.
+			for(var photoList of list.reviewPhoto){
+				var index = 1;
+				if(index == 1){
+					beforePath = photoList.filePath;
+				}
+				else{
+					afterPath = photoList.filePath;
+				}
+				index++;
+			}
+			
+			// 날짜 변환
+			var formattedDate = new Date(list.regDate);
+			var years = formattedDate.getFullYear();
+			var months = formattedDate.getMonth() + 1;
+			var days = formattedDate.getDate();
+			var regDate = years + '.' + months +'.'+ days;
+				
+			console.log(list.reviewNo);
+			
+		 	var div ='<div class="item">';
+			    div += '<div class="row row-main">';
+		    	div += '<div class="col-md-9 col-md-push-3">';
+		    	div += '<div class="row">'
+				div +=  '<div class="col-xs-12 col-md-8 col-md-8-title"><h3>'+ list.title +'</h3></div>'
+				div +=  '<div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />' + list.viewCnt +'</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />'+regDate+'</span></div>';
+				div += '</div>';
+				div += '<div class="row">';
+				div += '<div class="col-md-8">'+list.content+'</div>';
+				div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger" style="cursor: pointer;"><a class="detailLnk" href="#" reviewNo="'+list.reviewNo+'">MORE+</a></span></h2></div>';
+				div += '</div>';
+				div	+= '</div>';
+				div += '<div class="col-md-3 col-md-pull-9"><img src="'+ beforePath +'" width="250" height="215" /></div>';
+				div += '</div>';
+				div	+= '</div>';
+			var $elem = $(div);
+			
+			
+			$('#masonry').append($elem).masonry('appended',$elem);
+			
+			$('#masonry').imagesLoaded(function() {
+				$('#masonry').masonry();
+			});
+			
+			$('a.detailLnk').click(clickDetailLnk);
+			
+			}
+		}).error(function(error) {
+			window.location.href='login.html';
+		});
+
 
 		$('#listMore').on('click',function() {
 			$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do?pageNo=' + pageIdx,function(resultObj){
@@ -281,61 +348,6 @@
     
     </div>
 <script type="text/javascript">
- 	$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do',function(resultObj){
- 		for(var list of resultObj.reviewList){
- 			
- 			var beforePath = '';
- 			var afterPath = '';
- 			
- 			// 유저리스트 상세쪽 Before - After사진만 올릴수 있게하고 이 로직은 나중에 바꿔야 됩니다.
- 			for(var photoList of list.reviewPhoto){
- 				var index = 1;
- 				if(index == 1){
- 					beforePath = photoList.filePath;
- 				}
- 				else{
- 					afterPath = photoList.filePath;
- 				}
- 				index++;
- 			}
- 			
- 			// 날짜 변환
- 			var formattedDate = new Date(list.regDate);
-			var years = formattedDate.getFullYear();
-			var months = formattedDate.getMonth() + 1;
-			var days = formattedDate.getDate();
-			var regDate = years + '.' + months +'.'+ days;
- 			
-			console.log(list.reviewNo);
-			
-		 	var div ='<div class="item">';
-			    div += '<div class="row row-main">';
-		    	div += '<div class="col-md-9 col-md-push-3">';
-		    	div += '<div class="row">'
-				div +=  '<div class="col-xs-12 col-md-8 col-md-8-title"><h3>'+ list.title +'</h3></div>'
-				div +=  '<div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />' + list.viewCnt +'</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />'+regDate+'</span></div>';
-				div += '</div>';
-				div += '<div class="row">';
-				div += '<div class="col-md-8">'+list.content+'</div>';
-				div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger" style="cursor: pointer;"><a class="detailLnk" href="#" reviewNo="'+list.reviewNo+'">MORE+</a></span></h2></div>';
-				div += '</div>';
-				div	+= '</div>';
-				div += '<div class="col-md-3 col-md-pull-9"><img src="'+ beforePath +'" width="250" height="215" /></div>';
-				div += '</div>';
-				div	+= '</div>';
-			var $elem = $(div);
-			
-			
-			$('#masonry').append($elem).masonry('appended',$elem);
-			
-			$('#masonry').imagesLoaded(function() {
-				$('#masonry').masonry();
-			});
-			
-			$('a.detailLnk').click(clickDetailLnk);
-			
- 		}
- 	});
  	
  	function clickDetailLnk(event) {
  		console.log(event);

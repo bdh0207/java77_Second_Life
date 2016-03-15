@@ -87,4 +87,17 @@
 		select RPNO as photoNo, RNO as reviewNo, FIL_PATH as filePath 
 		from review_phot where rno = #{reviewNo}
  	</select>
+ 	
+ 	<select id="selectLogin" parameterType="CosmeticMember" resultType="int">
+ 		select count(*)
+ 		from member
+ 		where id = #{id}
+ 		and pwd = #{pwd}
+ 	</select>
+ 	
+ 	<select id="selectMember" parameterType="int" resultType="CosmeticMember">
+ 		select mno as memberNo,id,pwd,name,email,gender,birth,posno,addr_def as addrDef, addr_det as addrDet, tel, cPart, rec_email as recEmail, cont as content, reg_date as regDate 
+ 		from member
+		where mno = #{no}
+ 	</select>
 </mapper>
