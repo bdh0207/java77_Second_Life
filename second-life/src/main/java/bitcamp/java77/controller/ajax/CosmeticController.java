@@ -1,6 +1,8 @@
 package bitcamp.java77.controller.ajax;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,8 +10,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import bitcamp.java77.domain.AjaxResult;
+import bitcamp.java77.domain.CosmeticCounsel;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
@@ -38,6 +51,66 @@ public class CosmeticController {
 	CosmeticService cosmeticService;
 	@Autowired
 	ServletContext servletContext;
+	
+	@RequestMapping(value="sendMail", method=RequestMethod.POST)
+	public void sendMail(CosmeticCounsel cosmeticConsel) throws Exception, MessagingException {
+		// 메일 관련 정보
+        String host 	= "smtp.gmail.com";
+        String username = "77secondlife@gmail.com";
+        String password = "3whxptmxm";
+         
+        // 메일 내용
+        String recipient = "kkokkodaek87@naver.com";
+        String subject   = "상담 신청 메일 발송";
+         
+        //properties 설정
+        Properties props = new Properties();
+        props.put("mail.smtps.auth", "true");
+        
+        // 메일 세션
+        Session session = Session.getDefaultInstance(props);
+        MimeMessage msg = new MimeMessage(session);
+ 
+        // 메일 관련
+        msg.setSubject(subject);
+        Multipart multipart = new MimeMultipart();
+        MimeBodyPart body = new MimeBodyPart();
+        body.setContent(  "<table style='border: 1px solid #000000; border-collapse: collapse;'>"
+		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse;'>"
+		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>이름</th>"
+		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>"+ cosmeticConsel.getName() +"</td>"
+		        		+ "		</tr>"
+		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse;'>"
+		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>나이</th>"
+		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>"+ cosmeticConsel.getAge() +"</td>"
+		        		+ "		</tr>"
+		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse;'>"
+		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>시술법</th>"
+		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>"+ cosmeticConsel.getSway() +"</td>"
+		        		+ "		</tr>"
+		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse;'>"
+		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>연락처</th>"
+		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>"+ cosmeticConsel.getTel() +"</td>"
+		        		+ "		</tr>"
+		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse;'>"
+		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>상담내용</th>"
+		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>"+ cosmeticConsel.getContent() +"</td>"
+		        		+ "		</tr>"
+		        		+ "</table>"
+		        		+ "</body>"
+		        		+ "</html>", "text/html;charset=UTF-8");
+        multipart.addBodyPart(body);
+        msg.setContent(multipart);
+//        msg.setText(body);
+        msg.setFrom(new InternetAddress(username));
+        msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+ 
+        // 발송 처리
+        Transport transport = session.getTransport("smtps");
+        transport.connect(host, username, password);
+        transport.sendMessage(msg, msg.getAllRecipients());
+        transport.close();  
+	}
 	
 	@RequestMapping(value="join")
 	public void join(CosmeticMember cosmeticMember) throws Exception {
