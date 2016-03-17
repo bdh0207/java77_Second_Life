@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 public class CosmeticReviewComment implements Serializable {
-	
 	protected int commentNo;
 	protected int reviewNo;
 	protected int memberNo;

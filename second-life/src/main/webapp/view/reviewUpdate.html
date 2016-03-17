@@ -132,6 +132,7 @@ $(document).ready(function() {
 		formData.append('title',$('#title').val());
 		formData.append('content',$('#content').val());
 		formData.append('sugeryPart',sPart);
+	    formData.append('reviewNo',reviewNo);
 		
 		// 수술정보 공유가 체크되어있다면...
 		if($('input:checkbox[id="ckStatus"]').is(':checked')){
@@ -141,7 +142,6 @@ $(document).ready(function() {
 	    	formData.append('sugeryWay',$('input[name="way"]').val());
 	    	formData.append('sugeryPrice',$('input[name="price"]').val());
 	    	formData.append('sugeryDate',$('input[name="date"]').val());
-	    	formData.append('reviewNo',reviewNo);
 	    }
 	    else{
 	    	status = '0';

@@ -4,6 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bitcamp.java77.dao.CosmeticDao">
+
+	<!-- INSERT 영역 -->
 	<insert id="insertMember" parameterType="CosmeticMember">
 		insert into member(ID, PWD, NAME, EMAIL, GENDER, BIRTH, POSNO, ADDR_DEF, TEL, REC_EMAIL)
 		values(#{id}, #{pwd}, #{name}, #{email}, #{gender}, #{birth}, #{posNo}, #{addrDef}, #{tel}, #{recEmail})
@@ -39,6 +41,15 @@
  		values(#{reviewNo},#{filePath})
  	</insert>
  	
+ 	<insert id="insertReviewComment" parameterType="cosmeticReviewComment">
+ 		insert into comment(rno,mno,cont,reg_date)
+ 		values(#{reviewNo},#{memberNo},#{content},now())
+ 		<selectKey keyProperty="commentNo" order="AFTER" resultType="int">
+ 			select max(cmno) from comment
+ 		</selectKey>
+ 	</insert>
+ 	
+ 	<!-- SELECT 영역 -->
  	<select id="selectReviewList" parameterType="CosmeticSearch" resultMap="reviewResultMap">
  		select a.rno as reviewNo, mno as memberNo, a.hno as hospitalNo, a.title as title, a.cont as content, a.vcnt as viewCnt, a.spart as sugeryPart, a.stat as status,b.fil_path as filePath, a.reg_date as regDate
 		from review a inner join review_phot b
@@ -64,6 +75,7 @@
  	<resultMap id="reviewPhotoMap" type="CosmeticReviewPhoto">
  		<result property="filePath" column="filePath" />
  	</resultMap>
+ 	
  	
  	<select id="selectReviewListDetail" parameterType="int" resultType="CosmeticReview">
  		select RNO as reviewNo, MNO as memberNo, HNO as hospitalNo,title as title,CONT as content, VCNT as viewCnt, SPART as sugeryPart, STAT as status,hos_name as hospitalName,doc_name as doctorName,sway as sugeryWay, sprice as sugeryPrice, sdate as sugeryDate, REG_DATE as regDate 
@@ -123,6 +135,7 @@
  		where rno = #{reviewNo}
  	</select>
  	
+ 	<!-- DELETE 영역 -->
  	<delete id="deleteReviewPhoto" parameterType="int">
  		delete from review_phot
  		where rno = #{reviewNo}
@@ -134,6 +147,8 @@
  		and mno = #{memberNo}
  	</delete>
  	
+ 	
+ 	<!-- UPDATE 영역 -->
  	<update id="updateReview" parameterType="cosmeticReview">
  	<choose>
  		<when test="status == 0">
