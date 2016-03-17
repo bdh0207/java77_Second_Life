@@ -193,7 +193,7 @@ public class CosmeticController {
 	}
 	
 	@RequestMapping(value="reviewListDetail",method=RequestMethod.GET)
-	public AjaxResult reviewListDetail(int reviewNo,HttpServletRequest req) throws Exception{
+	public AjaxResult reviewListDetail(@RequestParam(name="pageNo",defaultValue="0")int pageNo,int reviewNo,HttpServletRequest req) throws Exception{
 		// 로그인 세션정보 가져오기
 		HttpSession session = req.getSession();
 		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
@@ -426,4 +426,27 @@ public class CosmeticController {
 		return new AjaxResult("success", member);
 	}
 	
+	@RequestMapping(value="reviewCommentAdd", method=RequestMethod.POST)
+	public AjaxResult reviewCommentAdd(CosmeticReviewComment cosmeticReviewComment, HttpServletRequest req) throws Exception{
+		HashMap<String, Object> resultMap = new HashMap<>();
+		// 세션정보 가져오기
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		cosmeticReviewComment.setMemberNo(member.getMemberNo());
+		
+		
+		// 댓글 등록 서비스
+		// 수정 삭제를 위한 댓글번호 반환
+		int commentNo = cosmeticService.insertReviewComment(cosmeticReviewComment);
+		cosmeticReviewComment.setCommentNo(commentNo);
+		resultMap.put("comment", cosmeticReviewComment);
+		resultMap.put("id", member.getId());
+		return new AjaxResult("success",resultMap);
+	}
+	
+	@RequestMapping(value="reviewCommentDelete", method=RequestMethod.GET)
+	public AjaxResult reviewCommentDelete(CosmeticReviewComment cosmeticReviewComment, HttpServletRequest req) throws Exception{
+		
+		return new AjaxResult("success",null);
+	}
 }

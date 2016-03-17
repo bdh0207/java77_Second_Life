@@ -36,21 +36,24 @@
 		text-align: left;
 	}
 	..col-xs-12,.col-md-8{
-		text-overflow:ellipsis;
-		overflow: hidden;
+		white-space:nowrap !important;
+		text-overflow:ellipsis !important;
+		overflow: hidden !important;
 	}
 	.col-md-8{
 		font-family: "HY견고딕";
 		color: rgb(127,127,127);
-		text-overflow:ellipsis;
-		overflow: hidden;
+		white-space:nowrap !important;
+		text-overflow:ellipsis !important;
+		overflow: hidden !important;
 	}
 	.col-md-8-title{
 		font-family: "HY견고딕";
 		font-weight: bold;
 		color: rgb(89,89,89);
-		text-overflow:ellipsis;
-		overflow: hidden;
+		white-space:nowrap !important;
+		text-overflow:ellipsis !important;
+		overflow: hidden !important;
 	}
 	.col-xs-6,.col-md-4{
 		text-align: right;
@@ -177,7 +180,7 @@
 				div +=  '<div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />' + list.viewCnt +'</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />'+regDate+'</span></div>';
 				div += '</div>';
 				div += '<div class="row">';
-				div += '<div class="col-md-8">'+list.content+'</div>';
+				div += '<div class="col-md-8" style="white-space:nowrap; text-overflow:ellipsis; overflow: hidden;">'+list.content+'</div>';
 				div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger" style="cursor: pointer;"><a class="detailLnk" href="#" reviewNo="'+list.reviewNo+'">MORE+</a></span></h2></div>';
 				div += '</div>';
 				div	+= '</div>';

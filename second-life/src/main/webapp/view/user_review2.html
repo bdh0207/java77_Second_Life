@@ -71,6 +71,7 @@ $(document).ready(function() {
 		if(reviewDetail.member != null){
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
 			$('.changeValue2').html('Hello '+ reviewDetail.member.id).removeAttr('onclick');
+			$('#commentId').text(reviewDetail.member.id);
 		}
  		
  		if(ajaxResult.status == 'success'){
@@ -97,13 +98,23 @@ $(document).ready(function() {
      	 	 var emptyCheck =  $.isEmptyObject(reviewDetail.comment);
      	 	 
  	 		 for(var commentList of reviewDetail.comment){
- 	 			 var tr = '<tr>';
-	                 tr+=     '	<td>1</td>                                                                                                                      ';
-	                 tr+=     '	<td>김초롱</td>                                                                                                                 ';
-	                 tr+=     '	<td>'+commentList.content+'</td>                                                                                                ';
-	                 tr+=     '	<td>'+commentList.regDate+'</td>                                                                                                ';
-	                 tr+=     '	<td class="favorite"><a href="#" class="btn btn-danger btn-xs">수정</a><a href="#" class="btn btn-danger btn-xs">삭제</a></td>';
-	                 tr+=     '</tr>		                                                                                                                    ';
+ 	 				
+ 	 			 // 날짜 변환
+		 		var formattedDate = new Date(commentList.regDate);
+				var years = formattedDate.getFullYear();
+				var months = formattedDate.getMonth() + 1;
+				var days = formattedDate.getDate();
+				var hours = formattedDate.getHours();
+				var minutes = formattedDate.getMinutes();
+				var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
+				
+ 	 			 var tr = '<tr id=c_'+commentList.commentNo+'>';
+	                 tr+=     '	<td>'+coomentList.commentNo+'</td>                                                                                            															';
+	                 tr+=     '	<td>'+commentList.member[0].id+'</td>                                                                                         															';
+	                 tr+=     '	<td>'+commentList.content+'</td>                                                                                              															';
+	                 tr+=     '	<td>'+regDate+'</td>                                                                                                          															';
+	                 tr+=     '<td class="favorite"><a href="#" class="btn btn-danger btn-xs">수정</a><a href="#" onclick=commentDel('+commentList.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
+	                 tr+= '</tr>		                                                                                                                    															';
  	 		 	 $('#comment-area').append(tr);
  	 		 }
  	 		 
@@ -117,8 +128,20 @@ $(document).ready(function() {
  		 }
  		 
  	 }).error(function(error) {
-			window.location.href='login.html';
-	});
+		 window.location.href='login.html';
+	 });
+ 	 
+ 	 function commentDel(commentNo, reviewNo) {
+		$.ajax({
+			url: contextRoot + '/cosmetic/ajax/reviewCommentDelete.do',
+			data : {
+				commentNo : commentNo,
+				reviewNo : reviewNo
+			}
+		}).done(function(resultObj) {
+			
+		});
+	 }
  	 
  	 $('#deleteBtn').click(function() {
 		  $.get(contextRoot+'/cosmetic/ajax/reviewDelete.do?reviewNo='+reviewNo,function(resultObj){
@@ -159,6 +182,15 @@ $(document).ready(function() {
 			reviewNo : reviewNo,
 			content : $('#textArea').val()
 		},function(resultObj){
+			var ajaxResult = resultObj.ajaxResult;
+			var status = ajaxResult.status;
+			var data = ajaxResult.data;
+			var comment = data.comment;
+			console.log(comment);
+			
+			if(status == 'success'){
+				
+			}
 			
 		},'json');
 	 });
@@ -244,24 +276,24 @@ $(document).ready(function() {
                   </tbody> 
                 </table>	 
                   </div>
-                  <div style="padding: 0px; margin: 0px; line-height: none; text-align: center;">
-                  	<ul class="pagination pagination-sm">
-                      <li class="disabled"><a href="#">&laquo;</a></li>
-                      <li class="active"><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#">&raquo;</a></li>
-                    </ul>
-                  </div>
+<!--                   <div style="padding: 0px; margin: 0px; line-height: none; text-align: center;"> -->
+<!--                   	<ul class="pagination pagination-sm"> -->
+<!--                       <li class="disabled"><a href="#">&laquo;</a></li> -->
+<!--                       <li class="active"><a href="#">1</a></li> -->
+<!--                       <li><a href="#">2</a></li> -->
+<!--                       <li><a href="#">3</a></li> -->
+<!--                       <li><a href="#">4</a></li> -->
+<!--                       <li><a href="#">5</a></li> -->
+<!--                       <li><a href="#">&raquo;</a></li> -->
+<!--                     </ul> -->
+<!--                   </div> -->
                 <div class="row">
 						<div class="col-xs-12 col-sm-6 col-md-8" style="margin-left: 20px; width: 90%">
 								<form class="form-horizontal">
 								  <fieldset>
 								    <legend>Comment Regist</legend>
 								    <div class="form-group">
-								      <label for="textArea" class="col-lg-2 control-label">NickName</label>
+								      <label id="commentId" for="textArea" class="col-lg-2 control-label"></label>
 								      <div class="col-lg-10">
 								        <textarea class="form-control" rows="3" id="textArea"></textarea>
 								      </div>
@@ -269,7 +301,7 @@ $(document).ready(function() {
 								    
 								    <div class="form-group">
 								      <div class=".col-md-3 .col-md-offset-3" style="float: right; margin-right: 13px;">
-								        <button type="submit" id="submitBtn" class="btn btn-info">Submit</button>
+								        <button type="button" id="submitBtn" class="btn btn-info">Submit</button>
 								      </div>
 								    </div>
 								    
@@ -281,7 +313,10 @@ $(document).ready(function() {
               
             <div style="float: left;">
             	<button type="button" class="btn btn-default" aria-label="Left Align">
-				  <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+				  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 좋아요
+				</button>
+            	<button type="button" class="btn btn-default" aria-label="Left Align">
+				  <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 찜
 				</button>
             </div>
             
