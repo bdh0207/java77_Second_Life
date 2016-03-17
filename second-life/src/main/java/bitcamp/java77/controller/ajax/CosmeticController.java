@@ -410,4 +410,5 @@ public class CosmeticController {
 		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
 		return new AjaxResult("success", member);
 	}
+	
 }
