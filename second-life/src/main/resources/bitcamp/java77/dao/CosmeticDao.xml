@@ -19,8 +19,16 @@
 	</select>
 	
  	<insert id="insertReview" useGeneratedKeys="true" parameterType="CosmeticReview" keyProperty="reviewNo">
- 		insert into review(mno,title,cont,vcnt,spart,stat,reg_date)
- 		values(#{memberNo},#{title},#{content},0,#{sugeryPart},#{status},now())
+ 		<choose>
+ 			<when test="status == 0">
+ 				insert into review(mno,title,cont,vcnt,spart,stat,reg_date)
+ 				values(#{memberNo},#{title},#{content},0,#{sugeryPart},#{status},now())
+ 			</when>
+ 			<otherwise>
+ 				insert into review(mno,title,cont,vcnt,spart,stat,hos_name,doc_name,sway,sprice,sdate,reg_date)
+ 				values(#{memberNo},#{title},#{content},0,#{sugeryPart},#{status},#{hospitalName},#{doctorName},#{sugeryWay},#{sugeryPrice},#{sugeryDate},now())
+ 			</otherwise>
+ 		</choose>
  		<selectKey keyProperty="reviewNo" order="AFTER" resultType="int">
  			select max(rno) from review
  		</selectKey>
@@ -58,7 +66,7 @@
  	</resultMap>
  	
  	<select id="selectReviewListDetail" parameterType="int" resultType="CosmeticReview">
- 		select RNO as reviewNo, MNO as memberNo, HNO as hospitalNo,title as title,CONT as content, VCNT as viewCnt, SPART as sugeryPart, STAT as status, REG_DATE as regDate 
+ 		select RNO as reviewNo, MNO as memberNo, HNO as hospitalNo,title as title,CONT as content, VCNT as viewCnt, SPART as sugeryPart, STAT as status,hos_name as hospitalName,doc_name as doctorName,sway as sugeryWay, sprice as sugeryPrice, sdate as sugeryDate, REG_DATE as regDate 
  		from review where rno = #{reviewNo}
  	</select>
  	
@@ -95,9 +103,71 @@
  		and pwd = #{pwd}
  	</select>
  	
- 	<select id="selectMember" parameterType="int" resultType="CosmeticMember">
+ 	<select id="selectMember" parameterType="cosmeticMember" resultType="CosmeticMember">
  		select mno as memberNo,id,pwd,name,email,gender,birth,posno,addr_def as addrDef, addr_det as addrDet, tel, cPart, rec_email as recEmail, cont as content, reg_date as regDate 
  		from member
-		where mno = #{no}
+		where id = #{id}
+		and pwd = #{pwd}
  	</select>
+ 	
+ 	<select id="selectReviewMatch" parameterType="cosmeticReview" resultType="int">
+ 		select count(*)
+ 		from review
+ 		where rno = #{reviewNo}
+ 		and mno = #{memberNo}
+ 	</select>
+ 	
+ 	<select id="selectReviewPhotoNo" parameterType="int" resultType="cosmeticReviewPhoto">
+ 		select rpno as photoNo
+ 		from review_phot
+ 		where rno = #{reviewNo}
+ 	</select>
+ 	
+ 	<delete id="deleteReviewPhoto" parameterType="int">
+ 		delete from review_phot
+ 		where rno = #{reviewNo}
+ 	</delete>
+ 	
+ 	<delete id="deleteReview" parameterType="cosmeticReview">
+ 		delete from review
+ 		where rno = #{reviewNo}
+ 		and mno = #{memberNo}
+ 	</delete>
+ 	
+ 	<update id="updateReview" parameterType="cosmeticReview">
+ 	<choose>
+ 		<when test="status == 0">
+	 		update review
+	 		set title = #{title}
+	 		,cont = #{content}
+	 		,spart = #{sugeryPart}
+	 		,stat = #{status}
+	 		where rno=#{reviewNo}
+	 		and mno=#{memberNo}
+ 		</when>
+ 		<otherwise>
+			update review
+	 		set title = #{title}
+	 		,cont = #{content}
+	 		,spart = #{sugeryPart}
+	 		,stat = #{status}
+	 		,hos_name = #{hospitalName}
+	 		,doc_name = #{doctorName}
+	 		,sway = #{sugeryWay}
+	 		,sprice = #{sugeryPrice}
+	 		,sdate = #{sugeryDate}
+	 		where rno=#{reviewNo}
+	 		and mno=#{memberNo}
+ 		</otherwise>
+ 	</choose>
+ 	</update>
+ 	
+ 	<update id="updateReviewPhoto" parameterType="cosmeticReviewPhoto">
+ 		update review_phot
+ 		set fil_path = #{filePath}
+ 		where rno = #{reviewNo}
+ 		and rpno = #{photoNo}
+ 	</update>
+ 	
+ 	
 </mapper>

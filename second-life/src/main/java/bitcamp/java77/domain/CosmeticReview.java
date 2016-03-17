@@ -13,10 +13,46 @@ public class CosmeticReview implements Serializable {
 	protected int viewCnt;
 	protected String sugeryPart;
 	protected char status;
+	protected String hospitalName;
+	protected String doctorName;
+	protected String sugeryWay;
+	protected int sugeryPrice;
+	protected Date sugeryDate;
 	protected Date regDate;
 	protected List<CosmeticReviewPhoto> reviewPhoto;
 	protected List<CosmeticReviewComment> reviewComment;
 	protected CosmeticMember member;
+	
+	public String getHospitalName() {
+		return hospitalName;
+	}
+	public void setHospitalName(String hospitalName) {
+		this.hospitalName = hospitalName;
+	}
+	public String getDoctorName() {
+		return doctorName;
+	}
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
+	}
+	public String getSugeryWay() {
+		return sugeryWay;
+	}
+	public void setSugeryWay(String sugeryWay) {
+		this.sugeryWay = sugeryWay;
+	}
+	public int getSugeryPrice() {
+		return sugeryPrice;
+	}
+	public void setSugeryPrice(int sugeryPrice) {
+		this.sugeryPrice = sugeryPrice;
+	}
+	public Date getSugeryDate() {
+		return sugeryDate;
+	}
+	public void setSugeryDate(Date sugeryDate) {
+		this.sugeryDate = sugeryDate;
+	}
 	
 	public CosmeticMember getMember() {
 		return member;

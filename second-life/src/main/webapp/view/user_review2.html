@@ -49,6 +49,17 @@ $(window).load(function() {
 
 $(document).ready(function() {
 	$('#top').load('top.html').trigger('pagecreate');
+	$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+		var ajaxResult = resultObj.ajaxResult;
+		var member = ajaxResult.data;
+		if(member != null){
+			console.log(member.id);
+			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+			$('.changeValue2').html('Hello '+member.id).removeAttr('onclick');
+		}
+	}).error(function(error) {
+		window.location.href='login.html';
+	});
 	
 	 // 파라미터 번호 추출
  	 var reviewNo = location.href.split('?')[1].split('=')[1];
@@ -56,8 +67,6 @@ $(document).ready(function() {
  	 $.getJSON(contextRoot + '/cosmetic/ajax/reviewListDetail.do?reviewNo='+reviewNo,function(resultObj){
  		 var ajaxResult = resultObj.ajaxResult;
  		 var reviewDetail = ajaxResult.data;
- 		 
- 		console.log(reviewDetail.member);
  		// 로그인 헤더 처리
 		if(reviewDetail.member != null){
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
@@ -74,7 +83,7 @@ $(document).ready(function() {
  	 		 
  	 		 for(var photoList of reviewDetail.photo){
  	 			 var li =   '<li data-thumb="'+photoList.filePath+'">	 ';
-		             li +=  '<img src="'+photoList.filePath+'"/>     ';
+		             li +=  '<img src="'+photoList.filePath+'" style="width:100%"/>     ';
 		             li +=  '</li>                                     ';
 		         $('.slides').append(li);   
  	 		 }
@@ -83,22 +92,76 @@ $(document).ready(function() {
      	 		    animation: "slide"
      	 		    //controlNav: "thumbnails"
      	 		});
- 	 		 
+     	 	
+     	 	 // 빈 오브젝트 체크
+     	 	 var emptyCheck =  $.isEmptyObject(reviewDetail.comment);
+     	 	 
  	 		 for(var commentList of reviewDetail.comment){
  	 			 var tr = '<tr>';
 	                 tr+=     '	<td>1</td>                                                                                                                      ';
 	                 tr+=     '	<td>김초롱</td>                                                                                                                 ';
 	                 tr+=     '	<td>'+commentList.content+'</td>                                                                                                ';
 	                 tr+=     '	<td>'+commentList.regDate+'</td>                                                                                                ';
-	                 tr+=     '	<td class="favorite"><a href="#" class="btn btn-danger btn-xs">좋아요</a><a href="#" class="btn btn-danger btn-xs">신고</a></td>';
+	                 tr+=     '	<td class="favorite"><a href="#" class="btn btn-danger btn-xs">수정</a><a href="#" class="btn btn-danger btn-xs">삭제</a></td>';
 	                 tr+=     '</tr>		                                                                                                                    ';
  	 		 	 $('#comment-area').append(tr);
  	 		 }
+ 	 		 
+ 	 		 if(emptyCheck){
+ 	 			var tr = '<tr>';
+                tr+=     '	<td colspan=5 align="center">작성된 댓글이 없습니다.</td>                                                                                                                      ';
+                tr+=     '</tr>		                                                                                                                    ';
+ 		 	 	$('#comment-area').append(tr);
+ 	 		 }
+ 	 		 
  		 }
  		 
  	 }).error(function(error) {
 			window.location.href='login.html';
-		});
+	});
+ 	 
+ 	 $('#deleteBtn').click(function() {
+		  $.get(contextRoot+'/cosmetic/ajax/reviewDelete.do?reviewNo='+reviewNo,function(resultObj){
+			   var ajaxResult = resultObj.ajaxResult;
+			   console.log(ajaxResult.status);
+			   var status = ajaxResult.status;
+			   
+			   if(status == 'success'){
+				   alert('게시글이 삭제되었습니다.');
+				   location.href = 'user_review_list.html';
+			   }
+			   else{
+				   alert('권한이 없습니다.');
+			   }
+			   
+		  },'json');
+	 });
+ 	 
+ 	 $('#updateBtn').click(function() {
+ 		 //권한 체크
+ 	  $.get(contextRoot+'/cosmetic/ajax/authority.do?reviewNo='+reviewNo,function(resultObj){
+ 			 var ajaxResult = resultObj.ajaxResult;
+ 			 var status = ajaxResult.status;
+ 			 
+ 			 if(status == 'success'){
+ 				location.href = 'reviewUpdate.html?reviewNo='+reviewNo; 
+ 			 }
+ 			 else{
+ 				 alert('권한이 없습니다.')
+ 			 }
+ 			 
+ 		 },'json');
+		 
+	 });
+ 	 
+ 	 $('#submitBtn').click(function() {
+		$.post(contextRoot+'/cosmetic/ajax/reviewCommentAdd.do',{
+			reviewNo : reviewNo,
+			content : $('#textArea').val()
+		},function(resultObj){
+			
+		},'json');
+	 });
  	 
 });
 </script>
@@ -160,7 +223,7 @@ $(document).ready(function() {
                       <th>글쓴이</th>
                       <th>내용</th>
                       <th>등록일</th>
-                      <th>좋아요 | 신고</th>
+                      <th>수정 | 삭제</th>
                     </tr>
                   </thead>
                   <tbody id="comment-area"> 
@@ -171,34 +234,6 @@ $(document).ready(function() {
 <!--                       <td>2016-02-19 14:95</td> -->
 <!--                       <td class="favorite"><a href="#" class="btn btn-danger btn-xs">좋아요</a><a href="#" class="btn btn-danger btn-xs">신고</a></td> -->
 <!--                     </tr>  -->
-<!--                     <tr> -->
-<!--                       <td>1</td> -->
-<!--                       <td>김초롱</td> -->
-<!--                       <td>와전다 진시 다른 사람</td> -->
-<!--                       <td>2016-02-19 14:95</td> -->
-<!--                       <td class="favorite"><a href="#" class="btn btn-danger btn-xs">좋아요</a><a href="#" class="btn btn-danger btn-xs">신고</a></td> -->
-<!--                     </tr>  -->
-<!--                     <tr> -->
-<!--                       <td>1</td> -->
-<!--                       <td>김초롱</td> -->
-<!--                       <td>와전다 진시 다른 사람</td> -->
-<!--                       <td>2016-02-19 14:95</td> -->
-<!--                       <td class="favorite"><a href="#" class="btn btn-danger btn-xs">좋아요</a><a href="#" class="btn btn-danger btn-xs">신고</a></td> -->
-<!--                     </tr>  -->
-<!--                     <tr> -->
-<!--                       <td>1</td> -->
-<!--                       <td>김초롱</td> -->
-<!--                       <td>와전다 진시 다른 사람</td> -->
-<!--                       <td>2016-02-19 14:95</td> -->
-<!--                       <td class="favorite"><a href="#" class="btn btn-danger btn-xs">좋아요</a><a href="#" class="btn btn-danger btn-xs">신고</a></td> -->
-<!--                     </tr>  -->
-<!--                     <tr> -->
-<!--                       <td>1</td> -->
-<!--                       <td>김초롱</td> -->
-<!--                       <td>와전다 진시 다른 사람</td> -->
-<!--                       <td>2016-02-19 14:95</td> -->
-<!--                       <td class="favorite"><a href="#" class="btn btn-danger btn-xs">좋아요</a><a href="#" class="btn btn-danger btn-xs">신고</a></td> -->
-<!--                     </tr>   -->
                   </tbody> 
                 </table>	 
                   </div>
@@ -213,51 +248,45 @@ $(document).ready(function() {
                       <li><a href="#">&raquo;</a></li>
                     </ul>
                   </div>
+                <div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-8" style="margin-left: 20px; width: 90%">
+								<form class="form-horizontal">
+								  <fieldset>
+								    <legend>Comment Regist</legend>
+								    <div class="form-group">
+								      <label for="textArea" class="col-lg-2 control-label">NickName</label>
+								      <div class="col-lg-10">
+								        <textarea class="form-control" rows="3" id="textArea"></textarea>
+								      </div>
+								    </div>
+								    
+								    <div class="form-group">
+								      <div class=".col-md-3 .col-md-offset-3" style="float: right; margin-right: 13px;">
+								        <button type="submit" id="submitBtn" class="btn btn-info">Submit</button>
+								      </div>
+								    </div>
+								    
+								  </fieldset>
+								</form>
+						</div>
+				</div>
               </div>
-            </div> 
+              
+            <div style="float: left;">
+            	<button type="button" class="btn btn-default" aria-label="Left Align">
+				  <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+				</button>
+            </div>
+            
+            <div style="float: right;">
+            	<a href="#" id="updateBtn" class="btn btn-warning">UPDATE</a>
+	      		<a href="#" id="deleteBtn" class="btn btn-danger">DELETE</a>
+	      		<a href="user_review_list.html" class="btn btn-primary">LIST</a>
+            </div>
+            </div>
       </div>
-      <script type="text/javascript">
-//       	 // 파라미터 번호 추출
-//       	 var reviewNo = location.href.split('?')[1].split('=')[1];
-      	 
-//       	 $.getJSON(contextRoot + '/cosmetic/ajax/reviewListDetail.do?reviewNo='+reviewNo,function(resultObj){
-//       		 var ajaxResult = resultObj.ajaxResult;
-//       		 var reviewDetail = ajaxResult.data;
-//       		 console.log(ajaxResult.data);
-      		 
-//       		 if(ajaxResult.status == 'success'){
-      			 
-//       	 		 $('#data-title').text(reviewDetail.review.title);
-//       			 $('#data-content').text(reviewDetail.review.content);
-//       	 		 $('#viewCnt').text(reviewDetail.review.viewCnt);
-      			 
-      	 		
-      	 		 
-//       	 		 for(var photoList of reviewDetail.photo){
-//       	 			 var li =   '<li data-thumb="'+photoList.filePath+'">	 ';
-// 			             li +=  '<img src="'+photoList.filePath+'"/>     ';
-// 			             li +=  '</li>                                     ';
-// 			         $('.slides').append(li);   
-//       	 		 }
-      	 		 
-// 	      	 		$('.flexslider').flexslider({
-// 	      	 		    animation: "slide"
-// 	      	 		    //controlNav: "thumbnails"
-// 	      	 		});
-      	 		 
-//       	 		 for(var commentList of reviewDetail.comment){
-//       	 			 var tr = '<tr>';
-// 		                 tr+=     '	<td>1</td>                                                                                                                      ';
-// 		                 tr+=     '	<td>김초롱</td>                                                                                                                 ';
-// 		                 tr+=     '	<td>'+commentList.content+'</td>                                                                                                ';
-// 		                 tr+=     '	<td>'+commentList.regDate+'</td>                                                                                                ';
-// 		                 tr+=     '	<td class="favorite"><a href="#" class="btn btn-danger btn-xs">좋아요</a><a href="#" class="btn btn-danger btn-xs">신고</a></td>';
-// 		                 tr+=     '</tr>		                                                                                                                    ';
-//       	 		 	 $('#comment-area').append(tr);
-//       	 		 }
-//       		 }
-      		 
-//       	 });
+      
+      <script>
       </script>  
 </body>
 </html>

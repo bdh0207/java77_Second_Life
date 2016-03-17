@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="shortcut icon" href="/second-life/icon/shortcut/favicon.ico">
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
 <style>
@@ -110,8 +111,8 @@
 					var beforePath = '';
 					var afterPath = '';
 					
+					var index = 1;
 					for(var photoList of list.reviewPhoto){
-						var index = 1;
 						if(index ==1){
 							beforePath += photoList.filePath;
 						}
@@ -123,7 +124,7 @@
 					
 					var div = '<div class="item">';	
 						div +=	'<figure>';
-						div +=	'<a class="detailLnk" href="#"><img src="' + beforePath + '" reviewNo="' + list.reviewNo + '" /></a>									';
+						div +=	'<a class="detailLnk" href="#"><img src="' + afterPath + '" reviewNo="' + list.reviewNo + '" /></a>									';
 						div +=	'<figcaption>																														';
 						div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
 						div +=	'				<hr />                                                                                                              ';

@@ -52,28 +52,64 @@ public class CosmeticServiceImpl implements CosmeticService {
 	}
 
 	@Override
+	@Transactional
 	public int searchID(String id) throws Exception {
 		return cosmeticDao.searchID(id);
 	}
 
 	@Override
+	@Transactional
 	public void insertMember(CosmeticMember cosmeticMember) throws Exception {
 		cosmeticDao.insertMember(cosmeticMember);
 	}
 
 	@Override
+	@Transactional
 	public List<CosmeticReview> selectReviewList(CosmeticSearch search) throws Exception {
 		return cosmeticDao.selectReviewList(search);
 	}
 
 	@Override
+	@Transactional
 	public int selectLogin(CosmeticMember member) throws Exception {
 		return cosmeticDao.selectLogin(member);
 	}
 
 	@Override
-	public CosmeticMember selectMember(int no) throws Exception {
-		return cosmeticDao.selectMember(no);
+	@Transactional
+	public CosmeticMember selectMember(CosmeticMember member) throws Exception {
+		return cosmeticDao.selectMember(member);
+	}
+
+	@Override
+	@Transactional
+	public int selectReviewMatch(CosmeticReview cosmeticReview) throws Exception {
+		return cosmeticDao.selectReviewMatch(cosmeticReview);
+	}
+
+	@Override
+	@Transactional
+	public void deleteReview(CosmeticReview cosmeticReview) throws Exception {
+		cosmeticDao.deleteReviewPhoto(cosmeticReview.getReviewNo());
+		cosmeticDao.deleteReview(cosmeticReview);
+	}
+
+	@Override
+	@Transactional
+	public void updateReview(CosmeticReview cosmeticReview) throws Exception {
+		cosmeticDao.updateReview(cosmeticReview);
+	}
+
+	@Override
+	@Transactional
+	public List<CosmeticReviewPhoto> selectReviewPhotoNo(int reviewNo) throws Exception {
+		return cosmeticDao.selectReviewPhotoNo(reviewNo);
+	}
+
+	@Override
+	@Transactional
+	public void updateReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto) throws Exception {
+		cosmeticDao.updateReviewPhoto(cosmeticReviewPhoto);
 	}
 	
 	

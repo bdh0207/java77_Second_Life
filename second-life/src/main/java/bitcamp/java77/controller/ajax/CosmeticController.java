@@ -196,18 +196,42 @@ public class CosmeticController {
 	}
 	
 	@RequestMapping(value="reviewAdd",method=RequestMethod.POST)
-	public AjaxResult reviewAdd(CosmeticReview cosmeticReview, @RequestParam("files") MultipartFile[] files) throws Exception{
+	public AjaxResult reviewAdd(MultipartHttpServletRequest mRequest) throws Exception{
+		HttpSession session = mRequest.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		SimpleDateFormat transFormat  = new SimpleDateFormat("yyyy-MM-dd");
 		CosmeticReviewPhoto cosmeticReviewPhoto = new CosmeticReviewPhoto();
+		CosmeticReview cosmeticReview = new CosmeticReview();
+		
+		cosmeticReview.setMemberNo(member.getMemberNo());
+		cosmeticReview.setTitle(mRequest.getParameter("title"));
+		cosmeticReview.setContent(mRequest.getParameter("content"));
+		cosmeticReview.setSugeryPart(mRequest.getParameter("sugeryPart"));
+		String str = mRequest.getParameter("status");
+		char status = str.charAt(0);
+		cosmeticReview.setStatus(status);
+		// 상태값이 1이면 수술정보에 관련된 데이터를 insert한다.
+		if(status == '1'){
+			cosmeticReview.setHospitalName(mRequest.getParameter("hospitalName"));
+			cosmeticReview.setDoctorName(mRequest.getParameter("doctorName"));
+			cosmeticReview.setSugeryWay(mRequest.getParameter("sugeryWay"));
+			cosmeticReview.setSugeryPrice(Integer.parseInt(mRequest.getParameter("sugeryPrice")));
+			cosmeticReview.setSugeryDate(transFormat.parse(mRequest.getParameter("sugeryDate"))); // String to Date
+		}
 		
 		// reviewNo 추출
 		cosmeticService.insertReview(cosmeticReview);
+		transFormat = null;
      	int reviewNo = cosmeticReview.getReviewNo();
-		
-	    for (MultipartFile file : files) {
-	      if (file.getSize() > 0) {
-	        String newFileName = MultipartHelper.generateFilename(file.getOriginalFilename());
-	        
-	        // DB에 저장되는 경로
+     	
+     	Iterator<String> files = mRequest.getFileNames();
+     	while(files.hasNext()){
+     		String fName = files.next();
+     		MultipartFile file = mRequest.getFile(fName);
+     		
+     		String newFileName = MultipartHelper.generateFilename(file.getOriginalFilename());
+     		// DB에 저장되는 경로
 	        String fileDBPath = "/second-life/reviewPhoto/";
 	        
 	        // 폴더 지정
@@ -229,11 +253,121 @@ public class CosmeticController {
 	     	cosmeticReviewPhoto.setReviewNo(reviewNo);
 	     	cosmeticReviewPhoto.setFilePath(fileDBPath);
 	     	cosmeticService.insertReviewPhoto(cosmeticReviewPhoto);
-	      }
-	    }
-		
-	    
+     	}
 		return new AjaxResult("success",null);
+	}
+	
+	@RequestMapping(value="reviewUpdate", method=RequestMethod.POST)
+	public AjaxResult reviewUpdate(MultipartHttpServletRequest mRequest) throws Exception{
+		HttpSession session = mRequest.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		SimpleDateFormat transFormat  = new SimpleDateFormat("yyyy-MM-dd");
+		CosmeticReviewPhoto cosmeticReviewPhoto = new CosmeticReviewPhoto();
+		CosmeticReview cosmeticReview = new CosmeticReview();
+		
+		cosmeticReview.setReviewNo(Integer.parseInt(mRequest.getParameter("reviewNo")));
+		cosmeticReview.setMemberNo(member.getMemberNo());
+		cosmeticReview.setTitle(mRequest.getParameter("title"));
+		cosmeticReview.setContent(mRequest.getParameter("content"));
+		cosmeticReview.setSugeryPart(mRequest.getParameter("sugeryPart"));
+		String str = mRequest.getParameter("status");
+		char status = str.charAt(0);
+		cosmeticReview.setStatus(status);
+		// 상태값이 1이면 수술정보에 관련된 데이터를 insert한다.
+		if(status == '1'){
+			cosmeticReview.setHospitalName(mRequest.getParameter("hospitalName"));
+			cosmeticReview.setDoctorName(mRequest.getParameter("doctorName"));
+			cosmeticReview.setSugeryWay(mRequest.getParameter("sugeryWay"));
+			cosmeticReview.setSugeryPrice(Integer.parseInt(mRequest.getParameter("sugeryPrice")));
+			cosmeticReview.setSugeryDate(transFormat.parse(mRequest.getParameter("sugeryDate"))); // String to Date
+		}
+		
+		// reviewNo 추출
+		cosmeticService.updateReview(cosmeticReview);
+		transFormat = null;
+     	int reviewNo = cosmeticReview.getReviewNo();
+     	
+     	List<CosmeticReviewPhoto> list = cosmeticService.selectReviewPhotoNo(reviewNo);
+     	// 사진 번호 인덱스
+     	int i = 0;
+     	
+     	// 파일 관련 로직
+     	Iterator<String> files = mRequest.getFileNames();
+     	while(files.hasNext()){
+     		String fName = files.next();
+     		MultipartFile file = mRequest.getFile(fName);
+     		
+     		String newFileName = MultipartHelper.generateFilename(file.getOriginalFilename());
+     		// DB에 저장되는 경로
+	        String fileDBPath = "/second-life/reviewPhoto/";
+	        
+	        // 폴더 지정
+	     	String saveFolder = servletContext.getRealPath("/reviewPhoto/");
+	     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+	     	String path = sdf.format(new Date());
+	     	
+	     	// DB에 저장되는 경로
+	     	fileDBPath += sdf.format(new Date()) + "/";
+	     	
+	     	// 실제 파일 저장경로
+	     	saveFolder += path;
+	     	File f = new File(saveFolder);
+	     	f.mkdirs();
+	        
+	     	String filePath = saveFolder + "/" + newFileName;
+	     	fileDBPath += newFileName;
+	     	file.transferTo(new File(filePath));
+	     	cosmeticReviewPhoto.setPhotoNo(list.get(i).getPhotoNo());
+	     	cosmeticReviewPhoto.setReviewNo(reviewNo);
+	     	cosmeticReviewPhoto.setFilePath(fileDBPath);
+	     	cosmeticService.updateReviewPhoto(cosmeticReviewPhoto);
+	     	i++;
+     	}
+		
+		
+		return new AjaxResult("success",null);
+	}
+	
+	@RequestMapping(value="reviewDelete", method=RequestMethod.GET)
+	public AjaxResult reviewDelete(int reviewNo, HttpServletRequest req) throws Exception {
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		CosmeticReview cosmeticReview = new CosmeticReview();
+		cosmeticReview.setReviewNo(reviewNo);
+		cosmeticReview.setMemberNo(member.getMemberNo());
+		
+		String msg = "fail";
+		// 유저번호와 게시물번호로 일치하는 데이터가 있는지 확인
+		int cnt = cosmeticService.selectReviewMatch(cosmeticReview);
+		
+		if(cnt != 0){
+			msg = "success";
+			cosmeticService.deleteReview(cosmeticReview);
+		}
+		
+		return new AjaxResult(msg,null);
+	}
+	
+	// 권한 체크
+	@RequestMapping(value="authority",method=RequestMethod.GET)
+	public AjaxResult authorityCheck(int reviewNo, HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		CosmeticReview cosmeticReview = new CosmeticReview();
+		cosmeticReview.setReviewNo(reviewNo);
+		cosmeticReview.setMemberNo(member.getMemberNo());
+		
+		String msg = "fail";
+		int cnt = cosmeticService.selectReviewMatch(cosmeticReview);
+		
+		if(cnt != 0){
+			msg = "success";
+		}
+		
+		return new AjaxResult(msg,null);
 	}
 
 	@RequestMapping(value="login", method=RequestMethod.POST)
@@ -241,11 +375,18 @@ public class CosmeticController {
 		CosmeticMember member = new CosmeticMember();
 		member.setId(req.getParameter("id"));
 		member.setPwd(req.getParameter("password"));
+		// 계정이 있는지 체크
 		int no = cosmeticService.selectLogin(member);
 		
 		String msg = "fail";
-		member =cosmeticService.selectMember(no);
 		HttpSession session = null;
+		
+		if(no != 0){
+			member = cosmeticService.selectMember(member);			
+		}
+		else{
+			member = null;
+		}
 		
 		if(member != null){
 			// 세션에 로그인 객체를 등록

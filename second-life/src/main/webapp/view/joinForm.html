@@ -207,10 +207,17 @@
 	$("#idCheck").click(function() {
 		$.getJSON(contextRoot + "/cosmetic/ajax/idCheck.do", { "id" : $('#inputId').val() },
 			  function(resultObj) {
-				alert(resultObj.ajaxResult.data);
+				//alert(resultObj.ajaxResult.data);
 				idChk = resultObj.ajaxResult.data;
+				if(idChk == '사용 가능한 ID 입니다.'){
+					$('#idCheckText').css('color','green').text(idChk);
+				}
+				else{
+					$('#idCheckText').css('color','red').text(idChk);
+				}
 			  }
-		)
+		);
+		
 	});
 	
 	$("#joinBtn").click(function() {
@@ -221,6 +228,7 @@
 	// 			data : { birth : $("input[name=year]").val()+$("input[name=month]").val()+$("input[name=day]").val() },
 				dataType : "json",
 				success : function(resultObj) {
+					alert('회원가입이 완료되었습니다. 다시 로그인 해주세요.');
 					location.href = 'mainandreview.html';
 				}
 	        });	
@@ -285,6 +293,5 @@
     }
 
 </script>
-<script type="text/javascript" src="../js/duplicationcheck.js"></script>	
 </body>
 </html>

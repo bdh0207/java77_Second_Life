@@ -19,5 +19,10 @@ public interface CosmeticService {
 	public List<CosmeticReviewComment> selectReviewComment(int reviewNo) throws Exception;
 	public List<CosmeticReviewPhoto> selectReviewPhoto(int reviewNo) throws Exception;
 	public int selectLogin(CosmeticMember member) throws Exception; 
-	public CosmeticMember selectMember(int no) throws Exception;
+	public CosmeticMember selectMember(CosmeticMember member) throws Exception;
+	public int selectReviewMatch(CosmeticReview cosmeticReview) throws Exception;
+	public void deleteReview(CosmeticReview cosmeticReview) throws Exception;
+	public void updateReview(CosmeticReview cosmeticReview) throws Exception;
+	public List<CosmeticReviewPhoto> selectReviewPhotoNo(int reviewNo) throws Exception;
+	public void updateReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto) throws Exception;
 }

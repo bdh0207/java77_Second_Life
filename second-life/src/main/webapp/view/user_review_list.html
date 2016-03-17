@@ -87,7 +87,7 @@
 		text-align: right;
 	}
 	.item{
-		width: 1280px;
+		width: 100% !important;
 	}
 	
 	@media screen and (max-width:1024px) {
@@ -112,7 +112,9 @@
     	text-decoration: none;
 		color: white;	
 	}
-
+	#masonry{
+		width: 100% !important;
+	}
 </style>
 <script type="text/javascript">
 	// 페이징 인덱스
@@ -121,7 +123,6 @@
 	$(window).load(function(){
 		$('#masonry').masonry({
 			itemSelector:'.item',
-			columnWidth:1266,
 			isAnimated: true,
 			isFitWidth: true
 		});
@@ -320,7 +321,7 @@
 			    
 			    <!-- Content -->
 			    <!-- style="min-width: 967px; max-width: 1266px; -->
-			    <div id="masonry" style="height: 100%;">
+			    <div id="masonry" style="width:100% !important; height: 100%;">
 				<!-- 			    <div id="columns"> -->
 			    
 			    <!-- Content end -->
