@@ -117,6 +117,12 @@ public class CosmeticServiceImpl implements CosmeticService {
 	public int insertReviewComment(CosmeticReviewComment cosmeticReviewComment) throws Exception {
 		return cosmeticDao.insertReviewComment(cosmeticReviewComment);
 	}
+
+	@Override
+	public int hospitalInfo(CosmeticReviewComment cosmeticReviewComment) throws Exception {
+		
+		return ;
+	}
 	
 	
 }
