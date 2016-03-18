@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -488,4 +489,56 @@ function removeAllChildNods(el) {
 </script>
 </body>
 >>>>>>> 20177c8f920af017a2f7c84d5535b73eafa15511
+=======
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Search Hospital</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
+    <link rel="stylesheet" type="text/css" href="../css/searchHospital.css">
+    <style>
+    
+    </style>
+
+</head>
+<body>
+<!-- top -->
+	<div id="top"></div>
+
+<div class="bodyContent" style="margin-top: 70px;">
+<!-- Search Hospital -->
+	<fieldset>
+		<legend  style="color: #cf2d39;">
+		<h2>
+		Search Hospital
+		</h2>
+		</legend>
+	</fieldset>
+	<div>
+		<button id="hospitalAddr">주소 불러오기</button>
+	</div>
+</div>
+
+<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=
+32d3bb0127a08daaa98517ba3ffc0655&libraries=services"></script>
+<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+
+<script>
+// 해더
+$(document).ready(function() {
+    $('#top').load('top.html');
+});
+
+var hospitalAddr = $('hospitalAddr').on("click", function () {
+	$.getJSON(contextRoot + "/cosmetic/ajax/hospitalInfo.do", function(resultObj) {
+		console.log("test");
+		
+	})
+});
+
+</script>
+
+</body>
+>>>>>>> Chorong-Development
 </html>
