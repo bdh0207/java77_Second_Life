@@ -36,16 +36,21 @@
 // 해더
 $(document).ready(function() {
     $('#top').load('top.html');
+	
+	var hospitalInfo = function hospitalInfo() {
+		$('#hospitalAddr').on("click", function () {
+		$.getJSON(contextRoot + "/cosmetic/ajax/hospitalInfo.do", function(resultObj) {
+			alert
+			
+			});
+		});
+	} 
+	
+	hospitalInfo();
+	
 });
-
-var hospitalAddr = $('hospitalAddr').on("click", function () {
-	$.getJSON(contextRoot + "/cosmetic/ajax/hospitalInfo.do", function(resultObj) {
-		console.log("test");
-		
-	})
-});
-
 </script>
+<script src="../js/common.js" type="text/javascript"></script>
 
 </body>
 </html>

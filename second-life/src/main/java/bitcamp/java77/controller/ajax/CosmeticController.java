@@ -66,7 +66,7 @@ public class CosmeticController {
 	
 	@RequestMapping(value="hospitalInfo")
 	public void hospitalInfo() throws Exception {
-		
+
 	}
 	
 //	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)

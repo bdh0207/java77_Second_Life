@@ -15,12 +15,20 @@
 		 padding-left: 70px;
 		 padding-right: 70px;
 	}
+	hr {
+		border-color: #595959;
+		border-width: 0.05px;
+		border-style: solid;
+	}
 </style>
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="../js/common.js"></script>
 <script>
 	$(document).ready(function() {
 		// top 적용
 		$('#top').load('top.html');
+		
+		$('#joinFormMove').attr('href','joinForm.html');
 	});
 </script>
 </head>
@@ -41,15 +49,52 @@
 				<label class="control-label" for="inputSmall">PASS</label>
 				<input class="form-control input-sm" type="password" id="inputSmall">
 				</div>
+<<<<<<< HEAD
+				<hr/>
+				<div class="modal-footer paddingZero" style="padding-top: 0px;" >
+			        <button type="button" class="btn btn-default buttonColor" data-dismiss="modal"
+			        		style="background-color: white; color: #cf2d39;">Login</button>
+=======
 				<div class="modal-footer paddingZero" >
-			        <button type="button" class="btn btn-default buttonColor" data-dismiss="modal">Login</button>
+			        <button type="button" id="loginBtn" class="btn btn-default buttonColor" data-dismiss="modal">Login</button>
+>>>>>>> 20177c8f920af017a2f7c84d5535b73eafa15511
 			    </div>
 			    <div style="float: right;">
 				    <a href="#" class="btn btn-link joinAlink">아이디|비번찾기</a>
-				    <a href="#" class="btn btn-link joinAlink">회원가입</a>
+				    <a href="#" id="joinFormMove" class="btn btn-link joinAlink">회원가입</a>
 			    </div>
 			</div>
 		</div>
 	</div>
+<<<<<<< HEAD
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+=======
+	
+	<script type="text/javascript">
+		$('#loginBtn').click(function() {
+			$.post(contextRoot+'/cosmetic/ajax/login.do',
+				{
+					id : $('input[type="text"]').val(),
+					password : $('input[type="password"]').val()
+				},
+				function(resultObj){
+					var ajaxResult = resultObj.ajaxResult;
+					var status = ajaxResult.status;
+					console.log(status);
+					if(status == 'success'){
+						alert('로그인 성공');
+						location.href = "mainandreview.html";
+					}
+					else{
+						alert('로그인 정보를 다시 확인해 주세요');
+					}
+			},"json");
+		});
+	</script>
+>>>>>>> 20177c8f920af017a2f7c84d5535b73eafa15511
 </body>
 </html>

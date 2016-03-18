@@ -16,70 +16,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.0.0/js/bootstrap-datetimepicker.min.js"></script>
 <script src="../js/common.js"></script>
 <title>Review</title>
-<script>
-	$(document).ready(function() {
-		$('#top').load('top.html').trigger('pagecreate');
-	});
-	
-	// 성형정보 공유 disabled
-	function checkDisable(frm)
-	{
-	    if( frm.share.checked == true ){
-		   frm.way.disabled = false;
-		   frm.hsName.disabled = false;
-		   frm.doctor.disabled = false;
-		   frm.price.disabled = false;
-		   frm.date.disabled = false;
-		} 
-	    else 
-		{
-		   frm.way.disabled = true;
-		   frm.hsName.disabled = true;
-		   frm.doctor.disabled = true;
-		   frm.price.disabled = true;
-		   frm.date.disabled = true;
-		}
-	}
-	
-function ckSubmit() {
-		
-		console.log(contextRoot);
-		/*
-		var checkBoxValues = [];
-		
-		$('#sugeryPart:checked').each(function(i) {
-			checkBoxValues.push($(this).val());
-		});
-		
-		var allData = {};
-		
-		if($('input:checkbox[id="status"]').is(':checked') == true){
-			allData = {
-					title : $('#title').val(),
-					content : $('#content').val(),
-					fileName : $('#fileName').val()
-					
-			};
-		}else{
-			allData = {
-					memberNo : 1,
-					title : $('#title').val(),
-					content : $('#content').val(),
-					fileName : $('#fileName')[0].files[0],
-					sugeryPart : "눈,코",
-					status : "1"
-					
-			};
-			
-		}
-		console.log(allData);
-		
-		return false;
-		*/
-	}
-	
-	
-</script>
 <style type="text/css">
 	.checkData{
 		width: 70px !important;
@@ -100,13 +36,6 @@ function ckSubmit() {
 			margin-top: 20px;
 		}
 	}
-<<<<<<< HEAD
-	
-	hr {
-		border-width: 0.05px;
-		border-style: solid;
-	}
-=======
 	.ffile{
 		display: none !important; 
 	}
@@ -117,10 +46,13 @@ function ckSubmit() {
 		-ms-ime-mode:disabled !important; 
 		ime-mode:disabled !important; 
 	} 
->>>>>>> 20177c8f920af017a2f7c84d5535b73eafa15511
 </style>
 <script>
 $(document).ready(function() {
+	$('#top').load('top.html').trigger('pagecreate');
+	// review번호 채번
+	var reviewNo = location.href.split('?')[1].split('=')[1];
+	
 	$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
 		var ajaxResult = resultObj.ajaxResult;
 		var member = ajaxResult.data;
@@ -133,7 +65,43 @@ $(document).ready(function() {
 		window.location.href='login.html';
 	});
 	
-	$('#writeBtn').click(function() {
+	$.getJSON(contextRoot + '/cosmetic/ajax/reviewListDetail.do?reviewNo='+reviewNo,function(resultObj){
+		 var ajaxResult = resultObj.ajaxResult;
+		 var reviewDetail = ajaxResult.data;
+		 var review = reviewDetail.review;
+		// 로그인 헤더 처리
+		if(reviewDetail.member != null){
+			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+			$('.changeValue2').html('Hello '+ reviewDetail.member.id).removeAttr('onclick');
+		}
+		
+		if(ajaxResult.status == 'success'){
+			 $('#title').val(review.title);
+			 $('#content').val(review.content);
+			 if(review.status == '1'){
+				 $('input:checkbox[id="ckStatus"]').attr('checked',true);
+				 $('input[name="way"]').val(review.sugeryWay);
+				 $('input[name="hsName"]').val(review.hospitalName);
+				 $('input[name="doctor"]').val(review.doctorName);
+				 $('input[name="price"]').val(review.sugeryPrice);
+				 //$('input[type="date"]').val(review.sugeryDate.format('yyyy-MM-dd'));
+			 }
+			 else{
+				 $('input:checkbox[id="ckStatus"]').attr('checked',false);
+				 $('input[name="way"]').attr('disabled',true);
+				 $('input[name="hsName"]').attr('disabled',true);
+				 $('input[name="doctor"]').attr('disabled',true);
+				 $('input[name="price"]').attr('disabled',true);
+				 $('input[type="date"]').attr('disabled',true);
+			 }
+	    }
+		 
+	 }).error(function(error) {
+			window.location.href='login.html';
+	 });
+	
+	
+	$('#updateBtn').click(function() {
 		var ckIdx = 1;
 		var sPart ='';
 		var status='';
@@ -164,6 +132,7 @@ $(document).ready(function() {
 		formData.append('title',$('#title').val());
 		formData.append('content',$('#content').val());
 		formData.append('sugeryPart',sPart);
+	    formData.append('reviewNo',reviewNo);
 		
 		// 수술정보 공유가 체크되어있다면...
 		if($('input:checkbox[id="ckStatus"]').is(':checked')){
@@ -181,7 +150,7 @@ $(document).ready(function() {
 		formData.append('status', status);
 		
 		$.ajax({
-			url: contextRoot + '/cosmetic/ajax/reviewAdd.do',
+			url: contextRoot + '/cosmetic/ajax/reviewUpdate.do',
 			type: 'POST',
 			dataType : 'json',
 			processData: false,
@@ -189,11 +158,34 @@ $(document).ready(function() {
 			data: formData
 		}).done(function(resultObj,status,jqXHR) {
 			console.log(resultObj.ajaxResult);
-			location.href = 'user_review_list.html';
+			location.href = 'user_review2.html?reviewNo='+reviewNo;
 		});
-		
+	});
+	
+	$('#cancelBtn').click(function() {
+		location.href = 'user_review2.html?reviewNo='+reviewNo;
 	});
 });
+
+//성형정보 공유 disabled
+function checkDisable(frm)
+{
+    if( frm.share.checked == true ){
+	   frm.way.disabled = false;
+	   frm.hsName.disabled = false;
+	   frm.doctor.disabled = false;
+	   frm.price.disabled = false;
+	   frm.date.disabled = false;
+	} 
+    else 
+	{
+	   frm.way.disabled = true;
+	   frm.hsName.disabled = true;
+	   frm.doctor.disabled = true;
+	   frm.price.disabled = true;
+	   frm.date.disabled = true;
+	}
+}
 
 </script>
 </head>
@@ -207,7 +199,7 @@ $(document).ready(function() {
 	<fieldset>
 	    <legend><h3 style="color: #cf2d39;">Review</h3></legend>
 	    <div class="float">
-	    	<img src="..\images\reviewForm.png" width="450px">
+	    	<img src="../images/reviewForm.png" width="450px">
 	    </div>
 	    <div class="floatForm">
 	    <div class="form-group">
@@ -266,10 +258,7 @@ $(document).ready(function() {
 	      </div>
 	      -->
 	    </div>
-<<<<<<< HEAD
-=======
 	    
->>>>>>> 20177c8f920af017a2f7c84d5535b73eafa15511
 	    <div class="form-group">
 	      <label for="inputPassword" class="col-lg-2 control-label">수술 부위</label>
 	      <div class="col-lg-10">
@@ -305,19 +294,7 @@ $(document).ready(function() {
 			  <span class="help-block textMargin" style="font-size: 8pt; color: #cf2d39;"> *수술받은 부위를 체크해주세요.　(중복가능)</span>
 	      </div>
 	    </div>
-	    <div class="form-group">
-	      <label for="inputEmail" class="col-lg-2 control-label">공유 여부</label>
-	      <div class="col-lg-10" >
-	        <div class="checkbox">
-	            <div  style="margin-left: 20px;">
-	            <input id="ckStatus" type="checkbox" checked="checked" name="share" 
-	            	    onclick="checkDisable(this.form)">
-	            </div>
-				<span style="margin-left: 20px; font-size: 9pt;">당신의 성형 정보를 공유 하시겠습니까?</span>
-	          <span class="help-block textMargin" style="font-size: 6pt; color: #cf2d39;"> *공유하지 않는다면, 다른 이용자들의 정보 요청 쪽지 세례를 받으실 수 있습니다.</span>
-	        </div>
-	      </div>
-	    </div>
+	    
 	    <div class="form-group">
 	      <label for="inputPassword" class="col-lg-2 control-label">공유 여부</label>
 	      <div class="col-lg-10">
@@ -335,110 +312,45 @@ $(document).ready(function() {
 	    <div class="form-group">
 	      <label for="inputEmail" class="col-lg-2 control-label">수술 방법</label>
 	      <div class="col-lg-10">
-	        <input name="way" type="text" class="form-control boxSize" id="inputEmail"  style="font-size: 8pt;"  placeholder="체크한 수술의 수술 방법을 입력해주세요.　ex) 눈:매몰법, 코:매부리코">
+	        <input name="way" type="text" class="form-control fontStyle boxSize" id="inputEmail" placeholder="체크한 수술의 수술 방법을 입력해주세요.　ex) 눈:매몰법, 코:매부리코">
 	      </div>
 	    </div>
 	    <div class="form-group">
 	      <label for="inputEmail" class="col-lg-2 control-label">병원 이름</label>
 	      <div class="col-lg-10">
-	        <input name="hsName" type="text" class="form-control boxSize" id="inputEmail" style="font-size: 8pt;" placeholder="수술 받은 병원의 이름을 입력해주세요.">
+	        <input name="hsName" type="text" class="form-control fontStyle boxSize" id="inputEmail" placeholder="수술 받은 병원의 이름을 입력해주세요.">
 	      </div>
 	    </div>
 	    <div class="form-group">
 	      <label for="inputEmail" class="col-lg-2 control-label">담당 의사</label>
 	      <div class="col-lg-10">
-	        <input name="doctor" type="text" class="form-control boxSize" id="inputEmail"  style="font-size: 8pt;"  placeholder="수술 받은 의사의 이름을 입력해주세요.">
+	        <input name="doctor" type="text" class="form-control fontStyle boxSize" id="inputEmail" placeholder="수술 받은 의사의 이름을 입력해주세요.">
 	      </div>
 	    </div>
 	    <div class="form-group">
 	      <label for="inputEmail" class="col-lg-2 control-label">수술 비용</label>
 	      <div class="col-lg-10">
-<<<<<<< HEAD
-	        <input name="price" type="text" class="form-control boxSize" id="inputEmail"  style="font-size: 8pt;"  placeholder="ex) 200만원">
-=======
 	        <input name="price" type="text" class="form-control fontStyle boxSize" id="inputEmail" placeholder="단위 : 만원" value="" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" />
->>>>>>> 20177c8f920af017a2f7c84d5535b73eafa15511
 	      </div>
 	    </div>
 	    <div class="form-group">
 	      <label for="inputEmail" class="col-lg-2 control-label">수술 시기</label>
 	      <div class="col-lg-10">
-<<<<<<< HEAD
-	        <input name="date" type="text" class="form-control boxSize" id="inputEmail" style="font-size: 8pt;" placeholder="수술 받은 날짜를 입력해주세요.">
-=======
 	        <input name="date" type="date" class="form-control fontStyle boxSize" id="inputEmail" placeholder="수술 받은 날짜를 입력해주세요.">
->>>>>>> 20177c8f920af017a2f7c84d5535b73eafa15511
 	      </div>
 	    </div>
 	    </div>
 	</div>
-		<hr>
 	    <div class="form-group">
 	    	<div class="modal-footer paddingZero" >
-				<button type="button" id="cancelBtn" class="btn btn-default" data-dismiss="modal"
-				style="background-color: white; color: #cf2d39;">Cancel</button>
-				<button type="button" class="btn btn-primary" id="writeBtn"
-				style="background-color: white; color: #cf2d39;">Write</button>
+				<button type="button" id="cancelBtn" class="btn btn-default buttonWhite" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-primary" id="updateBtn">Update</button>
 			</div>
 		</div>
 	</fieldset>
 </form>
 </div>
 <script type="text/javascript">
-/*
-var filelist = [];
-$('.ffile').fileupload({
-	url: contextRoot + '/cosmetic/ajax/reviewAdd.do',
-	type : 'POST',
-	dataType: 'json',
-	singleFileUploads: false, // 서버에 한 번만 요청을 보내라.
-	add: function (e, data) {
-    //data.context = $('<p/>').text('Uploading...').appendTo(document.body);
-	var ckIdx = 1;
-	var sPart ='';
-	var length = $('input:checkbox[name="sPartCk"]:checked').length;
-	
-    $('input:checkbox[name="sPartCk"]').each(function() {
-		if(this.checked){
-			if(ckIdx == 1){
-				sPart += this.value;
-				ckIdx++;
-			}
-			else{
-				sPart += ','+this.value;
-				ckIdx++;
-			}
-		}
-	});
-    console.log("파일을 추가하였음...");
-    $('#writeBtn').click(function(event) {
-    	  console.log(data);
-    	  console.log("서버에 전송함...");
-	    	data.formData = {
-	    			memberNo: 1,
-	    			title: $('#title').val(),
-	    			content: $('#content').val(),
-	    			sugeryPart : sPart,
-					status : "0"
-	    	};
-     	data.submit();
-    });
-  },
-  done: function (e, data) {
-	  console.log(data.result.ajaxResult);
-	  location.href = 'user_review_list.html';
-  }
-}).on('fileuploadadd',function(e, data){
-	for(var i = 0; i < data.files.length; i++){
-		filelist.push(data.files[i]);
-	}
-});
-*/
-
-
-$('#cancelBtn').click(function() {
-	location.href = 'user_review_list.html';
-});
 
 // 파일 미리보기 부분
 $('#file-img1').click(function() {

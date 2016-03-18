@@ -50,15 +50,8 @@
 	opacity: 0;
 	cursor: pointer;
 }
-
-.sample {
-	display: none;
-}
-
-#choice-val {
-	display: block;
-}
  
+
 /* search_hopital.html ======================================== */
 .search-result {
 	border: 1px solid #aab2bd;

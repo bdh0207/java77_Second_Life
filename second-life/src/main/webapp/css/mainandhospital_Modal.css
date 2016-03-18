@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+
+.modal-size{
+/* 	width: 600px;
+	height:700px; */
+	padding: 10px;
+	text-align: center;
+	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.div-size{
+	magin: auto;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	width: 500px;
+	display: inline-block;
+	font-size: 14px;
+	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.title{
+	width: 500px;
+	display: inline-block;
+	color: white;
+	font-size: 20px;
+	background-color: #cf2d39; 
+	padding: 5px;
+	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	border-radius: 3px;
+}
+
+.button-size{
+	width: 510px;
+	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

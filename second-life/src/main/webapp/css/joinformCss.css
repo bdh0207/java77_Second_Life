@@ -4,6 +4,7 @@
 	width: 80%;
 	margin-left: 150px;
 	margin-right: 150px;
+	
 }
 
 .paddingZero {
@@ -50,4 +51,9 @@
 
 #join-logo {
 	margin-top: 50px;
-}
+} 
+
+.float-right { float: right; }
+
+span { color: #cf2d39; }
+input { font-size: 9pt; }

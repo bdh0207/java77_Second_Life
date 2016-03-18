@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import bitcamp.java77.dao.CosmeticDao;
+import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
@@ -119,8 +120,8 @@ public class CosmeticServiceImpl implements CosmeticService {
 	}
 
 	@Override
-	public int hospitalInfo() throws Exception {
-		
+	public int hospitalInfo(CosmeticHospital cosmeticHospital) throws Exception {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 	

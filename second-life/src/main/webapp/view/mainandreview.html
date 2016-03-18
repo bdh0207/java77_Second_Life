@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="shortcut icon" href="/second-life/icon/shortcut/favicon.ico">
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
 <style>
@@ -14,7 +15,7 @@
       	width: 800px !important;
       }
       .h3, h3 {
-		font-size: 17px !important ;
+		font-size: 17px !important;
 	  }
     }
 </style>
@@ -39,8 +40,8 @@
 	
 	
 	<script type="text/javascript">
+		var pageIdx = 2;
 		$(document).ready(function() {	
-			$('#top').load('top.html').trigger('pagecreate');
 			var container = document.querySelector('#masonry');
 
 			/* 찜하기 함수  */
@@ -61,13 +62,16 @@
 				}, function () {
 					$("#zzim .review1").css({opacity: "1.0"});
 				});
-			
+				
 				$(".x").click(function () {
 					$("#zzim .review1").remove();
 					$(".x").remove();
 					$(".starOpa").css("opacity", "0.4");
 				});
-				
+<<<<<<< HEAD
+				return false;
+=======
+>>>>>>> cd3be90506b1c4c5a0166b40f5be6cab1dc16904
 			});
 		});
 			/*
@@ -84,7 +88,8 @@
 			*/
 		
 		$(window).load(function() {
-			$('#top').load('top.html').trigger('pagecreate');
+			
+		
 			var container = document.querySelector('#columns');
 			$('#columns').masonry({
 				itemSelector:'.item',
@@ -97,45 +102,124 @@
 		});
 		
 		$(document).ready(function() {	
+			$('#top').load('top.html').trigger('pagecreate');
+			$.getJSON(contextRoot + '/cosmetic/ajax/mainReview.do',function(resultObj){
+				// 로그인 헤더 처리
+				if(resultObj.member != null){
+					$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+					$('.changeValue2').html('Hello '+ resultObj.member.id).attr('onclick','location.href="mylist.html"');
+				}
+				
+				for(var list of resultObj.reviewList){
+					var beforePath = '';
+					var afterPath = '';
+					
+					var index = 1;
+					for(var photoList of list.reviewPhoto){
+						if(index ==1){
+							beforePath += photoList.filePath;
+						}
+						else{
+							afterPath += photoList.filePath;
+						}
+						index++;
+					}
+					
+					var div = '<div class="item">';	
+						div +=	'<figure>';
+						div +=	'<a class="detailLnk" href="#"><img src="' + afterPath + '" reviewNo="' + list.reviewNo + '" /></a>									';
+						div +=	'<figcaption>																														';
+						div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
+						div +=	'				<hr />                                                                                                              ';
+						div +=	'				<div class="footers">                                                                                               ';
+						div +=	'					<div class="row">                                                                                               ';
+						div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
+						div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
+						div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
+						div +=	'					  </div>                                                                                                        ';
+						div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
+						div +=	'					  	<div class="wish"><img class="starOpa" src="../images/star.png" width="30" height="28"  /></div>          ';
+						div +=	'					  </div>                                                                                                        ';
+						div +=	'					</div>                                                                                                          ';
+						div +=	'				</div>                                                                                                              ';
+						div +=	'			</figcaption>                                                                                                           ';
+						div +=	'		</figure>                                                                                                                   ';
+						div +=	'	</div>                                                                                                                          ';
+						
+						var $elem = $(div);
+						
+						$('#columns').append($elem).masonry('appended',$elem);
+						
+						$('#columns').imagesLoaded(function() {
+							$('#columns').masonry();
+						});
+						
+						$('a.detailLnk').click(clickDetailLnk);
+				}
+			});
 			
 			$(window).scroll(function() {
 				var scrollHeight=$(window).scrollTop()+$(window).height();
 				var documentHeight = $(document).height();
 				
 				if(scrollHeight==documentHeight){
-					for(var i=0; i<10; i++){
-						var div = '<div class="item">';	
-							div += '<figure>';
-							div += '<a href="user_review2.html"><img src="../images/review_main12.jpg" /></a>'
-							div += '<figcaption>';
-							div += '<div class="review">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div>';
-							div +=	'<hr />';
-							div +=	'<div class="footers">';
-							div +=	'<div class="row">';
-							div +=  '<div class="col-xs-12 col-md-8">';
-							div	+=	'<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>';
-							div	+=  '<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>';
-							div	+=	'</div>';
-							div	+=	'<div class="col-xs-6 col-md-4">';
-							div +=  '<div class="wish"><img src="../images/star.png" width="30" height="28" alt="" /></div>';
-							div +=	'</div>';
-							div +=	'</div>';
-							div +=	'</div>';
-							div += '</figcaption>';
-							div += '</figure>';
-							div	+= '</div>';
+					$.getJSON(contextRoot + '/cosmetic/ajax/mainReview.do?pageNo='+pageIdx, function(resultObj) {
+						for(var list of resultObj.reviewList){
+							if(resultObj.reviewList.length != 0) pageIdx++;
+							
+							var beforePath = '';
+							var afterPath = '';
+								
+							for(var photoList of list.reviewPhoto){
+								var index = 1;
+								if(index ==1){
+									beforePath += photoList.filePath;
+								}
+								else{
+									afterPath += photoList.filePath;
+								}
+								index++;
+							}
+								
+							var div = '<div class="item">';	
+								div +=	'<figure>';
+								div +=	'<a class="detailLnk" href="#"><img src="' + beforePath + '" reviewNo="' + list.reviewNo + '" /></a>									';
+								div +=	'<figcaption>																														';
+								div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
+								div +=	'				<hr />                                                                                                              ';
+								div +=	'				<div class="footers">                                                                                               ';
+								div +=	'					<div class="row">                                                                                               ';
+								div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
+								div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
+								div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
+								div +=	'					  </div>                                                                                                        ';
+								div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
+								div +=	'					  	<div class="wish"><img class="starOpa" src="../images/star.png" width="30" height="28"  /></div>          ';
+								div +=	'					  </div>                                                                                                        ';
+								div +=	'					</div>                                                                                                          ';
+								div +=	'				</div>                                                                                                              ';
+								div +=	'			</figcaption>                                                                                                           ';
+								div +=	'		</figure>                                                                                                                   ';
+								div +=	'	</div>';
+								
+								// 추가할 엘리먼트 jquery 객체화
+								var $elem = $(div);
+								// masonry 추가
+						    	$('#columns').append($elem).masonry('appended',$elem);
+						    	// 추가되고 다시 재배치 해줌
+						    	$('#columns').imagesLoaded(function() {
+									$('#columns').masonry();
+								});
+						    	// 다시 리로드
+						    	$('#columns').masonry('reloadItems');
+						    	
+						    	$('a.detailLnk').click(clickDetailLnk);
+						}
 						
-						// 추가할 엘리먼트 jquery 객체화
-						var $elem = $(div);
-						// masonry 추가
-				    	$('#columns').append($elem).masonry('appended',$elem);
-				    	// 추가되고 다시 재배치 해줌
-				    	$('#columns').imagesLoaded(function() {
-							$('#columns').masonry();
-						});
-				    	// 다시 리로드
-				    	$('#columns').masonry('reloadItems');
-					}
+						
+					});
+					
+					
 				}
 			});
 			
@@ -161,251 +245,6 @@
   	
 	<div id="masonry">
 		<div id="columns">
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img class="review1" src="../images/review_main1.jpg" /></a>
-				<figcaption>
-					<div class="review.html">전에는 정말 살기싫었는데 지금은 계속 살고싶네요</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish">
-						  	<img class="starOpa" src="../images/star.png" width="30" height="28"  />
-						  	</div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main2.jpg" /></a>
-				<figcaption>
-					<div class="review">안녕하세요 저는 서울에 사는 홍길동 입니다. 성형외과에서 진찰을 받았습니다.</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main3.jpg" /></a>
-				<figcaption>
-					<div class="review">엄청난 큰변화에 박수를 보내드립니다. 이 병원 추천!!</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main4.jpg" /></a>
-				<figcaption>
-					<div class="review">역시 인생은 성형이죠 ㅎㅎ</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main5.jpg" /></a>
-				<figcaption>
-					<div class="review">전 오늘도 따봉을 외칩니다. 하핫</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main6.jpg" /></a>
-				<figcaption>
-					<div class="review">원래 인생이 뜯어고치고 사는거 아니겠습니까?</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main7.jpg" /></a>
-				<figcaption>
-					<div class="review">성형 핵꿀잼ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main8.jpg" /></a>
-				<figcaption>
-					<div class="review">관리 조금만하면 연예인될거같은 기분?ㅎㅎ</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main9.jpg" /></a>
-				<figcaption>
-					<div class="review">여러분 지금 빨리 하세요. 제일 쌀때 해야됩니다 ㅎㅎ</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main10.jpg" /></a>
-				<figcaption>
-					<div class="review">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div>
-					<hr />
-					<div class="footers">
-					<div class="row">
-					  <div class="col-xs-12 col-md-8">
-					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-					  </div>
-					  <div class="col-xs-6 col-md-4">
-					  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-					  </div>
-					</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main11.png" /></a>
-				<figcaption>
-					<div class="review">짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱짱</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		
-		<div class="item">	
-			<figure>
-				<a href="user_review2.html"><img src="../images/review_main12.jpg" /></a>
-				<figcaption>
-					<div class="review">오지고 또 오졌다. 인정?</div>
-					<hr />
-					<div class="footers">
-						<div class="row">
-						  <div class="col-xs-12 col-md-8">
-						  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />2531</div>
-							<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-						  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28" alt="" /></div>
-						  </div>
-						</div>
-					</div>
-				</figcaption>
-			</figure>
-		</div>
-		
 		</div><!-- columns end -->
 	</div>
 	
@@ -422,56 +261,6 @@
 	
 	</div>
 <script type="text/javascript">
-	$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do',function(resultObj){
-		for(var list of resultObj.reviewList){
-			var beforePath = '';
-			var afterPath = '';
-			
-			for(var photoList of list.reviewPhoto){
-				var index = 1;
-				if(index ==1){
-					beforePath += photoList.filePath;
-				}
-				else{
-					afterPath += photoList.filePath;
-				}
-				index++;
-			}
-			
-			var div = '<div class="item">';	
-				div +=	'<figure>';
-				div +=	'<a class="detailLnk" href="#"><img src="' + beforePath + '" reviewNo="' + list.reviewNo + '" /></a>									';
-				div +=	'<figcaption>																														';
-				div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
-				div +=	'				<hr />                                                                                                              ';
-				div +=	'				<div class="footers">                                                                                               ';
-				div +=	'					<div class="row">                                                                                               ';
-				div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
-				div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
-				div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
-				div +=	'					  </div>                                                                                                        ';
-				div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
-				div +=	'					  	<div class="wish"><img class="starClick" src="../images/star.png" width="30" height="28"  /></div>          ';
-				div +=	'					  </div>                                                                                                        ';
-				div +=	'					</div>                                                                                                          ';
-				div +=	'				</div>                                                                                                              ';
-				div +=	'			</figcaption>                                                                                                           ';
-				div +=	'		</figure>                                                                                                                   ';
-				div +=	'	</div>                                                                                                                          ';
-				
-				var $elem = $(div);
-				
-				$('#columns').append($elem).masonry('appended',$elem);
-				
-				$('#columns').imagesLoaded(function() {
-					$('#columns').masonry();
-				});
-				
-				$('a.detailLnk').click(clickDetailLnk);
-				
-		}
-	});
-	
 	$(".starClick").click(function() {
         if($(this).css("opacity") == "0.4") {
            $(this).css("opacity", "1.0");
