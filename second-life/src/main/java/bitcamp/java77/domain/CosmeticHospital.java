@@ -5,7 +5,7 @@ import java.util.Date;
 public class CosmeticHospital {
 	protected int hospitalNo;
 	protected String name;
-	protected int surgeryPart;
+	protected String surgeryPart;
 	protected String content;
 	protected String addr;
 	protected String tel;
@@ -23,10 +23,10 @@ public class CosmeticHospital {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getSurgeryPart() {
+	public String getSurgeryPart() {
 		return surgeryPart;
 	}
-	public void setSurgeryPart(int surgeryPart) {
+	public void setSurgeryPart(String surgeryPart) {
 		this.surgeryPart = surgeryPart;
 	}
 	public String getContent() {
@@ -49,6 +49,7 @@ public class CosmeticHospital {
 	}
 	public String getLink() {
 		return link;
+	}
 	public void setLink(String link) {
 		this.link = link;
 	}

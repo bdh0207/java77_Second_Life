@@ -2,12 +2,12 @@ package bitcamp.java77.dao;
 
 import java.util.List;
 
+import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
 import bitcamp.java77.domain.CosmeticSearch;
-import bitcamp.java77.service.impl.cosmeticReviewComment;
 
 public interface CosmeticDao {
 	int searchID(String id); // ID 중복확인
@@ -27,5 +27,5 @@ public interface CosmeticDao {
 	List<CosmeticReviewPhoto> selectReviewPhotoNo(int reviewNo);
 	void updateReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto);
 	int insertReviewComment(CosmeticReviewComment cosmeticReviewComment);
-	String selectHospital(cosmeticReview cosmeticReview);
+	String selectHospital(CosmeticHospital cosmeticHospital);
 }
