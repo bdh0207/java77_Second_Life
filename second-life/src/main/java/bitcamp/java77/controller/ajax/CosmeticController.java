@@ -69,10 +69,15 @@ public class CosmeticController {
 
 	}
 	
-//	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
-//	public void selectMemInfo(String id) throws Exception {
-//		 System.out.println(id);
-//	}
+	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
+	public AjaxResult selectMemInfo(HttpServletRequest req) throws Exception {
+		HttpSession session   = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+
+		member = cosmeticService.selectMember(member);
+		
+		return new AjaxResult("success", member);
+	}
 	
 //	@RequestMapping(value="sendMail", method=RequestMethod.POST)
 //	public void sendMail(CosmeticCounsel cosmeticConsel) throws Exception, MessagingException {

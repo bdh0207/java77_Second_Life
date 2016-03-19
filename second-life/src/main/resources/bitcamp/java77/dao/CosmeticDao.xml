@@ -116,7 +116,7 @@
  	</select>
  	
  	<select id="selectMember" parameterType="cosmeticMember" resultType="CosmeticMember">
- 		select mno as memberNo,id,pwd,name,email,gender,birth,posno,addr_def as addrDef, addr_det as addrDet, tel, cPart, rec_email as recEmail, cont as content, reg_date as regDate 
+ 		select mno as memberNo,id,pwd,name,email,gender,birth,posno,addr_def as addrDef, addr_det as addrDet, tel, cPart, rec_email as recEmail, cont, reg_date as regDate 
  		from member
 		where id = #{id}
 		and pwd = #{pwd}

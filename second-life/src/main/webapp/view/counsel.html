@@ -7,9 +7,10 @@
 </style>
 <title>상담신청</title>
 <link rel="stylesheet" type="text/css" href="../css/common.css">
-<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script src='../js/jquery.form.js' type='text/javascript'></script>
-<script src="../js/common.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="../lib/bootflat/css/site.min.css" >
+<script type='text/javascript' src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script type='text/javascript' src='../js/jquery.form.js' ></script>
+<script type='text/javascript' src="../js/common.js" ></script>
 <script>
 	$(document).ready(function() {
 		// top 적용
@@ -217,7 +218,7 @@
 							</div>
 							<div class="row">
 								<div class="col-md-12">
-									<label for="exampleInputPassword1">시술법</label> 
+									<label for="exampleInputPassword1">성형부위</label> 
 									<input type="text" class="form-control" name="surgeryWay" value="">
 								</div>
 							</div>
@@ -253,6 +254,19 @@
 	
 <script>
 $(document).ready(function() {
+	$.getJSON(contextRoot + "/cosmetic/ajax/selectMemInfo.do", function(resultObj) {
+			var member = resultObj.ajaxResult.data;
+			var d	   = new Date();
+			var age    = d.getFullYear() - parseInt(member.birth/10000) + 1;
+			
+			$("input[name=name]").val(member.name);
+			$("input[name=age]").val(age);
+			$("input[name=tel]").val(member.tel);
+			$("input[name=surgeryWay]").val(member.cPart);
+			$("#contentTextarea").val(member.cont);
+		}			
+	);
+	
 	// 선택한 성형부위 추가
 	$("input[type=checkbox]").change(function() {
 		var swayVal = $("input[name=surgeryWay]").val()  
