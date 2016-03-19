@@ -7,9 +7,10 @@
 </style>
 <title>상담신청</title>
 <link rel="stylesheet" type="text/css" href="../css/common.css">
-<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
-<script src="../js/common.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="../lib/bootflat/css/site.min.css" >
+<script type='text/javascript' src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script type='text/javascript' src='../js/jquery.form.js' ></script>
+<script type='text/javascript' src="../js/common.js" ></script>
 <script>
 	$(document).ready(function() {
 		// top 적용
@@ -305,6 +306,7 @@
 	</div>
  
 <script>
+<<<<<<< HEAD
 	$(document).ready(function() {
 		// 선택한 성형부위 나타나기
 		$("input[type=checkbox]").change(function() {
@@ -316,6 +318,91 @@
 				$("input[name=sway]").val($(this).val());
 			} else {
 				$("input[name=sway]").val(addSway + ", " +$(this).val());
+=======
+$(document).ready(function() {
+	$.getJSON(contextRoot + "/cosmetic/ajax/selectMemInfo.do", function(resultObj) {
+			var member = resultObj.ajaxResult.data;
+			var age = 
+			$("input[name=name]").val(member.name);
+			$("input[name=age]").val(age);
+			$("input[name=tel]").val(member.tel);
+			$("input[name=surgeryWay]").val(member.name);
+			$("#contentTextarea").val(member.name);
+		}			
+			
+	);
+	
+	// 선택한 성형부위 추가
+	$("input[type=checkbox]").change(function() {
+		var swayVal = $("input[name=surgeryWay]").val()  
+		var choice  = $(this).attr("class");
+		var title 	= "";
+		
+		if(choice == "eye") {
+			title = "눈";
+		} else if(choice == "nose") {
+			title = "코";
+		} else if(choice == "forehead") {
+			title = "이마";
+		} else if(choice == "cheek") {
+			title = "광대";
+		} else if(choice == "face") {
+			title = "기타";
+		} else if(choice == "breast") {
+			title = "가슴";
+		} else if(choice == "abdomen") {
+			title = "복부";
+		} else if(choice == "heap") {
+			title = "엉덩이";
+		} else if(choice == "calf") {
+			title = "종아리";
+		} else if(choice == "liposuction") {
+			title = "지방흡입";
+		}   
+		 
+		var fileHtml = "<div class='col-md-2' name='" + choice + "'>                                               "
+				     + "	<div class='panel panel-danger'>                                                    "
+				     + "		<div class='panel-heading'>                                                     "
+				     + "			<h3 class='panel-title'>" + title + "</h3>                                  "
+				     + "		</div>                                                                          "
+				     + "		<div class='panel-body'>                                                        "
+				     + "			<div class='file-div'>                                                      "
+				     + "				<img class='file-img' src='../images/" + choice + ".jpg'>               "
+				     + "			</div>                                                                      "
+				     + "			<div style='position: relative;'>                                           "
+				     + "				<input type='file' name='file-upload' class='btn-block file-hidden' onchange='changePic(this);'> "
+				     + "				<button type='button' class='btn btn-default btn-block'>파일첨부</button>   "
+				     + "			</div>                                                                      "
+				     + "		</div>                                                                          "
+				     + "	</div>";
+		
+	  	// 시술법 추가/삭제	
+		if(swayVal == "") {  
+			$("input[name=surgeryWay]").val($(this).val());
+			$("#insert-file").append(fileHtml);
+		} else {
+			if(this.checked == false) { // 체크해제
+				var splitCode = swayVal.split(",");
+			
+				for(var idx in splitCode) {
+					if($.trim(splitCode[idx]) == $(this).val()) {
+						splitCode.splice(idx, 1);
+					}
+				}
+				
+				$("input[name=surgeryWay]").val(splitCode);
+				
+				if($("div[name="+choice+"]").length > 0) {
+					$("div[name="+choice+"]").remove();
+				}
+					
+			} else { // 체크
+				$("input[name=surgeryWay]").val(swayVal + ", " +$(this).val());
+				
+				if($("div[name="+choice+"]").length == 0) {
+					$("#insert-file").append(fileHtml);
+				}
+>>>>>>> 2838a2e21f9f7dc7beeb6f26635b4bc1633cc442
 			}
 	    });
 	}); 
