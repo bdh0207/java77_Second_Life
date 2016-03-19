@@ -11,11 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.UUID;
 
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -25,7 +22,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.MimeUtility;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -59,12 +56,6 @@ public class CosmeticController {
 	@Autowired
 	ServletContext servletContext;
 	
-	
-//	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
-//	public void selectMemInfo(String id) throws Exception {
-//		 System.out.println(id);
-//	}
-	
 	@RequestMapping(value="sendMail", method=RequestMethod.POST)
 	public void sendMail(CosmeticCounsel cosmeticConsel) throws Exception, MessagingException {
 		// 메일 관련 정보
@@ -73,7 +64,7 @@ public class CosmeticController {
         String password = "3whxptmxm";
          
         // 메일 내용
-        String recipient = cosmeticConsel.getEmail();
+        String recipient = "kkokkodaek87@naver.com";
         String subject   = "상담 신청 메일 발송";
          
         //properties 설정
@@ -87,35 +78,34 @@ public class CosmeticController {
         // 메일 관련
         msg.setSubject(subject);
         Multipart multipart = new MimeMultipart();
-        MimeBodyPart body   = new MimeBodyPart();
-         
-        body.setContent(  "<table style='width: 700px; border: 1px solid #000000; border-collapse: collapse;'>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse; width: 100px;'>이름</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getName() +"</td>"
+        MimeBodyPart body = new MimeBodyPart();
+        body.setContent(  "<table style='border: 1px solid #000000; border-collapse: collapse;'>"
+		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse;'>"
+		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>이름</th>"
+		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>"+ cosmeticConsel.getName() +"</td>"
 		        		+ "		</tr>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse;'>"
 		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>나이</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getAge() +"</td>"
+		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>"+ cosmeticConsel.getAge() +"</td>"
 		        		+ "		</tr>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>연락처</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getTel() +"</td>"
-		        		+ "		</tr>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse;'>"
 		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>시술법</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getSurgeryWay() +"</td>"
+		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>"+ cosmeticConsel.getSway() +"</td>"
 		        		+ "		</tr>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse;'>"
+		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>연락처</th>"
+		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>"+ cosmeticConsel.getTel() +"</td>"
+		        		+ "		</tr>"
+		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse;'>"
 		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>상담내용</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getContent() +"</td>"
+		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>"+ cosmeticConsel.getContent() +"</td>"
 		        		+ "		</tr>"
 		        		+ "</table>"
 		        		+ "</body>"
 		        		+ "</html>", "text/html;charset=UTF-8");
-        
         multipart.addBodyPart(body);
         msg.setContent(multipart);
+//        msg.setText(body);
         msg.setFrom(new InternetAddress(username));
         msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
  

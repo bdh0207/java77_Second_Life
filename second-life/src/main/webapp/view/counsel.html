@@ -8,8 +8,7 @@
 <title>상담신청</title>
 <link rel="stylesheet" type="text/css" href="../css/common.css">
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script src='../js/jquery.form.js' type='text/javascript'></script>
-<script src="../js/common.js" type="text/javascript"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script src="../js/common.js" type="text/javascript"></script>
 <script>
 	$(document).ready(function() {
@@ -35,13 +34,12 @@
 
 	<!-- 본문 -->
 	<div class="container documents font-new">
-
+	
 		<!-- 페이지 소개 -->
 		<div class="example">
 			<div class="row">
 				<div class="col-md-12">
 					<h3 class="font-new font-bold" id="typography">상담신청</h3>
-					<hr>
 				</div>
 			</div>
 		</div>
@@ -56,7 +54,21 @@
 						</div>
 						<div class="panel-body">
 							<div class="row">
-								<div class="col-md-2">
+								<div class="col-md-6"></div>
+								<div class="col-md-6">
+									<div class="input-group form-search">
+										<input type="text" class="form-control search-query">
+										<span class="input-group-btn">
+											<button type="submit" class="btn btn-warning" data-type="last" onclick="searchHos()">Search</button>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="hResult"></div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6 col-md-3">
 									<div class="thumbnail" id="thumbnail-new">
 										<div class="close-new"
 											onclick="$(this).parent().parent().hide();">X</div>
@@ -71,7 +83,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-2">
+								<div class="col-sm-6 col-md-3">
 									<div class="thumbnail" id="thumbnail-new">
 										<div class="close-new"
 											onclick="$(this).parent().parent().hide();">X</div>
@@ -85,7 +97,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-2">
+								<div class="col-sm-6 col-md-3">
 									<div class="thumbnail" id="thumbnail-new">
 										<div class="close-new"
 											onclick="$(this).parent().parent().hide();">X</div>
@@ -97,20 +109,6 @@
 												<p></p>
 											</div>
 										</div>
-									</div>
-								</div>
-								<div class="col-md-2">
-									<div class="thumbnail" id="thumbnail-new">
-										<div class="close-new"
-											onclick="$(this).parent().parent().hide();">X</div>
-										<img class="img-rounded" src="../images/Hospital3.jpg">
-										<div class="caption">
-											<h3>B 성형외과</h3>
-											<p>서울시 은평구 불광동 151-15</p>
-											<div class="panel-footer-grade">
-												<p></p>
-											</div>
-										</div>	
 									</div>
 								</div>
 							</div>
@@ -123,75 +121,138 @@
 		<!-- 부위 선택 -->
 		<div class="example">
 			<div class="row">
-				<div class="col-md-12">
+				<!-- 선택1 -->
+				<div class="col-md-6">
 					<div class="panel panel-danger">
 						<div class="panel-heading">
-							<h3 class="panel-title">성형부위 선택</h3>
+							<h3 class="panel-title">성형부위 선택 1</h3>
 						</div>
 						<div class="panel-body">
 							<div class="row example-popover">
 								<div class="col-md-6">
-									<div class="popover left">
+									<div class="popover top">
 										<div class="arrow"></div>
 										<h3 class="popover-title">FACE</h3>
 										<div class="popover-content">눈<br>
-											<input type="checkbox" id="flat-checkbox-1" value="쌍커풀" class="eye">쌍커풀 
-											<input type="checkbox" id="flat-checkbox-1" value="트임" class="eye">트임 
-											<input type="checkbox" id="flat-checkbox-1" value="눈매교정" class="eye">눈매교정<br> 
-											<input type="checkbox" id="flat-checkbox-1" value="안검하수" class="eye">안검하수 
-											<input type="checkbox" id="flat-checkbox-1" value="애교" class="eye">애교 
-											<input type="checkbox" id="flat-checkbox-1" value="기타" class="face">기타 
+											<input type="checkbox" id="flat-checkbox-1" value="쌍커풀" onclick="visibility('eye')">쌍커풀 
+											<input type="checkbox" id="flat-checkbox-1" value="트임">트임 
+											<input type="checkbox" id="flat-checkbox-1" value="눈매교정">눈매교정<br> 
+											<input type="checkbox" id="flat-checkbox-1" value="안검하수">안검하수 
+											<input type="checkbox" id="flat-checkbox-1" value="애교">애교 
+											<input type="checkbox" id="flat-checkbox-1" value="기타">기타 
 										</div>
 										<div class="popover-content">코<br>
-											<input type="checkbox" id="flat-checkbox-1" value="코" class="nose">코
-											<input type="checkbox" id="flat-checkbox-1" value="기타" class="face">기타 
+											<input type="checkbox" id="flat-checkbox-1" value="코" onclick="visibility('nose')">코
+											<input type="checkbox" id="flat-checkbox-1" value="기타">기타 
 										</div>
 										<div class="popover-content">기타<br>
-											<input type="checkbox" id="flat-checkbox-1" value="이마" class="forehead">이마
-											<input type="checkbox" id="flat-checkbox-1" value="광대" class="cheek">광대 
-											<input type="checkbox" id="flat-checkbox-1" value="돌려깎기" class="face">돌려깎기 <br>
-											<input type="checkbox" id="flat-checkbox-1" value="안면윤곽" class="face">안면윤곽
-											<input type="checkbox" id="flat-checkbox-1" value="턱" class="face">턱 
-											<input type="checkbox" id="flat-checkbox-1" value="양악" class="face">양악 
-											<input type="checkbox" id="flat-checkbox-1" value="기타" class="face">기타 
+											<input type="checkbox" id="flat-checkbox-1" value="이마" onclick="visibility('forehead')">이마
+											<input type="checkbox" id="flat-checkbox-1" value="광대">광대 
+											<input type="checkbox" id="flat-checkbox-1" value="돌려깎기">돌려깎기 <br>
+											<input type="checkbox" id="flat-checkbox-1" value="안면윤곽">안면윤곽
+											<input type="checkbox" id="flat-checkbox-1" value="턱">턱 
+											<input type="checkbox" id="flat-checkbox-1" value="양악">양악 
+											<input type="checkbox" id="flat-checkbox-1" value="기타">기타 
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="row example-popover">
 								<div class="col-md-5">
-									<div class="popover left">
+									<div class="popover right">
 										<div class="arrow"></div>
 										<h3 class="popover-title">BODY</h3>
 										<div class="popover-content">
-											<input type="checkbox" id="flat-checkbox-1" value="가슴" class="breast">가슴
-											<input type="checkbox" id="flat-checkbox-1" value="복부" class="abdomen">복부
-											<input type="checkbox" id="flat-checkbox-1" value="엉덩이" class="heap">엉덩이<br>
-											<input type="checkbox" id="flat-checkbox-1" value="종아리" class="calf">종아리
-											<input type="checkbox" id="flat-checkbox-1" value="지방흡입" class="liposuction">지방흡입
+											<input type="checkbox" id="flat-checkbox-1" value="가슴" onclick="visibility('forehead')">가슴
+											<input type="checkbox" id="flat-checkbox-1" value="복부" onclick="visibility('forehead')">복부
+											<input type="checkbox" id="flat-checkbox-1" value="엉덩이" onclick="visibility('forehead')">엉덩이<br>
+											<input type="checkbox" id="flat-checkbox-1" value="종아리" onclick="visibility('forehead')">종아리
+											<input type="checkbox" id="flat-checkbox-1" value="지방흡입" onclick="visibility('forehead')">지방흡입
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="row example-popover">
 								<div class="col-md-5">
-									<div class="popover left">
+									<div class="popover top">
 										<div class="arrow"></div>
 										<h3 class="popover-title">ETC</h3>
 										<div class="popover-content"> 
-											<input type="checkbox" id="flat-checkbox-1" value="쁘띠성형">쁘띠성형
+											<input type="checkbox" id="flat-checkbox-1" value="쁘띠성형" onclick="visibility('forehead')">쁘띠성형
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div> 
+				</div>
+				<!-- 선택2 -->
+				<div class="col-md-6">
+					<div class="panel panel-danger">
+						<div class="panel-heading">
+							<h3 class="panel-title">성형부위 선택 2</h3>
+						</div>
+						<div class="panel-body" id="choice-val">선택사항</div>
+						<div class="panel-body">
+							<h4>※하단 샘플이미지를 참조하여 사진을 첨부</h4>
+							<div class="col-md-4 sample" id="sample-eye">
+								<div class="panel panel-danger">
+									<div class="panel-heading">
+										<h3 class="panel-title">눈</h3>
+									</div>
+									<div class="panel-body">
+										<div class="file-div">
+											<img class="file-img" src="../images/eyes.jpg">
+										</div>
+										<div style="position: relative;">
+											<input type="file" name="file-upload"
+												class="btn-block file-hidden" onchange="readURL(this);">
+											<button type="button" class="btn btn-default btn-block">파일첨부</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 sample" id="sample-nose">
+								<div class="panel panel-danger">
+									<div class="panel-heading">
+										<h3 class="panel-title">코</h3>
+									</div>
+									<div class="panel-body">
+										<div class="file-div">
+											<img class="file-img" src="../images/nose.jpg">
+										</div>
+										<div style="position: relative;">
+											<input type="file" name="file-upload"
+												class="btn-block file-hidden">
+											<button type="button" class="btn btn-default btn-block">파일첨부</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 sample" id="sample-forehead">
+								<div class="panel panel-danger">
+									<div class="panel-heading">
+										<h3 class="panel-title">이마</h3>
+									</div>
+									<div class="panel-body">
+										<div class="file-div">
+											<img class="file-img" src="../images/forehead.jpg">
+										</div>
+										<div style="position: relative;">
+											<input type="file" name="file-upload"
+												class="btn-block file-hidden">
+											<button type="button" class="btn btn-default btn-block">파일첨부</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
 		<!-- 상담신청서 -->
-		<form method="post" name="counselForm" id="counselForm">
 		<div class="example">
 			<div class="row">
 				<div class="col-md-12">
@@ -217,25 +278,19 @@
 							<div class="row">
 								<div class="col-md-12">
 									<label for="exampleInputPassword1">시술법</label> 
-									<input type="text" class="form-control" name="surgeryWay" value="">
+									<input type="text" class="form-control" id="exampleInputPassword1" placeholder="매몰법" name="sway">
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<label for="exampleInputPassword1">첨부파일</label> 
-								</div>
-							</div>
-							<div class="row" id="insert-file"></div>
 							<div class="row">
 								<div class="col-md-12">
 									<label>상담내용</label>
-									<textarea class="form-control" rows="3" placeholder="잘 부탁드립니다." id="contentTextarea"></textarea>
+									<textarea class="form-control" rows="3" placeholder="잘 부탁드립니다." id="conselContent"></textarea>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-3"></div>	
 								<div class="col-md-3">
-									<button type="button" class="btn btn-danger btn-block" id="sendMail">신청</button>
+									<button type="button" class="btn btn-danger btn-block" onclick="sendMail()">신청</button>
 								</div>
 								<div class="col-md-3">
 									<button type="button" class="btn btn-default btn-block">취소</button>
@@ -247,87 +302,39 @@
 				</div>
 			</div>
 		</div>
-		</form>	
 	</div>
-	
+ 
 <script>
-$(document).ready(function() {
-	// 선택한 성형부위 추가
-	$("input[type=checkbox]").change(function() {
-		var swayVal = $("input[name=surgeryWay]").val()  
-		var choice  = $(this).attr("class");
-		var title 	= "";
-		
-		if(choice == "eye") {
-			title = "눈";
-		} else if(choice == "nose") {
-			title = "코";
-		} else if(choice == "forehead") {
-			title = "이마";
-		} else if(choice == "cheek") {
-			title = "광대";
-		} else if(choice == "face") {
-			title = "기타";
-		} else if(choice == "breast") {
-			title = "가슴";
-		} else if(choice == "abdomen") {
-			title = "복부";
-		} else if(choice == "heap") {
-			title = "엉덩이";
-		} else if(choice == "calf") {
-			title = "종아리";
-		} else if(choice == "liposuction") {
-			title = "지방흡입";
-		}   
-		 
-		var fileHtml = "<div class='col-md-2' name='" + choice + "'>                                               "
-				     + "	<div class='panel panel-danger'>                                                    "
-				     + "		<div class='panel-heading'>                                                     "
-				     + "			<h3 class='panel-title'>" + title + "</h3>                                  "
-				     + "		</div>                                                                          "
-				     + "		<div class='panel-body'>                                                        "
-				     + "			<div class='file-div'>                                                      "
-				     + "				<img class='file-img' src='../images/" + choice + ".jpg'>               "
-				     + "			</div>                                                                      "
-				     + "			<div style='position: relative;'>                                           "
-				     + "				<input type='file' name='file-upload' class='btn-block file-hidden' onchange='changePic(this);'> "
-				     + "				<button type='button' class='btn btn-default btn-block'>파일첨부</button>   "
-				     + "			</div>                                                                      "
-				     + "		</div>                                                                          "
-				     + "	</div>";
-		
-	  	// 시술법 추가/삭제	
-		if(swayVal == "") {  
-			$("input[name=surgeryWay]").val($(this).val());
-			$("#insert-file").append(fileHtml);
-		} else {
-			if(this.checked == false) { // 체크해제
-				var splitCode = swayVal.split(",");
-			
-				for(var idx in splitCode) {
-					if($.trim(splitCode[idx]) == $(this).val()) {
-						splitCode.splice(idx, 1);
-					}
-				}
-				
-				$("input[name=surgeryWay]").val(splitCode);
-				
-				if($("div[name="+choice+"]").length > 0) {
-					$("div[name="+choice+"]").remove();
-				}
-					
-			} else { // 체크
-				$("input[name=surgeryWay]").val(swayVal + ", " +$(this).val());
-				
-				if($("div[name="+choice+"]").length == 0) {
-					$("#insert-file").append(fileHtml);
-				}
+	$(document).ready(function() {
+		// 선택한 성형부위 나타나기
+		$("input[type=checkbox]").change(function() {
+			var html 	= "<span class='label label-default'>"+$(this).val()+"</span>";
+			var addSway = $("input[name=sway]").val()  
+
+			$("#choice-val").append(html);
+			if(addSway == "") {
+				$("input[name=sway]").val($(this).val());
+			} else {
+				$("input[name=sway]").val(addSway + ", " +$(this).val());
 			}
-		}		 
-    });
+	    });
+	}); 
+	
+	//
+	function visibility(portion) {
+		$("#sample-"+portion).show();
+	}
+	
+	function searchHos() {
+		if($(".hResult").css("display") == "none") {
+			$(".hResult").show();
+		} else {
+			$(".hResult").hide();
+		}
+	}
 	
 	// 상담신청서 메일발송
-	$("#sendMail").click(function() {
+	function sendMail() {
 		$.ajax({
 			type: "POST",
 			url: contextRoot + "/cosmetic/ajax/sendMail.do", 
@@ -335,21 +342,18 @@ $(document).ready(function() {
 				"name" : $("input[name=name]").val(),
 				"age" : $("input[name=age]").val(),
 				"tel" : $("input[name=tel]").val(),
-				"surgeryWay" : $("input[name=surgeryWay]").val(),
-				"content" : $("#contentTextarea").val(),
+				"sway" : $("input[name=sway]").val(),
+				"content" : $("#conselContent").val(),
 				"email" : $("input[name=email]").val()
 			},
 			dataType: "json",
 			success: function() {
 				alert("상담 신청서가 발송 되었습니다");
 				window.location.reload();
-			},
-			error: function() {
-				alert("발송안됨--;;");
 			}
 		});
-	}); 
-});
+	}
 </script>
+				
 </body>
 </html>
