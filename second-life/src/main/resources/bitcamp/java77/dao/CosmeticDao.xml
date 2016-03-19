@@ -50,6 +50,24 @@
  	</insert>
  	
  	<!-- SELECT 영역 -->
+ 	
+ 	<!-- 병원 정보 resultMap -->
+ 	<resultMap id="hospitalInfoListMap" type="CosmeticHospital">
+ 		<result property="hospitalNo" column="HNO" />
+ 		<result property="name" column="NAME" />
+ 		<result property="surgeryPart" column="SPART" />
+ 		<result property="content" column="CONT"/>
+ 		<result property="addr" column="ADDR" />
+ 		<result property="tel" column="TEL" />
+ 		<result property="link" column="LINK" />
+ 		<result property="regDate" column="REG_DATE" />
+ 	</resultMap>
+ 	<!-- 병원 정보 select -->
+ 	<select id="selectHospital" resultMap="hospitalInfoListMap">
+ 		select HNO, NAME, SPART, CONT, ADDR, TEL, LINK, REG_DATE
+ 		  from HOSPITAL
+ 	</select>
+ 	
  	<select id="selectReviewList" parameterType="CosmeticSearch" resultMap="reviewResultMap">
  		select a.rno as reviewNo, mno as memberNo, a.hno as hospitalNo, a.title as title, a.cont as content, a.vcnt as viewCnt, a.spart as sugeryPart, a.stat as status,b.fil_path as filePath, a.reg_date as regDate
 		from review a inner join review_phot b

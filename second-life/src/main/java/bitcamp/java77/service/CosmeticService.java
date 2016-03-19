@@ -27,5 +27,5 @@ public interface CosmeticService {
 	public List<CosmeticReviewPhoto> selectReviewPhotoNo(int reviewNo) throws Exception;
 	public void updateReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto) throws Exception;
 	public int insertReviewComment(CosmeticReviewComment cosmeticReviewComment) throws Exception;
-	public int hospitalInfo(CosmeticHospital cosmeticHospital) throws Exception;
+	public List<CosmeticHospital> hospitalInfo() throws Exception;
 }

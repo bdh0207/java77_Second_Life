@@ -27,5 +27,5 @@ public interface CosmeticDao {
 	List<CosmeticReviewPhoto> selectReviewPhotoNo(int reviewNo);
 	void updateReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto);
 	int insertReviewComment(CosmeticReviewComment cosmeticReviewComment);
-	String selectHospital(CosmeticHospital cosmeticHospital);
+	List<CosmeticHospital> selectHospital();
 }

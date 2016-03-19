@@ -120,9 +120,9 @@ public class CosmeticServiceImpl implements CosmeticService {
 	}
 
 	@Override
-	public int hospitalInfo(CosmeticHospital cosmeticHospital) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	@Transactional
+	public List<CosmeticHospital> hospitalInfo() throws Exception {
+		return cosmeticDao.selectHospital();
 	}
 	
 	

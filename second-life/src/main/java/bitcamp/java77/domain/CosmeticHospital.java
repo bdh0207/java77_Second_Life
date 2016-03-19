@@ -11,6 +11,7 @@ public class CosmeticHospital {
 	protected String tel;
 	protected String link;
 	protected Date regDate;
+	
 	public int getHospitalNo() {
 		return hospitalNo;
 	}

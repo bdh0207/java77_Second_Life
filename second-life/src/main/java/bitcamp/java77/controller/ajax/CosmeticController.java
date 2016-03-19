@@ -46,6 +46,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import bitcamp.java77.domain.AjaxResult;
 import bitcamp.java77.domain.CosmeticCounsel;
+import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
@@ -65,8 +66,12 @@ public class CosmeticController {
 	ServletContext servletContext;
 	
 	@RequestMapping(value="hospitalInfo")
-	public void hospitalInfo() throws Exception {
-
+	public AjaxResult hospitalInfo() throws Exception {
+		// 병원 정보 불러오기
+		List<CosmeticHospital> hospitalInfoList = cosmeticService.hospitalInfo();
+		System.out.println(hospitalInfoList.size());
+		return new AjaxResult("success", hospitalInfoList);
+		
 	}
 	
 //	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
