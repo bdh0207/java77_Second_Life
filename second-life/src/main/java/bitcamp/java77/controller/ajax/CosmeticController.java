@@ -194,18 +194,52 @@ public class CosmeticController {
 	
 	@RequestMapping(value="reviewListDetail",method=RequestMethod.GET)
 	public AjaxResult reviewListDetail(@RequestParam(name="pageNo",defaultValue="0")int pageNo,int reviewNo,HttpServletRequest req) throws Exception{
+		
 		// 로그인 세션정보 가져오기
 		HttpSession session = req.getSession();
 		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
 		
+		// 페이징 관련변수
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+		CosmeticSearch search = new CosmeticSearch();
+		
+		search.setStart((pageNo-1)*5);
+		search.setEnd(pageNo * 5);
+		search.setReviewNo(reviewNo);
+		
 		HashMap<String, Object> resultMap = new HashMap<>();
 		CosmeticReview review = cosmeticService.selectReviewListDetail(reviewNo);
-		List<CosmeticReviewComment> comment  = cosmeticService.selectReviewComment(reviewNo);
+		HashMap<String, Object> result  = cosmeticService.selectReviewComment(search);
+		// 댓글 리스트 가져오기
+		List<CosmeticReviewComment> comment = (List<CosmeticReviewComment>)result.get("comment");
 		List<CosmeticReviewPhoto> reviewPhoto = cosmeticService.selectReviewPhoto(reviewNo);
+		
+		// 페이징을 위한 변수 정리
+		// 전체 게시물 수
+		int cnt = (Integer)result.get("cnt");
+		
+		// 마지막 페이지
+		int lastPage = (cnt % 5 ==0) ? cnt / 5 : cnt/ 5 + 1;
+		
+		// 현재 화면의 탭
+		int currTab = (pageNo-1)/5 + 1;
+		
+		// 화면의 시작 페이지 번호
+		int beginPage = (currTab-1) * 5 +1;
+		
+		// 화면의 마지막 페이지 번호
+		int endPage = (currTab * 5 > lastPage) ? lastPage : currTab * 5;
+		
+		
 		resultMap.put("review", review);
 		resultMap.put("comment", comment);
 		resultMap.put("photo", reviewPhoto);
 		resultMap.put("member", member);
+		resultMap.put("pageNo", pageNo);
+		resultMap.put("beginPage", beginPage);
+		resultMap.put("lastPage", lastPage);
+		resultMap.put("endPage", endPage);
+		resultMap.put("commentCnt", cnt);
 		
 		return new AjaxResult("success", resultMap);
 	}
@@ -427,26 +461,149 @@ public class CosmeticController {
 	}
 	
 	@RequestMapping(value="reviewCommentAdd", method=RequestMethod.POST)
-	public AjaxResult reviewCommentAdd(CosmeticReviewComment cosmeticReviewComment, HttpServletRequest req) throws Exception{
-		HashMap<String, Object> resultMap = new HashMap<>();
+	public Object reviewCommentAdd(CosmeticReviewComment cosmeticReviewComment, HttpServletRequest req) throws Exception{
+		
+		int pageNo = 1;
 		// 세션정보 가져오기
 		HttpSession session = req.getSession();
 		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
 		cosmeticReviewComment.setMemberNo(member.getMemberNo());
 		
+		CosmeticSearch search = new CosmeticSearch();
+		search.setStart((pageNo - 1) * 5); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 5);
+		search.setReviewNo(cosmeticReviewComment.getReviewNo());
+		
+		HashMap<String, Object> paramMap = new HashMap<>();
+		
+		paramMap.put("search", search);
+		paramMap.put("cosmeticReviewComment", cosmeticReviewComment);
+		
+		
 		
 		// 댓글 등록 서비스
 		// 수정 삭제를 위한 댓글번호 반환
-		int commentNo = cosmeticService.insertReviewComment(cosmeticReviewComment);
-		cosmeticReviewComment.setCommentNo(commentNo);
-		resultMap.put("comment", cosmeticReviewComment);
+		HashMap<String, Object> resultMap = cosmeticService.insertReviewComment(paramMap);
+		HashMap<String, Object> result  = cosmeticService.selectReviewComment(search);
+		
+		// 페이징을 위한 변수 정리
+		int cnt = (Integer)result.get("cnt");
+		
+		
+		// 마지막 페이지
+		int lastPage = (cnt % 5 ==0) ? cnt / 5 : cnt/ 5 + 1;
+				
+		// 현재 화면의 탭
+		int currTab = (pageNo-1)/5 + 1;
+				
+		// 화면의 시작 페이지 번호
+		int beginPage = (currTab-1) * 5 +1;
+				
+		// 화면의 마지막 페이지 번호
+		int endPage = (currTab * 5 > lastPage) ? lastPage : currTab * 5;
+		
 		resultMap.put("id", member.getId());
-		return new AjaxResult("success",resultMap);
+		resultMap.put("pageNo", pageNo);
+		resultMap.put("beginPage", beginPage);
+		resultMap.put("lastPage", lastPage);
+		resultMap.put("endPage", endPage);
+		resultMap.put("commentCnt", cnt);
+		return resultMap;
 	}
 	
 	@RequestMapping(value="reviewCommentDelete", method=RequestMethod.GET)
-	public AjaxResult reviewCommentDelete(CosmeticReviewComment cosmeticReviewComment, HttpServletRequest req) throws Exception{
+	public AjaxResult reviewCommentDelete(@RequestParam(name="pageNo",defaultValue="0")int pageNo,CosmeticReviewComment cosmeticReviewComment, HttpServletRequest req) throws Exception{
+		// 세션정보 가져오기
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		cosmeticReviewComment.setMemberNo(member.getMemberNo());
+		int reviewNo = cosmeticReviewComment.getReviewNo();
 		
-		return new AjaxResult("success",null);
+		// 페이징 관련변수
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+		
+		CosmeticSearch search = new CosmeticSearch();
+		search.setStart((pageNo - 1)*5);
+		search.setReviewNo(reviewNo);
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("search", search);
+		paramMap.put("cosmeticReviewComment", cosmeticReviewComment);
+		
+		String msg = "fail";
+		HashMap<String, Object> resultMap = cosmeticService.deleteReviewCommentByNo(paramMap);
+		HashMap<String, Object> result  = cosmeticService.selectReviewComment(search);
+		// 권한이 있는지
+		int resultCnt = (Integer)resultMap.get("resultCnt");
+		
+		// 페이징을 위한 변수 정리
+		int cnt = (Integer)result.get("cnt");
+				
+				
+		// 마지막 페이지
+		int lastPage = (cnt % 5 ==0) ? cnt / 5 : cnt/ 5 + 1;
+						
+		// 현재 화면의 탭
+		int currTab = (pageNo-1)/5 + 1;
+						
+		// 화면의 시작 페이지 번호
+		int beginPage = (currTab-1) * 5 +1;
+						
+		// 화면의 마지막 페이지 번호
+		int endPage = (currTab * 5 > lastPage) ? lastPage : currTab * 5;
+		
+		if(resultCnt != 0){
+			msg = "success";
+			resultMap.put("pageNo", pageNo);
+			resultMap.put("beginPage", beginPage);
+			resultMap.put("lastPage", lastPage);
+			resultMap.put("endPage", endPage);
+			resultMap.put("commentCnt", cnt);
+		}
+		
+		
+		return new AjaxResult(msg,resultMap);
+	}
+	
+	@RequestMapping(value="searchComment",method=RequestMethod.GET)
+	public Object searchComment(@RequestParam(name="pageNo",defaultValue="0")int pageNo,int reviewNo) throws Exception{
+//		// 세션정보 가져오기
+//		HttpSession session = req.getSession();
+//		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+		
+		HashMap<String, Object> resultMap = new HashMap<>();
+		CosmeticSearch search = new CosmeticSearch();
+		search.setStart((pageNo - 1) * 5); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 5);
+		search.setReviewNo(reviewNo);
+		
+		HashMap<String, Object> result =cosmeticService.selectReviewComment(search);
+		List<CosmeticReviewComment> comment = (List<CosmeticReviewComment>)result.get("comment");
+		
+		// 페이징을 위한 변수 정리
+		// 전체 게시물 수
+		int cnt = (Integer)result.get("cnt");
+				
+		// 마지막 페이지
+		int lastPage = (cnt % 5 ==0) ? cnt / 5 : cnt/ 5 + 1;
+				
+		// 현재 화면의 탭
+		int currTab = (pageNo-1)/5 + 1;
+				
+		// 화면의 시작 페이지 번호
+		int beginPage = (currTab-1) * 5 +1;
+				
+		// 화면의 마지막 페이지 번호
+		int endPage = (currTab * 5 > lastPage) ? lastPage : currTab * 5;
+		
+		resultMap.put("comment", comment);
+		resultMap.put("commentCnt", cnt);
+		resultMap.put("lastPage", lastPage);
+		resultMap.put("pageNo", pageNo);
+		resultMap.put("beginPage", beginPage);
+		resultMap.put("endPage", endPage);
+		
+		return resultMap;
 	}
 }

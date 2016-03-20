@@ -41,8 +41,11 @@ public class CosmeticServiceImpl implements CosmeticService {
 
 	@Override
 	@Transactional
-	public List<CosmeticReviewComment> selectReviewComment(int reviewNo) throws Exception {
-		return cosmeticDao.selectReviewComment(reviewNo);
+	public HashMap<String, Object> selectReviewComment(CosmeticSearch search) throws Exception {
+		HashMap<String, Object> result = new HashMap<>();
+		result.put("comment", cosmeticDao.selectReviewComment(search));
+		result.put("cnt", cosmeticDao.selectReviewCommentCount(search.getReviewNo()));
+		return result;
 	}
 
 	@Override
@@ -90,6 +93,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 	@Override
 	@Transactional
 	public void deleteReview(CosmeticReview cosmeticReview) throws Exception {
+		cosmeticDao.deleteReviewCommentByReviewNo(cosmeticReview.getReviewNo());
 		cosmeticDao.deleteReviewPhoto(cosmeticReview.getReviewNo());
 		cosmeticDao.deleteReview(cosmeticReview);
 	}
@@ -114,8 +118,27 @@ public class CosmeticServiceImpl implements CosmeticService {
 
 	@Override
 	@Transactional
-	public int insertReviewComment(CosmeticReviewComment cosmeticReviewComment) throws Exception {
-		return cosmeticDao.insertReviewComment(cosmeticReviewComment);
+	public HashMap<String, Object> insertReviewComment(HashMap<String, Object> paramMap) throws Exception {
+		CosmeticSearch search = (CosmeticSearch)paramMap.get("search");
+		CosmeticReviewComment cosmeticReviewComment = (CosmeticReviewComment)paramMap.get("cosmeticReviewComment");
+		
+		HashMap<String, Object> resultMap = new HashMap<>();
+		resultMap.put("commentNo", cosmeticDao.insertReviewComment(cosmeticReviewComment));
+		int reviewNo = cosmeticReviewComment.getReviewNo();
+		resultMap.put("commentList", cosmeticDao.selectReviewCommentByReviewNo(search));
+		return resultMap;
+	}
+
+	@Override
+	@Transactional
+	public HashMap<String, Object> deleteReviewCommentByNo(HashMap<String, Object> paramMap) throws Exception {
+		CosmeticSearch search = (CosmeticSearch)paramMap.get("search");
+		CosmeticReviewComment cosmeticReviewComment = (CosmeticReviewComment)paramMap.get("cosmeticReviewComment");
+		
+		HashMap<String, Object> resultMap = new HashMap<>();
+		resultMap.put("resultCnt", cosmeticDao.deleteReviewCommentByNo(cosmeticReviewComment));
+		resultMap.put("commentList", cosmeticDao.selectReviewCommentByReviewNo(search));
+		return resultMap;
 	}
 	
 	

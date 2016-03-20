@@ -5,7 +5,14 @@ import java.io.Serializable;
 public class CosmeticSearch implements Serializable {
 	protected int start;
 	protected int end;
+	protected int reviewNo;
 	
+	public int getReviewNo() {
+		return reviewNo;
+	}
+	public void setReviewNo(int reviewNo) {
+		this.reviewNo = reviewNo;
+	}
 	public int getStart() {
 		return start;
 	}

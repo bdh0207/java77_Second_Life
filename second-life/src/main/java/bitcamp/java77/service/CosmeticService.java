@@ -16,7 +16,7 @@ public interface CosmeticService {
 	public void insertMember(CosmeticMember cosmeticMember) throws Exception;
 	public List<CosmeticReview> selectReviewList(CosmeticSearch search) throws Exception;
 	public CosmeticReview selectReviewListDetail(int reviewNo) throws Exception;
-	public List<CosmeticReviewComment> selectReviewComment(int reviewNo) throws Exception;
+	public HashMap<String, Object> selectReviewComment(CosmeticSearch search) throws Exception;
 	public List<CosmeticReviewPhoto> selectReviewPhoto(int reviewNo) throws Exception;
 	public int selectLogin(CosmeticMember member) throws Exception; 
 	public CosmeticMember selectMember(CosmeticMember member) throws Exception;
@@ -25,5 +25,6 @@ public interface CosmeticService {
 	public void updateReview(CosmeticReview cosmeticReview) throws Exception;
 	public List<CosmeticReviewPhoto> selectReviewPhotoNo(int reviewNo) throws Exception;
 	public void updateReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto) throws Exception;
-	public int insertReviewComment(CosmeticReviewComment cosmeticReviewComment) throws Exception;
+	public HashMap<String, Object> insertReviewComment(HashMap<String, Object> paramMap) throws Exception;
+	public HashMap<String, Object> deleteReviewCommentByNo(HashMap<String, Object> paramMap) throws Exception;
 }

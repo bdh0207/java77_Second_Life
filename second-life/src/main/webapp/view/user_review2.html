@@ -38,6 +38,9 @@ a, h3, td { font-family: 'Jeju Gothic', serif; }
 <script type="text/javascript" src="../js/jquery.flexslider.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script>
+// 현재 페이지 번호
+var pageNumber = 1;
+
 $(window).load(function() {
 	/*
   $('.flexslider').flexslider({
@@ -80,7 +83,6 @@ $(document).ready(function() {
  			 $('#data-content').text(reviewDetail.review.content);
  	 		 $('#viewCnt').text(reviewDetail.review.viewCnt);
  			 
- 	 		
  	 		 
  	 		 for(var photoList of reviewDetail.photo){
  	 			 var li =   '<li data-thumb="'+photoList.filePath+'">	 ';
@@ -107,43 +109,43 @@ $(document).ready(function() {
 				var hours = formattedDate.getHours();
 				var minutes = formattedDate.getMinutes();
 				var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
-				
- 	 			 var tr = '<tr id=c_'+commentList.commentNo+'>';
-	                 tr+=     '	<td>'+coomentList.commentNo+'</td>                                                                                            															';
+ 	 			var tr = '<tr id=c_'+commentList.commentNo+'>';
+	                 tr+=     '	<td>'+commentList.commentNo+'</td>                                                                                            															';
 	                 tr+=     '	<td>'+commentList.member[0].id+'</td>                                                                                         															';
 	                 tr+=     '	<td>'+commentList.content+'</td>                                                                                              															';
 	                 tr+=     '	<td>'+regDate+'</td>                                                                                                          															';
-	                 tr+=     '<td class="favorite"><a href="#" class="btn btn-danger btn-xs">수정</a><a href="#" onclick=commentDel('+commentList.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
+	                 tr+=     '<td class="favorite"><a class="btn btn-danger btn-xs">수정</a><a onclick=commentDel('+commentList.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
 	                 tr+= '</tr>		                                                                                                                    															';
  	 		 	 $('#comment-area').append(tr);
  	 		 }
- 	 		 
  	 		 if(emptyCheck){
  	 			var tr = '<tr>';
                 tr+=     '	<td colspan=5 align="center">작성된 댓글이 없습니다.</td>                                                                                                                      ';
                 tr+=     '</tr>		                                                                                                                    ';
  		 	 	$('#comment-area').append(tr);
  	 		 }
- 	 		 
+ 	 		 pageNumber = reviewDetail.pageNo;
+ 	 		 if(reviewDetail.pageNo != 1){
+ 	 			var li = '<li><a href="#" onclick="commentPage('+(pageNumber-1)+','+reviewNo+');return false;">&laquo;</a></li>';
+	 			$('.pagination').append(li);
+ 	 		 }
+ 	 		 for(var i = reviewDetail.beginPage; i <= reviewDetail.endPage; i++){
+ 	 			 var li = '<li id=p_'+ i +'><a href="#" onclick="commentPage('+ i +','+reviewNo+'); return false;" style="cursor: pointer;">'+i+'</a></li>';
+ 	 			 $('.pagination').append(li);
+ 	 		 }
+ 	 		 if(reviewDetail.pageNo != reviewDetail.lastPage){
+ 	 			 var li = '<li><a href="#" onclick="commentPage('+(pageNumber+1)+','+reviewNo+');return false;">&raquo;</a></li>';
+ 	 			 $('.pagination').append(li);
+ 	 		 }
+ 	 		pageNumber = reviewDetail.pageNo;
  		 }
  		 
  	 }).error(function(error) {
 		 window.location.href='login.html';
 	 });
  	 
- 	 function commentDel(commentNo, reviewNo) {
-		$.ajax({
-			url: contextRoot + '/cosmetic/ajax/reviewCommentDelete.do',
-			data : {
-				commentNo : commentNo,
-				reviewNo : reviewNo
-			}
-		}).done(function(resultObj) {
-			
-		});
-	 }
- 	 
- 	 $('#deleteBtn').click(function() {
+ 	 $('#deleteBtn').click(function(event) {
+ 		event.preventDefault();
 		  $.get(contextRoot+'/cosmetic/ajax/reviewDelete.do?reviewNo='+reviewNo,function(resultObj){
 			   var ajaxResult = resultObj.ajaxResult;
 			   console.log(ajaxResult.status);
@@ -170,32 +172,185 @@ $(document).ready(function() {
  				location.href = 'reviewUpdate.html?reviewNo='+reviewNo; 
  			 }
  			 else{
- 				 alert('권한이 없습니다.')
+ 				alert('권한이 없습니다.')
  			 }
  			 
  		 },'json');
 		 
 	 });
  	 
- 	 $('#submitBtn').click(function() {
+ 	 $('#submitBtn').click(function(event) {
+ 		event.preventDefault();
 		$.post(contextRoot+'/cosmetic/ajax/reviewCommentAdd.do',{
 			reviewNo : reviewNo,
 			content : $('#textArea').val()
 		},function(resultObj){
-			var ajaxResult = resultObj.ajaxResult;
-			var status = ajaxResult.status;
-			var data = ajaxResult.data;
-			var comment = data.comment;
-			console.log(comment);
+			$('#comment-area').children('tr').remove();
 			
-			if(status == 'success'){
+			console.log(resultObj);
+			for(var comment of resultObj.commentList){
 				
+				// 날짜 변환
+		 		var formattedDate = new Date(comment.regDate);
+				var years = formattedDate.getFullYear();
+				var months = formattedDate.getMonth() + 1;
+				var days = formattedDate.getDate();
+				var hours = formattedDate.getHours();
+				var minutes = formattedDate.getMinutes();
+				var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
+				
+				// 결과값을 태그에 추가
+ 	 			var tr = '<tr id=c_'+comment.commentNo+'>';
+	                 tr+=     '	<td>'+comment.commentNo+'</td>                                                                                            															';
+	                 tr+=     '	<td>'+comment.member[0].id+'</td>                                                                                         															';
+	                 tr+=     '	<td>'+comment.content+'</td>                                                                                              															';
+	                 tr+=     '	<td>'+regDate+'</td>                                                                                                          															';
+	                 tr+=     '<td class="favorite"><a class="btn btn-danger btn-xs">수정</a><a onclick=commentDel('+comment.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
+	                 tr+= '</tr>		                                                                                                                    															';
+ 	 		 	$('#comment-area').append(tr);
+ 	 		 	$('#textArea').val('');
+ 	 		 	
+ 	 		 	$('.pagination').children('li').remove();
+ 	 			
+ 	 			// 다시 페이지번호 출력
+ 	 	 		if(resultObj.pageNo != 1){
+ 	 	 			var li = '<li><a href="#" onclick="commentPage('+(resultObj.pageNo-1)+','+reviewNo+');return false;">&laquo;</a></li>';
+ 	 	 			$('.pagination').append(li);
+ 	 	 		}
+ 	 	 		
+ 	 			for(var i = resultObj.beginPage; i <= resultObj.endPage; i++){
+ 	 	 			 var li = '<li id=p_'+ i +'><a href="#" onclick="commentPage('+ i +','+reviewNo+'); return false;" style="cursor: pointer;">'+i+'</a></li>';
+ 	 	 			 $('.pagination').append(li);
+ 	 	 		}
+ 	 			
+ 	 	 		if(resultObj.pageNo != resultObj.lastPage){
+ 	 	 			 var li = '<li><a href="#" onclick="commentPage('+(resultObj.pageNo+1)+','+reviewNo+');return false;">&raquo;</a></li>';
+ 	 	 			 $('.pagination').append(li);
+ 	 	 		}
 			}
+			pageNumber = resultObj.pageNo;
 			
 		},'json');
 	 });
  	 
+ 	 
 });
+
+function commentPage(pageNo,reviewNo) {
+	
+	$.getJSON(contextRoot + '/cosmetic/ajax/searchComment.do?pageNo='+pageNo+'&reviewNo='+reviewNo,function(resultObj){
+		$('#comment-area').children('tr').remove();
+		
+		for(var comment of resultObj.comment){
+			
+			// 날짜 변환
+	 		var formattedDate = new Date(comment.regDate);
+			var years = formattedDate.getFullYear();
+			var months = formattedDate.getMonth() + 1;
+			var days = formattedDate.getDate();
+			var hours = formattedDate.getHours();
+			var minutes = formattedDate.getMinutes();
+			var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
+			
+			// 결과값을 태그에 추가
+	 		var tr = '<tr id=c_'+comment.commentNo+'>';
+                tr+=     '	<td>'+comment.commentNo+'</td>                                                                                            															';
+                tr+=     '	<td>'+comment.member[0].id+'</td>                                                                                         															';
+                tr+=     '	<td>'+comment.content+'</td>                                                                                              															';
+                tr+=     '	<td>'+regDate+'</td>                                                                                                          															';
+                tr+=     '<td class="favorite"><a class="btn btn-danger btn-xs">수정</a><a onclick=commentDel('+comment.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
+                tr+= '</tr>		                                                                                                                    															';
+	 		 	$('#comment-area').append(tr);
+	 		 	$('#textArea').val('');
+		}
+		$('.pagination').children('li').remove();
+		
+		// 다시 페이지번호 출력
+ 		if(resultObj.pageNo != 1){
+ 			var li = '<li><a href="#" onclick="commentPage('+(pageNo-1)+','+reviewNo+');return false;">&laquo;</a></li>';
+ 			$('.pagination').append(li);
+ 		}
+ 		
+		for(var i = resultObj.beginPage; i <= resultObj.endPage; i++){
+ 			 var li = '<li id=p_'+ i +'><a href="#" onclick="commentPage('+ i +','+reviewNo+'); return false;" style="cursor: pointer;">'+i+'</a></li>';
+ 			 $('.pagination').append(li);
+ 		}
+		
+ 		if(resultObj.pageNo != resultObj.lastPage){
+ 			 var li = '<li><a href="#" onclick="commentPage('+(pageNo+1)+','+reviewNo+');return false;">&raquo;</a></li>';
+ 			 $('.pagination').append(li);
+ 		}
+		pageNumber = resultObj.pageNo;
+	});
+	
+	console.log(pageNumber);
+}
+
+function commentDel(commentNo, reviewNo) {
+	$.ajax({
+		url: contextRoot + '/cosmetic/ajax/reviewCommentDelete.do',
+		type: "GET",
+		dataType:"json",
+		data : {
+			pageNo : pageNumber,
+			commentNo : commentNo,
+			reviewNo : reviewNo
+		}
+	}).done(function(resultObj) {
+		var ajaxResult = resultObj.ajaxResult;
+		var status = ajaxResult.status;
+		var data = ajaxResult.data;
+		if(status == 'success'){
+// 			console.log(data);
+// 			$('#c_'+commentNo).remove();
+			console.log(data);
+			$('#comment-area').children('tr').remove();
+			for(var comment of data.commentList){
+				
+				// 날짜 변환
+		 		var formattedDate = new Date(comment.regDate);
+				var years = formattedDate.getFullYear();
+				var months = formattedDate.getMonth() + 1;
+				var days = formattedDate.getDate();
+				var hours = formattedDate.getHours();
+				var minutes = formattedDate.getMinutes();
+				var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
+				
+				// 결과값을 태그에 추가
+		 		var tr = '<tr id=c_'+comment.commentNo+'>';
+	                tr+=     '	<td>'+comment.commentNo+'</td>                                                                                            															';
+	                tr+=     '	<td>'+comment.member[0].id+'</td>                                                                                         															';
+	                tr+=     '	<td>'+comment.content+'</td>                                                                                              															';
+	                tr+=     '	<td>'+regDate+'</td>                                                                                                          															';
+	                tr+=     '<td class="favorite"><a class="btn btn-danger btn-xs">수정</a><a onclick=commentDel('+comment.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
+	                tr+= '</tr>		                                                                                                                    															';
+		 		 	$('#comment-area').append(tr);
+		 		 	$('#textArea').val('');
+			}
+			$('.pagination').children('li').remove();
+			
+			// 다시 페이지번호 출력
+	 		if(data.pageNo != 1){
+	 			var li = '<li><a href="#" onclick="commentPage('+(data.pageNo-1)+','+reviewNo+');return false;">&laquo;</a></li>';
+	 			$('.pagination').append(li);
+	 		}
+	 		
+			for(var i = data.beginPage; i <= data.endPage; i++){
+	 			 var li = '<li id=p_'+ i +'><a href="#" onclick="commentPage('+ i +','+reviewNo+'); return false;" style="cursor: pointer;">'+i+'</a></li>';
+	 			 $('.pagination').append(li);
+	 		}
+			
+	 		if(data.pageNo != data.lastPage){
+	 			 var li = '<li><a href="#" onclick="commentPage('+(data.pageNo+1)+','+reviewNo+');return false;">&raquo;</a></li>';
+	 			 $('.pagination').append(li);
+	 		}
+			pageNumber = data.pageNo;
+		}
+		else{
+			alert('권한이 없습니다.');
+		}
+	});
+ }
 </script>
 </head>
 
@@ -248,7 +403,7 @@ $(document).ready(function() {
                 	<h3 class="panel-title">COMMENT</h3>
                 </div>
                   <div class="panel-body">
-                    <table class="table table-striped table-hover">
+                  <table class="table table-striped table-hover">
                   <thead>
                     <tr>
                       <th>No.</th>
@@ -269,17 +424,15 @@ $(document).ready(function() {
                   </tbody> 
                 </table>	 
                   </div>
-<!--                   <div style="padding: 0px; margin: 0px; line-height: none; text-align: center;"> -->
-<!--                   	<ul class="pagination pagination-sm"> -->
-<!--                       <li class="disabled"><a href="#">&laquo;</a></li> -->
-<!--                       <li class="active"><a href="#">1</a></li> -->
-<!--                       <li><a href="#">2</a></li> -->
-<!--                       <li><a href="#">3</a></li> -->
-<!--                       <li><a href="#">4</a></li> -->
-<!--                       <li><a href="#">5</a></li> -->
-<!--                       <li><a href="#">&raquo;</a></li> -->
-<!--                     </ul> -->
-<!--                   </div> -->
+                  <div style="padding: 0px; margin: 0px; line-height: none; text-align: center;">
+                  	<ul class="pagination pagination-sm">
+<!--                       <li><a href="#" id="p_1" style="cursor: pointer;">1</a></li> -->
+<!--                       <li><a href="#" id="p_2" style="cursor: pointer;">2</a></li> -->
+<!--                       <li><a href="#" id="p_3" style="cursor: pointer;">3</a></li> -->
+<!--                       <li><a href="#" id="p_4" style="cursor: pointer;">4</a></li> -->
+<!--                       <li><a href="#" id="p_5" style="cursor: pointer;">5</a></li> -->
+                    </ul>
+                  </div>
                 <div class="row">
 						<div class="col-xs-12 col-sm-6 col-md-8" style="margin-left: 20px; width: 90%">
 								<form class="form-horizontal">

@@ -55,7 +55,7 @@
 		from review a inner join review_phot b
 		on a.rno = b.rno
 		order by a.reg_date desc
-		limit #{start},#{end}
+		limit #{start},6
  	</select>
  	
  	<resultMap id="reviewResultMap" type="CosmeticReview">
@@ -82,12 +82,26 @@
  		from review where rno = #{reviewNo}
  	</select>
  	
- 	<select id="selectReviewComment" parameterType="int" resultMap="reviewCommentMap">
+ 	<!-- 페이징하기 위한 searchVO로 조회 -->
+ 	<select id="selectReviewComment" parameterType="CosmeticSearch" resultMap="reviewCommentMap">
  		select a.CMNO as commentNo, b.id as id, a.RNO as reviewNo,a.MNO as memberNo, a.CONT as content,a.REG_DATE as regDate
 		from comment a
 		inner join member b
 		on a.mno = b.mno
 		where rno = #{reviewNo}
+		order by a.reg_date desc
+		limit #{start},5
+ 	</select>
+ 	
+ 	<!-- 리뷰번호로 댓글조회 -->
+ 	<select id="selectReviewCommentByReviewNo" parameterType="CosmeticSearch" resultMap="reviewCommentMap">
+ 		select a.CMNO as commentNo, b.id as id, a.RNO as reviewNo,a.MNO as memberNo, a.CONT as content,a.REG_DATE as regDate
+		from comment a
+		inner join member b
+		on a.mno = b.mno
+		where rno = #{reviewNo}
+		order by a.reg_date desc
+		limit #{start},5
  	</select>
  	
  	<resultMap id="reviewCommentMap" type="CosmeticReviewComment">
@@ -135,6 +149,12 @@
  		where rno = #{reviewNo}
  	</select>
  	
+ 	<select id="selectReviewCommentCount" parameterType="int" resultType="int">
+ 		select count(*)
+ 		from comment
+ 		where rno = #{reviewNo}
+ 	</select>
+ 	
  	<!-- DELETE 영역 -->
  	<delete id="deleteReviewPhoto" parameterType="int">
  		delete from review_phot
@@ -147,6 +167,16 @@
  		and mno = #{memberNo}
  	</delete>
  	
+ 	<delete id="deleteReviewCommentByReviewNo" parameterType="int">
+ 		delete from comment
+ 		where rno = #{reviewNo}
+ 	</delete>
+ 	
+ 	<delete id="deleteReviewCommentByNo" parameterType="cosmeticReviewComment">
+ 		delete from comment
+ 		where cmno = #{commentNo}
+ 		and mno = #{memberNo}
+ 	</delete>
  	
  	<!-- UPDATE 영역 -->
  	<update id="updateReview" parameterType="cosmeticReview">
