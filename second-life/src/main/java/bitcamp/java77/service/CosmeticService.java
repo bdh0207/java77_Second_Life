@@ -8,7 +8,9 @@ import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
+import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
+import bitcamp.java77.domain.CosmeticWish;
 
 public interface CosmeticService {
 	public int insertReview(CosmeticReview cosmeticReview) throws Exception;
@@ -29,4 +31,6 @@ public interface CosmeticService {
 	public HashMap<String, Object> insertReviewComment(HashMap<String, Object> paramMap) throws Exception;
 	public HashMap<String, Object> deleteReviewCommentByNo(HashMap<String, Object> paramMap) throws Exception;
 	public List<CosmeticHospital> hospitalInfo() throws Exception;
+	public HashMap<String, Object> insertWish(CosmeticWish cosmeticWish) throws Exception;
+	public HashMap<String, Object> insertReviewRecom(CosmeticReviewRecom reviewRecom) throws Exception;
 }

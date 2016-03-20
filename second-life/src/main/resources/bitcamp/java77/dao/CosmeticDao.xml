@@ -14,11 +14,6 @@
 		</selectKey>
 	</insert>
 	
-	<select id="searchID" parameterType="string" resultType="int">
-		select count(*)
-		  from member
-		 where id = #{id}
-	</select>
 	
  	<insert id="insertReview" useGeneratedKeys="true" parameterType="CosmeticReview" keyProperty="reviewNo">
  		<choose>
@@ -49,7 +44,23 @@
  		</selectKey>
  	</insert>
  	
+ 	<insert id="insertWish" parameterType="CosmeticWish">
+ 		insert into wish(rno,mno,reg_date)
+ 		values(#{reviewNo},#{memberNo},now())
+ 	</insert>
+ 	
+ 	<insert id="insertReviewRecom" parameterType="CosmeticReviewRecom">
+ 		insert into review_recom(mno,rno,reg_date)
+ 		values(#{memberNo},#{reviewNo},now())
+ 	</insert>
+ 	
  	<!-- SELECT 영역 -->
+ 	
+ 	<select id="searchID" parameterType="string" resultType="int">
+		select count(*)
+		  from member
+		 where id = #{id}
+	</select>
  	
  	<!-- 병원 정보 resultMap -->
  	<resultMap id="hospitalInfoListMap" type="CosmeticHospital">
@@ -171,6 +182,20 @@
  		select count(*)
  		from comment
  		where rno = #{reviewNo}
+ 	</select>
+ 	
+ 	<select id="selectWishCheck" parameterType="CosmeticWish" resultType="int">
+ 		select count(*)
+ 		from wish
+ 		where rno = #{reviewNo}
+ 		and mno = #{memberNo}
+ 	</select>
+ 	
+ 	<select id="selectReviewRecomCheck" parameterType="CosmeticReviewRecom" resultType="int">
+ 		select count(*)
+ 		from review_recom
+ 		where rno = #{reviewNo}
+ 		and mno = #{memberNo}
  	</select>
  	
  	<!-- DELETE 영역 -->

@@ -7,9 +7,9 @@
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
 <title>꽃보다 아름다운</title>  
+<link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" href="../css/flexslider.css" type="text/css">
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
-<link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">   -->
 <style>
 a, h3, td { font-family: 'Jeju Gothic', serif; }
@@ -178,6 +178,34 @@ $(document).ready(function() {
  			 
  		 },'json');
 		 
+	 });
+ 	 
+ 	 $('#wishBtn').click(function() {
+		$.get(contextRoot + '/cosmetic/ajax/wishAdd.do?reviewNo='+reviewNo,function(resultObj){
+			var ajaxResult = resultObj.ajaxResult;
+			var status = ajaxResult.status;
+			if(status == 'success'){
+				alert('위시리스트에 추가되었습니다.');
+			}
+			else{
+				alert('이미 위시리스트에 있습니다.');
+			}
+		},'json');	
+	 });
+ 	 
+ 	 $('#recomBtn').click(function() {
+		 $.getJSON(contextRoot + '/cosmetic/ajax/reivewRecomAdd.do?reviewNo='+reviewNo,function(resultObj){
+			 var ajaxResult = resultObj.ajaxResult;
+			 var status = ajaxResult.status;
+			 
+			 if(status == 'success'){
+					alert('추천하였습니다.');
+				}
+				else{
+					alert('이미 추천하였습니다.');
+				}
+		 });
+ 		 
 	 });
  	 
  	 $('#submitBtn').click(function(event) {
@@ -462,10 +490,10 @@ function commentDel(commentNo, reviewNo) {
               </div>
               
             <div style="float: left;">
-            	<button type="button" class="btn btn-default" aria-label="Left Align">
+            	<button id="recomBtn" type="button" class="btn btn-default" aria-label="Left Align">
 				  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 좋아요
 				</button>
-            	<button type="button" class="btn btn-default" aria-label="Left Align">
+            	<button id="wishBtn" type="button" class="btn btn-default" aria-label="Left Align">
 				  <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 찜
 				</button>
             </div>

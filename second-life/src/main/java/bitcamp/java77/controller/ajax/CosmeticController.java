@@ -51,7 +51,9 @@ import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
+import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
+import bitcamp.java77.domain.CosmeticWish;
 import bitcamp.java77.service.CosmeticService;
 import bitcamp.java77.util.MultipartHelper;
 
@@ -618,5 +620,37 @@ public class CosmeticController {
 		resultMap.put("endPage", endPage);
 		
 		return resultMap;
+	}
+	
+	// 찜 등록
+	@RequestMapping(value="wishAdd", method=RequestMethod.GET)
+	public AjaxResult wishAdd(int reviewNo, HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		CosmeticWish cosmeticWish = new CosmeticWish();
+		cosmeticWish.setReviewNo(reviewNo);
+		cosmeticWish.setMemberNo(member.getMemberNo());
+		
+		HashMap<String, Object> resultMap = cosmeticService.insertWish(cosmeticWish);
+		String msg = (String)resultMap.get("msg");
+		
+		return new AjaxResult(msg, null);
+	}
+	
+	// 추천 등록
+	@RequestMapping(value="reivewRecomAdd",method=RequestMethod.GET)
+	public AjaxResult reivewRecomAdd(int reviewNo, HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		CosmeticReviewRecom reviewRecom = new CosmeticReviewRecom();
+		reviewRecom.setMemberNo(member.getMemberNo());
+		reviewRecom.setReviewNo(reviewNo);
+		
+		HashMap<String, Object> resultMap = cosmeticService.insertReviewRecom(reviewRecom);
+		String msg = (String)resultMap.get("msg");
+		
+		return new AjaxResult(msg,null);
 	}
 }
