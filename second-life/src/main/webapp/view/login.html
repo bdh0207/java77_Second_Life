@@ -15,6 +15,11 @@
 		 padding-left: 70px;
 		 padding-right: 70px;
 	}
+	hr {
+		border-color: #595959;
+		border-width: 0.05px;
+		border-style: solid;
+	}
 </style>
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script src="../js/common.js"></script>
@@ -44,9 +49,13 @@
 				<label class="control-label" for="inputSmall">PASS</label>
 				<input class="form-control input-sm" type="password" id="inputSmall">
 				</div>
-				<div class="modal-footer paddingZero" >
-			        <button type="button" id="loginBtn" class="btn btn-default buttonColor" data-dismiss="modal">Login</button>
-			    </div>
+				<hr/>
+				<div class="modal-footer paddingZero" style="padding-top: 0px;" >
+			        <button type="button" id="loginBtn"  class="btn btn-default buttonColor" data-dismiss="modal" style="background-color: white; color: #cf2d39;">Login</button>
+			        
+<!-- 				<div class="modal-footer paddingZero" > -->
+<!-- 			        <button type="button" id="loginBtn" class="btn btn-default buttonColor" data-dismiss="modal">Login</button> -->
+<!-- 			    </div> -->
 			    <div style="float: right;">
 				    <a href="#" class="btn btn-link joinAlink">아이디|비번찾기</a>
 				    <a href="#" id="joinFormMove" class="btn btn-link joinAlink">회원가입</a>
@@ -54,6 +63,11 @@
 			</div>
 		</div>
 	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
 	
 	<script type="text/javascript">
 		$('#loginBtn').click(function() {

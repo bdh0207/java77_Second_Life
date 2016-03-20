@@ -2,6 +2,7 @@ package bitcamp.java77.dao;
 
 import java.util.List;
 
+import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
@@ -30,4 +31,5 @@ public interface CosmeticDao {
 	int insertReviewComment(CosmeticReviewComment cosmeticReviewComment);
 	int deleteReviewCommentByNo(CosmeticReviewComment cosmeticReviewComment);
 	int selectReviewCommentCount(int reviewNo);
+	String selectHospital(CosmeticHospital cosmeticHospital);
 }

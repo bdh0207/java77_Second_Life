@@ -3,6 +3,7 @@ package bitcamp.java77.service;
 import java.util.HashMap;
 import java.util.List;
 
+import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
@@ -27,4 +28,5 @@ public interface CosmeticService {
 	public void updateReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto) throws Exception;
 	public HashMap<String, Object> insertReviewComment(HashMap<String, Object> paramMap) throws Exception;
 	public HashMap<String, Object> deleteReviewCommentByNo(HashMap<String, Object> paramMap) throws Exception;
+	public List<CosmeticHospital> hospitalInfo() throws Exception;
 }

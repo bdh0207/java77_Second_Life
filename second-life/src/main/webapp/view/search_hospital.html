@@ -1,127 +1,190 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>병원찾기</title>
-<script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- jQuery 최신버전 -->
+    <meta charset="utf-8">
+    <title>Search Hospital</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
+    <link rel="stylesheet" type="text/css" href="../css/searchHospital.css">
+    <script src="../js/common.js" type="text/javascript"></script>
+	<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=32d3bb0127a08daaa98517ba3ffc0655&libraries=services"></script>
+	<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="../js/common.js" type="text/javascript"></script>
+    <style>
+    .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+    .wrap * {padding: 0;margin: 0;}
+    .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+    .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+    .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+    .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('http://i1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+    .info .close:hover {cursor: pointer;}
+    .info .body {position: relative;overflow: hidden;}
+    .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+    .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+    .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+    .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+    .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('http://i1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+    .info .link {color: #5085BB;}
+    .addBtnBox {
+    	cursor : pointer;
+    	color : #5085BB;
+    }
+    </style>
 
-<script src="../js/common.js"></script>
 </head>
-
 <body>
-	<!-- top -->
+<!-- top -->
 	<div id="top"></div>
-	 
-	<!-- 본문 -->
-	<div class="container documents">
-		<!-- 페이지 소개 -->
-		<div class="example">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="page-header">
-						<h3 id="typography">병원찾기</h3>
-					</div>
-				
-				</div>
-			</div> 
-		</div>
-		<!-- 검색 -->
-		<div class="example">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="input-group form-search">
-						<input type="text" class="form-control search-query">
-						<span class="input-group-btn">
-							<button type="submit" class="btn btn-danger" data-type="last">Search</button>
-						</span>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="example">
-			<div class="row">
-				<div class="col-md-4">
-					<div class="search-result">검색결과</div>
-				</div>
-				<div class="col-md-8">
-					<div id="map-canvas" style="width: 100%; height: 400px"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-<script src="http://maps.googleapis.com/maps/api/js?v=3&sensor=true" type="text/javascript"></script>
+
+<div class="bodyContent" style="margin-top: 70px;">
+<!-- Search Hospital -->
+	<fieldset>
+		<legend  style="color: #cf2d39;">
+		<h2>
+		Search Hospital
+		</h2>
+		</legend>
+	</fieldset>
+	<div id="map" style="border-radius:5px;width:100%;height:450px;"></div>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+</div>
+
+
 <script>
-	$(document).ready(function() {
-	    $('#top').load('top.html');
-	});
-    
-	$(window).load(function() {
-		$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
-			var ajaxResult = resultObj.ajaxResult;
-			var member = ajaxResult.data;
-			if(member != null){
-				console.log(member.id);
-				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-				$('.changeValue2').html('Hello '+member.id).removeAttr('onclick');
-			}
-		}).error(function(error) {
-			window.location.href='login.html';
+var hospitalArr = [];
+
+
+// 해더
+$(document).ready(function() {
+    $('#top').load('top.html');
+});
+
+var overlay = new daum.maps.CustomOverlay({
+		 map: map
 		});
-	});
-	
-	function initialize() {
 
-		var mapOptions = {
-			zoom : 18, // 지도를 띄웠을 때의 줌 크기
-			mapTypeId : google.maps.MapTypeId.ROADMAP
-		};
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	mapOption = { 
+	    center: new daum.maps.LatLng(37.5403764874743, 126.98582223288027), // 지도의 중심좌표
+	    level: 9 // 지도의 확대 레벨
+};
 
-		var map = new google.maps.Map(document.getElementById("map-canvas"), // div의 id과 값이 같아야 함. "map-canvas"
-		mapOptions);
+//지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+var map = new daum.maps.Map(mapContainer, mapOption); 
+  
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new daum.maps.services.Geocoder();
 
-		var size_x = 40; // 마커로 사용할 이미지의 가로 크기
-		var size_y = 40; // 마커로 사용할 이미지의 세로 크기
-
-		// 마커로 사용할 이미지 주소
-		var image = new google.maps.MarkerImage('주소 여기에 기입!',
-				new google.maps.Size(size_x, size_y), '', '',
-				new google.maps.Size(size_x, size_y));
-
-		// Geocoding *****************************************************
-		var address  = '서울시 서초구 서초동 1327-15'; // DB에서 주소 가져와서 검색하거나 왼쪽과 같이 주소를 바로 코딩.
-		var marker   = null;
-		var geocoder = new google.maps.Geocoder();
+// DB에서 주소값 불러내기
+var hospitalInfo = function hospitalInfo() {
+	$.getJSON(contextRoot + "/cosmetic/ajax/hospitalInfo.do", function(resultObj) {
+		console.log("만세!!!!");
+		var ajaxReuslt = resultObj.ajaxResult;
+		var data = ajaxReuslt.data;
 		
-		geocoder.geocode({
-			'address' : address
-		}, function(results, status) {
-			if(status == google.maps.GeocoderStatus.OK) {
-				map.setCenter(results[0].geometry.location);
-				marker = new google.maps.Marker({
-					map : map,
-					icon : image, // 마커로 사용할 이미지(변수)
-					title : '비트캠프', // 마커에 마우스 포인트를 갖다댔을 때 뜨는 타이틀
-					position : results[0].geometry.location
-				});
+		hospitalArr = data;
+		var i;
+	 	for(i=0;i<data.length; i++){
+	 		// 주소로 좌표를 검색합니다.
+	 		var d = data[i];
+	 		regHospitalMarker(d, i);
+	 	}
+	});
+};
 
-				var content = "비트캠프<br/><br/>Tel: 02-3486-9600"; // 말풍선 안에 들어갈 내용
+hospitalInfo();
 
-				// 마커를 클릭했을 때의 이벤트. 말풍선 뿅~
-				var infowindow = new google.maps.InfoWindow({
-					content : content
-				});
-				google.maps.event.addListener(marker, "click", function() {
-					infowindow.open(map, marker);
-				});
-			} else {
-				alert("Geocode was not successful for the following reason: "
-						+ status);
-			}
-		});
-		// Geocoding // *****************************************************
 
-	}
-	google.maps.event.addDomListener(window, 'load', initialize);
+
+var regHospitalMarker = function (data, idx) {
+	var d = data;
+	geocoder.addr2coord(d.addr, function(status, result) {
+	// 정상적으로 검색이 완료됐으면 
+	     if (status === daum.maps.services.Status.OK) {
+	    	
+	       	/* var imageSrc = '../images/hospitalMaker.png', // 마커이미지의 주소입니다    
+	      		imageSize = new daum.maps.Size(44, 49), // 마커이미지의 크기입니다
+	      		imageOption = {offset: new daum.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+	        
+	      	// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+	      	var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption), */
+	        var	coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng); // 마커가 표시될 위치입니다
+	      	
+	        // 결과값으로 받은 위치를 마커로 표시합니다
+	        var marker = new daum.maps.Marker({
+	            map: map,
+	            position: coords
+	            /* image: markerImage // 마커이미지 설정 */
+	        });
+	        
+	        marker.hospitalData = d;
+	        
+	    // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+	       daum.maps.event.addListener(marker, 'click', function() {
+	    	//커스텀 오버레이에 표시할 컨텐츠 입니다
+	    	//커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+	    	//별도의 이벤트 메소드를 제공하지 않습니다 
+	    	var data = this.hospitalData; 
+	    	var content = '<div class="wrap">' + 
+	    	'    <div class="info">' + 
+	    	'        <div class="title">' + 
+	    					data.name + 
+	    	'            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+	    	'        </div>' + 
+	    	'        <div class="body">' + 
+	    	'            <div class="img">' +
+	    	'                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
+	    	'           </div>' + 
+	    	'            <div class="desc">' + 
+	    	'                <div class="ellipsis">'+data.addr+'</div>' + 
+	    	'                <div class="jibun ellipsis">' + data.surgeryPart +
+	    	'                <div><a href="'+data.link+'" target="_blank" class="link">홈페이지</a></div>' +
+	    	'                <div class="addBtnBox" onclick="addList('+idx+')">추가</div>' + 
+	    	'            </div>' + 
+	    	'        </div>' + 
+	    	'    </div>' +    
+	    	'</div>';
+	    	
+	    	overlay.setContent(content);
+	    	overlay.setPosition(this.getPosition());
+	    	
+		    //마커 위에 커스텀오버레이를 표시합니다
+		//마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+	    	    overlay.setMap(map);
+	    	});
+		}
+	});
+};
+
+
+
+var addList = function(idx) {
+	console.dir(hospitalArr[idx]);
+};
+
+
+//커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
+function closeOverlay() {
+    overlay.setMap(null);     
+}
+
+
+
+
+
 </script>
+
+
 </body>
 </html>

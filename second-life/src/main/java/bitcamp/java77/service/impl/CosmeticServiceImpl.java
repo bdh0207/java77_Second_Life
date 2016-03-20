@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import bitcamp.java77.dao.CosmeticDao;
+import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
@@ -140,6 +141,12 @@ public class CosmeticServiceImpl implements CosmeticService {
 		resultMap.put("commentList", cosmeticDao.selectReviewCommentByReviewNo(search));
 		return resultMap;
 	}
-	
-	
+
+	@Override
+	@Transactional
+	public List<CosmeticHospital> hospitalInfo() throws Exception {
+		return null;
+		//cosmeticDao.selectHospital();
+	}
+
 }
