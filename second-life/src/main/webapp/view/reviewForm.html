@@ -124,7 +124,7 @@ $(document).ready(function() {
 		if(member != null){
 			console.log(member.id);
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-			$('.changeValue2').html('Hello '+member.id).removeAttr('onclick');
+			$('.changeValue2').html('Hello '+member.id).attr('onclick','location.href="mylist.html"');
 		}
 	}).error(function(error) {
 		window.location.href='login.html';

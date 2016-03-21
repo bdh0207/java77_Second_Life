@@ -9,6 +9,7 @@ import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
 import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
+import bitcamp.java77.domain.CosmeticSugeryInfo;
 import bitcamp.java77.domain.CosmeticWish;
 
 public interface CosmeticDao {
@@ -38,4 +39,8 @@ public interface CosmeticDao {
 	void insertWish(CosmeticWish cosmeticWish);
 	int selectReviewRecomCheck(CosmeticReviewRecom reviewRecom);
 	void insertReviewRecom(CosmeticReviewRecom reviewRecom);
+	List<CosmeticWish> selectReviewWish(int memberNo);
+	int selectInfoCheck(int reviewNo);
+	CosmeticSugeryInfo selectReviewSugeryInfo(int reviewNo);
+	void insertSugeryInfo(CosmeticSugeryInfo cosmeticSugeryInfo);
 }

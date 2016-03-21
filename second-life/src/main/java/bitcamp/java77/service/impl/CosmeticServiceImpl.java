@@ -15,6 +15,7 @@ import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
 import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
+import bitcamp.java77.domain.CosmeticSugeryInfo;
 import bitcamp.java77.domain.CosmeticWish;
 import bitcamp.java77.service.CosmeticService;
 
@@ -182,6 +183,28 @@ public class CosmeticServiceImpl implements CosmeticService {
 		
 		return resultMap;
 	}
-	
+
+	@Override
+	@Transactional
+	public List<CosmeticWish> selectReviewWish(int memberNo) throws Exception {
+		return cosmeticDao.selectReviewWish(memberNo);
+	}
+
+	@Override
+	@Transactional
+	public HashMap<String, Object> insertSugeryInfo(int wishNo, int reviewNo) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<>();
+		String msg = "fail";
+		int ckCnt = cosmeticDao.selectInfoCheck(reviewNo);
+		if(ckCnt != 0){
+			CosmeticSugeryInfo cosmeticSugeryInfo = cosmeticDao.selectReviewSugeryInfo(reviewNo);
+			cosmeticSugeryInfo.setWishNo(wishNo);
+			cosmeticDao.insertSugeryInfo(cosmeticSugeryInfo);
+			msg = "success";
+		}
+		resultMap.put("msg", msg);
+		
+		return resultMap;
+	}
 	
 }

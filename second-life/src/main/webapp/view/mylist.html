@@ -5,11 +5,128 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="../css/mylist.css" type="text/css">
 <link rel="stylesheet" href="../css/needpopup.min.css">
+<link rel="stylesheet" href="../lib/bootflat/css/site.min.css">
+<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
+<link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
+<style type="text/css">
+	.item{
+		width: 250px;
+	}
+	.gigante{
+		width: 350px;
+		height: 280px;
+	}
+</style>
+
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/masonry-docs.min.js"></script>
+<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> <!-- marsonry -->
+<script src="../js/common.js"></script>
+
 <script>
-	$(document).ready(function() {
-	    $('#top').load('top.html');
+	$(window).load(function() {
+		var container = document.querySelector('#columns');
+		var $grid = $('#columns').masonry({
+			itemSelector:'.item',
+			columnWidth: 270,
+			isAnimated: true
+		});
+		
+		$('#columns').imagesLoaded(function() {
+			$('#columns').masonry();
+		});
+		
+		
+		$.getJSON(contextRoot + '/cosmetic/ajax/searchReviewWish.do', function(resultObj) {
+	    	
+			var wishList = resultObj.reviewWish
+			console.log(wishList);
+			for(var wish of wishList){
+				var beforePath = '';
+				var afterPath = '';
+				
+				var index = 1;
+				for(var photoList of wish.reviewPhoto){
+					if(index ==1){
+						beforePath += photoList.filePath;
+					}
+					else{
+						afterPath += photoList.filePath;
+					}
+					index++;
+				}
+				var div = '<div class="item" id="w_'+wish.wishNo+'">                                                                   			  ';
+					div +=	'		<div class="thumbnail" id="thumbnail-new">                                      							   ';
+					div +=	'		<a class="detailLnk" href="#"><img class="img-rounded" reviewNo="'+wish.reviewNo+'" src="'+ afterPath +'"></a>';
+					div +=	'		<div class="caption">                                                           								';
+					div +=	'			<h3 class="title-mylist">'+wish.title+'</h3>                               									 ';
+					div +=	'			<p lang="content-mylist">'+resultObj.id+'</p>                                   						';
+					div +=	'			<p class="text-center icon-mylist">                                         							';
+				    div +=      '     	   		<img src="../images/eye.png" width="15px" height="15px" />'+wish.viewCnt;
+				    div +=      '          	<img src="../images/heart.png" width="15px" height="15px" /> 22534      ';
+				    div +=      '          </p>                                                                       ';
+					div +=	'			<p class="text-center">                                                     ';
+					div +=	'				<a id="infoBtn" onclick="getInfo(' + wish.wishNo +','+wish.reviewNo+'); return false;" class="btn btn-warning">정보받기</a>                        ';
+					div +=	'				<a id="deleteBtn" onclick="wishDel('+wish.wishNo+'); return false" class="btn btn-danger">삭제</a>                             ';
+					div +=	'			</p>                                                                        ';
+					div +=	'		</div>                                                                          ';
+					div +=	'		</div>                                                                          ';
+					div +=	'	</div>                                                                              ';
+					
+					var $elem = $(div);
+					
+					$('#columns').append($elem).masonry('appended',$elem);
+					
+					$('#columns').imagesLoaded(function() {
+						$('#columns').masonry();
+					});
+					$('a.detailLnk').click(clickDetailLnk);
+			}             
+		});
+		
+		
+		
 	});
+	
+	$(document).ready(function() {
+	    $('#top').load('top.html').trigger('pagecreate');
+	    
+	    $.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+			var ajaxResult = resultObj.ajaxResult;
+			var member = ajaxResult.data;
+			if(member != null){
+				console.log(member.id);
+				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+				$('.changeValue2').html('Hello '+member.id).attr('onclick','location.href="mylist.html"');
+			}
+		}).error(function(error) {
+			window.location.href='login.html';
+		});
+	    
+	    
+	    
+	});
+	
+	function clickDetailLnk(event) {
+		event.preventDefault();
+		location.href = 'user_review2.html?reviewNo='+$(event.target).attr('reviewNo');
+	}
+	
+	function getInfo(wishNo,reviewNo) {
+		$.getJSON(contextRoot+'/cosmetic/ajax/receiveSugeryInfo.do?wishNo='+wishNo+'&reviewNo=' + reviewNo,function(resultObj){
+			if(resultObj.msg == "success"){
+				alert('수술정보에 추가되었습니다.');
+			}
+			else{
+				alert('공유된 수술정보가 없습니다.');
+			}
+		});
+	}
+	function wishDel(wishNo) {
+		alert('위시삭제 성공');
+	}
 </script>
 </head>
 
@@ -40,241 +157,105 @@
 		        <h4 class="info-text">마음에 드는 후기와<br>병원 정보들을 모아보고,<br>정보를 얻어 체계적인 상담 신청을  해보세요.</h4> 
 			</div>
 		</div>
-
-		<div class="example">
-			<div class="row">
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 id="title-mylist">쌍수한지 3달째</h3>
-							<p >kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center"><a href="#" class="btn" id="btn-new" role="button" data-needpopup-show="#modal-popup">정보받기</a></p>
-						</div>
-					</div>
-				</div>
-			</div>
 		
+		<div id="masonry">
+			<div id="columns">
+				<!--
+				<div class="item">
+					<div class="thumbnail" id="thumbnail-new">
+						<img class="img-rounded" src="../images/after2.jpg">
+						<div class="caption">
+							<h3 class="title-mylist">쌍수한지 3달째</h3>
+							<p lang="content-mylist">kkokkodaek87</p>
+							<p class="text-center icon-mylist">
+		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
+		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
+		                    </p>
+							<p class="text-center">
+								<a href="#" class="btn btn-warning">정보받기</a>
+								<a href="#" class="btn btn-danger">삭제</a>
+							</p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="item">
+					<div class="thumbnail" id="thumbnail-new">
+						<img class="img-rounded" src="../images/after2.jpg">
+						<div class="caption">
+							<h3 class="title-mylist">쌍수한지 3달째dfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfg</h3>
+							<p lang="content-mylist">kkokkodaek87</p>
+							<p class="text-center icon-mylist">
+		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
+		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
+		                    </p>
+							<p class="text-center">
+								<a href="#" class="btn btn-warning">정보받기</a>
+								<a href="#" class="btn btn-danger">삭제</a>
+							</p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="item">
+					<div class="thumbnail" id="thumbnail-new">
+						<img class="img-rounded" src="../images/after2.jpg">
+						<div class="caption">
+							<h3 class="title-mylist">쌍수한지 3달째dfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfg</h3>
+							<p lang="content-mylist">kkokkodaek87</p>
+							<p class="text-center icon-mylist">
+		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
+		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
+		                    </p>
+							<p class="text-center">
+								<a href="#" class="btn btn-warning">정보받기</a>
+								<a href="#" class="btn btn-danger">삭제</a>
+							</p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="item">
+					<div class="thumbnail" id="thumbnail-new">
+						<img class="img-rounded" src="../images/after2.jpg">
+						<div class="caption">
+							<h3 class="title-mylist">쌍수한지 3달째dfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfg</h3>
+							<p lang="content-mylist">kkokkodaek87</p>
+							<p class="text-center icon-mylist">
+		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
+		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
+		                    </p>
+							<p class="text-center">
+								<a href="#" class="btn btn-warning">정보받기</a>
+								<a href="#" class="btn btn-danger">삭제</a>
+							</p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="item">
+					<div class="thumbnail" id="thumbnail-new">
+						<img class="img-rounded" src="../images/after2.jpg">
+						<div class="caption">
+							<h3 class="title-mylist">쌍수한지 3달째dfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfg</h3>
+							<p lang="content-mylist">kkokkodaek87</p>
+							<p class="text-center icon-mylist">
+		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
+		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
+		                    </p>
+							<p class="text-center">
+								<a href="#" class="btn btn-warning">정보받기</a>
+								<a href="#" class="btn btn-danger">삭제</a>
+							</p>
+						</div>
+					</div>
+				</div>
+				-->
+				
+			</div><!-- columns end -->
+		</div>
+		
+			 
 			<!-- '정보받기' 버튼 클릭시 나타나는 메시지 -->
 			<div id="modal-popup" class="needpopup">
 				<p>

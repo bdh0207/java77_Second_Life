@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://npmcdn.com/flickity@1.1/dist/flickity.min.css">
+<link rel="stylesheet" href="../lib/bootflat/css/site.min.css">
 
 <!-- Script -->
 <script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- jQuery 최신버전 -->
@@ -143,7 +144,7 @@
 			if(resultObj.member != null){
 				console.log(resultObj.member.id);
 				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-				$('.changeValue2').html('Hello '+ resultObj.member.id).removeAttr('onclick');
+				$('.changeValue2').html('Hello '+ resultObj.member.id).attr('onclick','location.href="mylist.html"');
 			}
 			
 			for(var list of resultObj.reviewList){

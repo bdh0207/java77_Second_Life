@@ -9,6 +9,7 @@
 <title>꽃보다 아름다운</title>  
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" href="../css/flexslider.css" type="text/css">
+<link rel="stylesheet" href="../lib/bootflat/css/site.min.css">
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">   -->
 <style>
@@ -74,7 +75,7 @@ $(document).ready(function() {
  		// 로그인 헤더 처리
 		if(reviewDetail.member != null){
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-			$('.changeValue2').html('Hello '+ reviewDetail.member.id).removeAttr('onclick');
+			$('.changeValue2').html('Hello '+ reviewDetail.member.id).attr('onclick','location.href="mylist.html"');
 			$('#commentId').text(reviewDetail.member.id);
 		}
  		

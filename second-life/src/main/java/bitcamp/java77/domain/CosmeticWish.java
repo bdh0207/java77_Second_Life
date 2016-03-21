@@ -2,13 +2,42 @@ package bitcamp.java77.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class CosmeticWish implements Serializable {
 	protected int wishNo;
 	protected int reviewNo;
 	protected int memberNo;
+	protected String title;
+	protected String content;
+	protected int viewCnt;
 	protected Date regDate;
+	protected List<CosmeticReviewPhoto> reviewPhoto;
 	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public int getViewCnt() {
+		return viewCnt;
+	}
+	public void setViewCnt(int viewCnt) {
+		this.viewCnt = viewCnt;
+	}
+	public List<CosmeticReviewPhoto> getReviewPhoto() {
+		return reviewPhoto;
+	}
+	public void setReviewPhoto(List<CosmeticReviewPhoto> reviewPhoto) {
+		this.reviewPhoto = reviewPhoto;
+	}
 	public int getWishNo() {
 		return wishNo;
 	}

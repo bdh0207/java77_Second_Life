@@ -167,8 +167,8 @@
 							var beforePath = '';
 							var afterPath = '';
 								
+							var index = 1;
 							for(var photoList of list.reviewPhoto){
-								var index = 1;
 								if(index ==1){
 									beforePath += photoList.filePath;
 								}
@@ -177,10 +177,12 @@
 								}
 								index++;
 							}
-								
+							console.log(beforePath);	
+							console.log(afterPath);
+							
 							var div = '<div class="item">';	
 								div +=	'<figure>';
-								div +=	'<a class="detailLnk" href="#"><img src="' + beforePath + '" reviewNo="' + list.reviewNo + '" /></a>									';
+								div +=	'<a class="detailLnk" href="#"><img src="' + afterPath + '" reviewNo="' + list.reviewNo + '" /></a>									';
 								div +=	'<figcaption>																														';
 								div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
 								div +=	'				<hr />                                                                                                              ';
@@ -208,7 +210,7 @@
 									$('#columns').masonry();
 								});
 						    	// 다시 리로드
-						    	$('#columns').masonry('reloadItems');
+						    	$('#columns').masonry();
 						    	
 						    	$('a.detailLnk').click(clickDetailLnk);
 						}

@@ -54,6 +54,11 @@
  		values(#{memberNo},#{reviewNo},now())
  	</insert>
  	
+ 	<insert id="insertSugeryInfo" parameterType="CosmeticSugeryInfo">
+ 		insert into surgery_info(wno,hos_name,doc_name,sway,sprice,spart,sdate,reg_date)
+ 		values(#{wishNo},#{hospitalName},#{doctorName},#{sugeryWay},#{sugeryPrice},#{sugeryPart},#{sugeryDate},now())
+ 	</insert>
+ 	
  	<!-- SELECT 영역 -->
  	
  	<select id="searchID" parameterType="string" resultType="int">
@@ -78,6 +83,26 @@
  		select HNO, NAME, SPART, CONT, ADDR, TEL, LINK, REG_DATE
  		  from HOSPITAL
  	</select>
+ 	
+ 	<select id="selectReviewWish" parameterType="int" resultMap="reviewWishMap">
+ 		select a.wno as wishNo, a.rno as reviewNo, b.title as title, b.cont as content, b.vcnt as viewCnt, c.fil_path as filePath
+		from wish a
+		inner join review b
+		on a.rno = b.rno
+		inner join review_phot c
+		on a.rno = c.rno
+		where a.mno = #{memberNo}
+		order by b.reg_date desc
+ 	</select>
+ 	
+ 	<resultMap type="CosmeticWish" id="reviewWishMap">
+ 		<result property="wishNo" column="wishNo" />
+ 		<result property="reviewNo" column="reviewNo" />
+ 		<result property="title" column="title" />
+ 		<result property="content" column="content" />
+ 		<result property="viewCnt" column="viewCnt" />
+ 		<collection property="reviewPhoto" column="filePath" resultMap="reviewPhotoMap" ofType="CosmeticReviewPhoto" javaType="ArrayList"></collection>
+ 	</resultMap>
  	
  	<select id="selectReviewList" parameterType="CosmeticSearch" resultMap="reviewResultMap">
  		select a.rno as reviewNo, mno as memberNo, a.hno as hospitalNo, a.title as title, a.cont as content, a.vcnt as viewCnt, a.spart as sugeryPart, a.stat as status,b.fil_path as filePath, a.reg_date as regDate
@@ -197,6 +222,19 @@
  		where rno = #{reviewNo}
  		and mno = #{memberNo}
  	</select>
+ 	
+ 	<select id="selectInfoCheck" parameterType="int" resultType="int">
+ 		select stat
+ 		from review
+ 		where rno = #{reviewNo}
+ 	</select>
+ 	
+ 	<select id="selectReviewSugeryInfo" parameterType="int" resultType="CosmeticSugeryInfo">
+ 		select hos_name as hospitalName, doc_name as doctorName,spart as sugeryPart, sway as sugeryWay, sprice as sugeryPrice, sdate as sugeryDate
+		from review
+		where rno = #{reviewNo}
+ 	</select>
+ 	
  	
  	<!-- DELETE 영역 -->
  	<delete id="deleteReviewPhoto" parameterType="int">

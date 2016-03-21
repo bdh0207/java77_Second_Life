@@ -653,4 +653,30 @@ public class CosmeticController {
 		
 		return new AjaxResult(msg,null);
 	}
+	
+	// 마이페이지 wish리스트
+	@RequestMapping(value="searchReviewWish", method=RequestMethod.GET)
+	public Object searchReviewWish(HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		HashMap<String, Object> resultMap = new HashMap<>();
+		List<CosmeticWish> reviewWish = cosmeticService.selectReviewWish(member.getMemberNo());
+		resultMap.put("reviewWish", reviewWish);
+		resultMap.put("id", member.getId());
+		
+		return resultMap;
+	}
+	
+	// 정보받기
+	@RequestMapping(value="receiveSugeryInfo", method=RequestMethod.GET)
+	public Object receiveSugeryInfo(int wishNo, int reviewNo, HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		HashMap<String, Object> resultMap = cosmeticService.insertSugeryInfo(wishNo,reviewNo);
+		
+		return resultMap;
+	}
+	
 }
