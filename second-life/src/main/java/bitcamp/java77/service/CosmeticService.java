@@ -35,4 +35,5 @@ public interface CosmeticService {
 	public HashMap<String, Object> insertReviewRecom(CosmeticReviewRecom reviewRecom) throws Exception;
 	public List<CosmeticWish> selectReviewWish(int memberNo) throws Exception;
 	public HashMap<String, Object> insertSugeryInfo(int wishNo, int reviewNo) throws Exception;
+	public CosmeticReview selectSurgeryInfo(int reviewNo) throws Exception;
 }

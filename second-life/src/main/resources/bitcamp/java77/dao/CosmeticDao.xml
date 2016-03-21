@@ -14,7 +14,6 @@
 		</selectKey>
 	</insert>
 	
-	
  	<insert id="insertReview" useGeneratedKeys="true" parameterType="CosmeticReview" keyProperty="reviewNo">
  		<choose>
  			<when test="status == 0">
@@ -60,7 +59,6 @@
  	</insert>
  	
  	<!-- SELECT 영역 -->
- 	
  	<select id="searchID" parameterType="string" resultType="int">
 		select count(*)
 		  from member
@@ -236,6 +234,13 @@
  	</select>
  	
  	
+	<!-- 수술정보 보기 -->
+ 	<select id="selectSurgeryInfo" parameterType="int" resultType="cosmeticReview">
+ 		select sway as sugeryWay, hos_name as hospitalName, doc_name as doctorName, sprice as sugeryPrice, sdate as sugeryDate, stat as status
+ 		  from review
+ 		 where rno = #{reviewNo} 
+ 	</select>
+ 	
  	<!-- DELETE 영역 -->
  	<delete id="deleteReviewPhoto" parameterType="int">
  		delete from review_phot
@@ -258,6 +263,7 @@
  		where cmno = #{commentNo}
  		and mno = #{memberNo}
  	</delete>
+ 	
  	
  	<!-- UPDATE 영역 -->
  	<update id="updateReview" parameterType="cosmeticReview">

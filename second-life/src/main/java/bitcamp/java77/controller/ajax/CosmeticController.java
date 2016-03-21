@@ -11,12 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.UUID;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -74,7 +70,7 @@ public class CosmeticController {
 		System.out.println(hospitalInfoList.size());
 		return new AjaxResult("success", hospitalInfoList);
 	}
-	
+ 
 	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
 	public AjaxResult selectMemInfo(HttpServletRequest req) throws Exception {
 		HttpSession session   = req.getSession();
@@ -83,6 +79,12 @@ public class CosmeticController {
 		member = cosmeticService.selectMember(member);
 		
 		return new AjaxResult("success", member);
+	}
+
+	@RequestMapping(value="viewInfo")
+	public AjaxResult viewInfo(int reviewNo) throws Exception {
+		CosmeticReview review = cosmeticService.selectSurgeryInfo(reviewNo);
+		return new AjaxResult("success", review);
 	}
 	
 //	@RequestMapping(value="sendMail", method=RequestMethod.POST)

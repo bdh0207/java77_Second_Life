@@ -24,7 +24,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 	
 	@Autowired
 	CosmeticDao cosmeticDao;
-	
+	 
 	@Override
 	@Transactional
 	public int insertReview(CosmeticReview cosmeticReview) throws Exception {
@@ -207,4 +207,10 @@ public class CosmeticServiceImpl implements CosmeticService {
 		return resultMap;
 	}
 	
+	@Override
+	@Transactional
+	public CosmeticReview selectSurgeryInfo(int reviewNo) throws Exception {
+		return cosmeticDao.selectSurgeryInfo(reviewNo);
+	}
+	 
 }

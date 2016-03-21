@@ -44,9 +44,13 @@
 		</h2>
 		</legend>
 	</fieldset>
+	<br />
 	<div id="map" style="border-radius:5px;width:100%;height:450px;"></div>
 	<br />
 	<br />
+	<div id="list">
+		
+	</div>
 	<br />
 	<br />
 	<br />
@@ -130,7 +134,7 @@ var regHospitalMarker = function (data, idx) {
 	        
 	        marker.hospitalData = d;
 	        
-	    // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+	    	// 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
 	       daum.maps.event.addListener(marker, 'click', function() {
 	    	//커스텀 오버레이에 표시할 컨텐츠 입니다
 	    	//커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
@@ -160,7 +164,7 @@ var regHospitalMarker = function (data, idx) {
 	    	overlay.setPosition(this.getPosition());
 	    	
 		    //마커 위에 커스텀오버레이를 표시합니다
-		//마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+			//마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
 	    	    overlay.setMap(map);
 	    	});
 		}
@@ -171,6 +175,7 @@ var regHospitalMarker = function (data, idx) {
 
 var addList = function(idx) {
 	console.dir(hospitalArr[idx]);
+	$("#list").append('<div>'+  +'</div>')
 };
 
 
@@ -178,9 +183,6 @@ var addList = function(idx) {
 function closeOverlay() {
     overlay.setMap(null);     
 }
-
-
-
 
 
 </script>
