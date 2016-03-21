@@ -38,4 +38,5 @@ public interface CosmeticDao {
 	void insertWish(CosmeticWish cosmeticWish);
 	int selectReviewRecomCheck(CosmeticReviewRecom reviewRecom);
 	void insertReviewRecom(CosmeticReviewRecom reviewRecom);
+	CosmeticReview selectSurgeryInfo(int reviewNo);
 }
