@@ -128,6 +128,29 @@
  		<result property="filePath" column="filePath" />
  	</resultMap>
  	
+ 	<select id="selectEventList" parameterType="CosmeticSearch" resultMap="eventresultMap">
+ 		select a.eno as eventNo, a.hno as hospitalNo, a.title, a.cont as content, a.vcnt as viewCnt, a.reg_date as regDate, b.fil_path as filePath, h.name as hospitalName
+		  from event a inner join event_phot b on a.eno = b.eno
+		  			   inner join hospital h on a.hno = h.hno
+		 order by a.reg_date desc
+		 limit #{start},6
+ 	</select>
+ 	
+ 	<resultMap id="eventresultMap" type="CosmeticEvent">
+ 		<result property="eventNo" column="eventNo" />
+ 		<result property="hospitalNo" column="hospitalNo" />
+ 		<result property="title" column="title" />
+ 		<result property="content" column="content"/>
+ 		<result property="viewCnt" column="viewCnt" />
+ 		<result property="regDate" column="regDate" />
+ 		<result property="hospitalName" column="hospitalName" />
+ 		<collection property="eventPhoto" column="filePath"  resultMap="eventPhotoMap" ofType="cosmeticEventPhoto" javaType="ArrayList"></collection>
+ 	</resultMap>
+ 	
+ 	<resultMap id="eventPhotoMap" type="cosmeticEventPhoto">
+ 		<result property="filePath" column="filePath" />
+ 	</resultMap>
+ 	
  	
  	<select id="selectReviewListDetail" parameterType="int" resultType="CosmeticReview">
  		select RNO as reviewNo, MNO as memberNo, HNO as hospitalNo,title as title,CONT as content, VCNT as viewCnt, SPART as sugeryPart, STAT as status,hos_name as hospitalName,doc_name as doctorName,sway as sugeryWay, sprice as sugeryPrice, sdate as sugeryDate, REG_DATE as regDate 
