@@ -1,0 +1,207 @@
+@CHARSET "UTF-8";
+ 
+.item{
+	width : 270px;
+    margin : 10px;
+	float: left;
+}
+
+div#columns figure {
+	width:275px;
+	background: #fefefe;
+	border: 2px solid #fcfcfc;
+	box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+	padding: 10px;
+	transition: opacity .4s ease-in-out;
+	column-break-inside: avoid;
+	display: inline-block;
+}
+
+div#columns figure>a>img {
+	width: 250px;
+	height: auto;
+	margin-bottom: 10px;
+}
+
+div#columns figure figcaption.wish {
+	width: 30px;
+	height: 20px;
+}
+ 
+.hReview a{
+	text-decoration: none;
+	color: black;
+}
+.hReview h4 { 
+	margin-top: 5px;
+	font-weight: 600;
+}
+
+.viewCount{
+	height: 25px;
+	line-height: 25px;
+	padding-left: 15px;
+	float: left;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+
+.recom{
+	height: 25px;
+	line-height: 25px;
+	margin-left: 10px;
+	float: left;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+
+.viewCount > img, .recom > img {
+	margin-right: 3px;
+	margin-top: -2px;
+}
+ 
+.wish{
+	margin-right: 15px;
+	float: right;	
+}
+  
+div#columns:hover figure:not(:hover) {
+	opacity: 0.4;
+}
+
+.hr-new {
+	margin-top: 40px;
+	margin-bottom: 10px;
+}
+
+#body-right{
+	position:absolute;
+	width:10%;
+	border: 1px solid black;
+	margin-top:90px;
+	height: 80%;
+	position: fixed;
+}
+ 
+/* 팝업 관련 디자인*/
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 1000px;
+  height: 600px;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: #06D85F;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+.hospital-Content{
+	height: 250px;
+}
+.hospital-Img{
+	float: left;
+}
+.hospital-Info{
+	margin-left: 10px;
+	float: left;
+	/* div 폰트설정*/
+}
+
+.doctor-Img,.doctor-Info{
+	float: left;
+}
+.doctor-Info{
+	margin-left: 10px;
+}
+
+.hospital-Info-Detail{
+	/* div 폰트설정*/
+	
+	margin-left: 20px;
+	font-size: 15px;
+	color: white;
+	width:100%;
+	height: 30px;
+	vertical-align: middle;
+	padding-left:5px;
+	padding-top: 5px;
+	
+	/* 색상 */
+	background: rgb(207, 45, 57);
+	background: -moz-linear-gradient(0deg, rgb(207, 45, 57) 100%, rgb(247, 255, 216) 100%);
+	background: -webkit-linear-gradient(0deg, rgb(207, 45, 57) 100%, rgb(247, 255, 216) 100%);
+	background: -o-linear-gradient(0deg, rgb(207, 45, 57) 100%, rgb(247, 255, 216) 100%);
+	background: -ms-linear-gradient(0deg, rgb(207, 45, 57) 100%, rgb(247, 255, 216) 100%);
+	background: linear-gradient(90deg, rgb(207, 45, 57) 100%, rgb(247, 255, 216) 100%);
+	
+	/*radius*/
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+	
+	/*shadow*/
+	-webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+}
+
+@media screen and (max-width: 700px){
+  .popup{
+    width: 70%;
+  }
+}
+

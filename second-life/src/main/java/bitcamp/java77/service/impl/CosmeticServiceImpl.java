@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import bitcamp.java77.dao.CosmeticDao;
+import bitcamp.java77.domain.CosmeticEvent;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
@@ -188,6 +189,12 @@ public class CosmeticServiceImpl implements CosmeticService {
 	@Transactional
 	public CosmeticReview selectSurgeryInfo(int reviewNo) throws Exception {
 		return cosmeticDao.selectSurgeryInfo(reviewNo);
+	}
+
+	@Override
+	@Transactional
+	public List<CosmeticEvent> selectEventList(CosmeticSearch search) throws Exception {
+		return cosmeticDao.selectEventList(search);
 	}
 	 
 }

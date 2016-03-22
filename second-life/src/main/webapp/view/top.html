@@ -81,7 +81,6 @@ span {
 	font-family: 'Nanum Gothic', serif;
 }
 </style>
-
 </head>
 
 <body>
@@ -89,6 +88,7 @@ span {
 		<div id="logo" onclick="location.href='mainandreview.html'">SECOND LIFE</div>
 		<div id="menu1">
 			<span id="reviewLink">USER REVIEW</span>
+			<span id="eventLink">HOSPITAL EVENT</span>
 			<span id="searchHospitalLink">SEARCH HOSPITAL</span>
 			<span id="counselLink">COUNSEL</span>
 		</div>
@@ -100,6 +100,9 @@ span {
 	<script type="text/javascript">
 		$('#reviewLink').click(function() {
 			location.href= 'user_review_list.html';
+		});
+		$('#eventLink').click(function() {
+			location.href= 'mainandhospital.html';
 		});
 		$('#searchHospitalLink').click(function() {
 			location.href= 'search_hospital.html';

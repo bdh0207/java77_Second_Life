@@ -2,6 +2,7 @@ package bitcamp.java77.dao;
 
 import java.util.List;
 
+import bitcamp.java77.domain.CosmeticEvent;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
@@ -17,6 +18,7 @@ public interface CosmeticDao {
 	int insertReview(CosmeticReview cosmeticReview);	// 리뷰 등록
 	void insertReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto); // 리뷰 사진 등록
 	List<CosmeticReview> selectReviewList(CosmeticSearch search); // 리뷰 리스트
+	List<CosmeticEvent> selectEventList(CosmeticSearch search); 	// 이벤트 리스트
 	CosmeticReview selectReviewListDetail(int reviewNo); // 리뷰 상세조회
 	List<CosmeticReviewComment> selectReviewComment(CosmeticSearch search); // 리뷰 댓글 조회
 	List<CosmeticReviewComment> selectReviewCommentByReviewNo(CosmeticSearch search); // 리뷰 댓글 조회
