@@ -47,7 +47,7 @@
 		<!-- 지도 -->
 		<div id="map" style="border-radius:5px;width: 800px;height:415px; float: left; margin-right: 20px;"></div>
 		<!-- 병원 리스트 -->
-		<div style="margin-bottom: 10px;"><input type="text" class="form-control searchBar" placeholder="  Search"></div>
+		<div style="margin-bottom: 10px;"><input id="search" type="text" class="form-control searchBar" placeholder="병원 이름으로 검색"></div>
 		<div class="mapList" style="width: 280px; height: 375px; float: right; overflow: auto;">
 			
 		</div>
@@ -187,8 +187,8 @@ var regHospitalMarker = function (data, idx) {
 	});
 };
 
-
-
+var idx;
+// Counseling List 만들기
 var addList = function(idx) {
 	console.dir(hospitalArr[idx]);
 	$("#listForm").append('<div class="list lead">'+
@@ -204,13 +204,48 @@ var addList = function(idx) {
 	$(".X").on("click", function () {
 		$(this).parent().remove();
 	});
+	idx = idx;
 };
 
-//커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
+// 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
 function closeOverlay() {
     overlay.setMap(null);
 }
 
+//키보드 이벤트
+var keyBoard = function () {
+	$("#search").keyup(function name() {
+		var searchVal = $("#search").val();
+		var searchResult;
+		var flag = false;
+		$(".mapList").empty();
+		for(var i = 0; i < hospitalArr.length; i++){
+			var name = hospitalArr[i].name;
+			searchResult = name.indexOf(searchVal);
+			console.dir(name)
+			if(searchResult != -1){
+				console.log("성공")
+				$(".mapList").append('<blockquote><p style="font-size: 15px;">' + name + '</p>' +
+			  			 			 '<small>' + hospitalArr[i].addr + '</small>' + 
+				  			 		 '<small>' + hospitalArr[i].surgeryPart + '</small>' + 
+				  					 '<small>'+ hospitalArr[i].tel + '</small>' + 
+					    			 '<div style="float: left;"><a style="font-size: 9pt;" href="'+ hospitalArr[i].link +'" target="_blank" class="link">홈페이지</a></div>' + 
+				  					 '</blockquote>'
+					);
+				flag = true;
+				continue;
+			}else {
+				console.log("실패")
+			};
+		};
+		
+		if(!flag) {
+			$(".mapList").append('<blockquote><p style="font-size: 15px;">' + '찾으시는 병원이 없습니다.' + '</p>' + '</blockquote>');
+		}
+	});
+};
+
+keyBoard();
 
 </script>
 
