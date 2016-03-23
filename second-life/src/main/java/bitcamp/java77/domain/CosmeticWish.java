@@ -8,12 +8,19 @@ public class CosmeticWish implements Serializable {
 	protected int wishNo;
 	protected int reviewNo;
 	protected int memberNo;
+	protected String memberId;
 	protected String title;
 	protected String content;
 	protected int viewCnt;
 	protected Date regDate;
 	protected List<CosmeticReviewPhoto> reviewPhoto;
 	
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 	public String getTitle() {
 		return title;
 	}

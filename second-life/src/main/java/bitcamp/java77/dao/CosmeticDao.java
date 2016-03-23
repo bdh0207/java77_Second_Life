@@ -44,4 +44,6 @@ public interface CosmeticDao {
 	CosmeticSugeryInfo selectReviewSugeryInfo(int reviewNo);
 	void insertSugeryInfo(CosmeticSugeryInfo cosmeticSugeryInfo);
 	CosmeticReview selectSurgeryInfo(int reviewNo);
+	void deleteSugeryInfo(CosmeticWish wish);
+	void deleteWish(CosmeticWish wish);
 }

@@ -681,4 +681,18 @@ public class CosmeticController {
 		return resultMap;
 	}
 	
+	// 리뷰 위시삭제
+	// 테이블 관계로 인해 관련된 수술정보같이 삭제
+	@RequestMapping(value="deleteWish", method=RequestMethod.GET)
+	public AjaxResult deleteWish(int wishNo, HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		CosmeticWish wish = new CosmeticWish();
+		wish.setMemberNo(member.getMemberNo());
+		wish.setWishNo(wishNo);
+		
+		cosmeticService.deleteWish(wish);
+		
+		return new AjaxResult("success",null);
+	}
 }

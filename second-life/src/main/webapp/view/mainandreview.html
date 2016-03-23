@@ -43,9 +43,26 @@
 		var pageIdx = 2;
 		$(document).ready(function() {	
 			var container = document.querySelector('#masonry');
-
+		});
+		
+		$(window).load(function() {
+			
+		
+			var container = document.querySelector('#columns');
+			$('#columns').masonry({
+				itemSelector:'.item',
+				columnWidth: 378,
+ 				percentPosition: true
+			});
+			$('#columns').imagesLoaded(function() {
+				
+			});
+			
+			
 			/* 찜하기 함수  */
-			$(".starOpa").click(function() {
+			/*
+			$('.starOpa').click(function() {
+				
 				var x = '<img class="x" alt="" src="../images/X.png" width="15px" height="15px">';
 				if($(this).css("opacity") == 0.4){
 					$(this).css({opacity: "1.0"});
@@ -68,34 +85,11 @@
 					$(".x").remove();
 					$(".starOpa").css("opacity", "0.4");
 				});
+				
 				return false;
 			});
-		});
-			/*
-			var msnry = new Masonry(container,{
-				itemSelector:'.item',
-				columnWidth: 379,
- 				percentPosition: true
-				
-			});
-			
-			imagesLoaded(container).on('progress', function() {
-				  msnry.layout();
-			});
 			*/
-		
-		$(window).load(function() {
 			
-		
-			var container = document.querySelector('#columns');
-			$('#columns').masonry({
-				itemSelector:'.item',
-				columnWidth: 378,
- 				percentPosition: true
-			});
-			$('#columns').imagesLoaded(function() {
-				
-			});
 		});
 		
 		$(document).ready(function() {	
@@ -126,7 +120,7 @@
 						div +=	'<figure>';
 						div +=	'<a class="detailLnk" href="#"><img src="' + afterPath + '" reviewNo="' + list.reviewNo + '" /></a>									';
 						div +=	'<figcaption>																														';
-						div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
+						div +=	'				<div class="review">'+ list.content +'</div>                                      ';
 						div +=	'				<hr />                                                                                                              ';
 						div +=	'				<div class="footers">                                                                                               ';
 						div +=	'					<div class="row">                                                                                               ';
@@ -135,7 +129,7 @@
 						div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
 						div +=	'					  </div>                                                                                                        ';
 						div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
-						div +=	'					  	<div class="wish"><img class="starOpa" src="../images/star.png" width="30" height="28"  /></div>          ';
+						div +=	'					  	<div class="wish"><a class="wishLnk" href="#"><img class="starOpa_'+list.reviewNo+'" src="../images/star.png" width="30" height="28"  /></a></div>          ';
 						div +=	'					  </div>                                                                                                        ';
 						div +=	'					</div>                                                                                                          ';
 						div +=	'				</div>                                                                                                              ';
@@ -150,9 +144,9 @@
 						$('#columns').imagesLoaded(function() {
 							$('#columns').masonry();
 						});
-						
 						$('a.detailLnk').click(clickDetailLnk);
 				}
+						$('a.wishLnk').click(clickWishLnk);
 			});
 			
 			$(window).scroll(function() {
@@ -161,8 +155,8 @@
 				
 				if(scrollHeight==documentHeight){
 					$.getJSON(contextRoot + '/cosmetic/ajax/mainReview.do?pageNo='+pageIdx, function(resultObj) {
+						if(resultObj.reviewList.length != 0) pageIdx++;
 						for(var list of resultObj.reviewList){
-							if(resultObj.reviewList.length != 0) pageIdx++;
 							
 							var beforePath = '';
 							var afterPath = '';
@@ -184,7 +178,7 @@
 								div +=	'<figure>';
 								div +=	'<a class="detailLnk" href="#"><img src="' + afterPath + '" reviewNo="' + list.reviewNo + '" /></a>									';
 								div +=	'<figcaption>																														';
-								div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
+								div +=	'				<div class="review">'+ list.content +'</div>                                      ';
 								div +=	'				<hr />                                                                                                              ';
 								div +=	'				<div class="footers">                                                                                               ';
 								div +=	'					<div class="row">                                                                                               ';
@@ -193,7 +187,7 @@
 								div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
 								div +=	'					  </div>                                                                                                        ';
 								div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
-								div +=	'					  	<div class="wish"><img class="starOpa" src="../images/star.png" width="30" height="28"  /></div>          ';
+								div +=	'					  	<div class="wish"><a class="wishLnk" href="#"><img class="starOpa_'+ list.reviewNo +'" src="../images/star.png" width="30" height="28"  /></a></div>          ';
 								div +=	'					  </div>                                                                                                        ';
 								div +=	'					</div>                                                                                                          ';
 								div +=	'				</div>                                                                                                              ';
@@ -211,11 +205,12 @@
 								});
 						    	// 다시 리로드
 						    	$('#columns').masonry();
-						    	
 						    	$('a.detailLnk').click(clickDetailLnk);
+						    	
+						    	// 여러번 이벤트 발생되는것을 방지하기위해 off로 이벤트 해제
+						    	$('a.wishLnk').off('click');
+						    	$('a.wishLnk').click(clickWishLnk);
 						}
-						
-						
 					});
 					
 					
@@ -223,6 +218,7 @@
 			});
 			
 		});
+		
 	</script>
 </head>
 <body>
@@ -271,6 +267,36 @@
 	function clickDetailLnk(event) {
 		event.preventDefault();
 		location.href = 'user_review2.html?reviewNo=' + $(event.target).attr('reviewNo');
+	}
+	function clickWishLnk(event) {
+		event.preventDefault();
+		console.log(event.target);
+		alert('한번만 타라.');
+		
+		/*
+		var x = '<img class="x" alt="" src="../images/X.png" width="15px" height="15px">';
+		if($(this).css("opacity") == 0.4){
+			$(this).css({opacity: "1.0"});
+			$("#zzim").append($(".item .review1").clone()
+					  .css({width: "100px", height: "100px"})).append(x);
+		}
+		else if($(this).css("opacity") == 1.0){
+			alert("이미 찜한 후기입니다.");
+		}
+		
+		$(".review1").hover(function () {
+			$("#zzim .review1").css({opacity: "0.4"});
+			
+		}, function () {
+			$("#zzim .review1").css({opacity: "1.0"});
+		});
+		
+		$(".x").click(function () {
+			$("#zzim .review1").remove();
+			$(".x").remove();
+			$(".starOpa").css("opacity", "0.4");
+		});
+		*/
 	}
 </script>
 </body>

@@ -83,12 +83,14 @@
  	</select>
  	
  	<select id="selectReviewWish" parameterType="int" resultMap="reviewWishMap">
- 		select a.wno as wishNo, a.rno as reviewNo, b.title as title, b.cont as content, b.vcnt as viewCnt, c.fil_path as filePath
+ 		select a.wno as wishNo, a.rno as reviewNo, b.title as title, b.cont as content, b.vcnt as viewCnt, c.fil_path as filePath , b.mno as memberNo, d.id as memberId
 		from wish a
 		inner join review b
 		on a.rno = b.rno
 		inner join review_phot c
 		on a.rno = c.rno
+        inner join member d
+        on b.mno = d.mno
 		where a.mno = #{memberNo}
 		order by b.reg_date desc
  	</select>
@@ -98,6 +100,8 @@
  		<result property="reviewNo" column="reviewNo" />
  		<result property="title" column="title" />
  		<result property="content" column="content" />
+ 		<result property="memberNo" column="memberNo"/>
+ 		<result property="memberId" column="memberId"/>
  		<result property="viewCnt" column="viewCnt" />
  		<collection property="reviewPhoto" column="filePath" resultMap="reviewPhotoMap" ofType="CosmeticReviewPhoto" javaType="ArrayList"></collection>
  	</resultMap>
@@ -264,6 +268,16 @@
  		and mno = #{memberNo}
  	</delete>
  	
+ 	<delete id="deleteSugeryInfo" parameterType="CosmeticWish">
+ 		delete from surgery_info
+ 		where wno = #{wishNo}
+ 	</delete>
+ 	
+ 	<delete id="deleteWish" parameterType="CosmeticWish">
+ 		delete from wish
+ 		where wno = #{wishNo}
+ 		and mno = #{memberNo}
+ 	</delete>
  	
  	<!-- UPDATE 영역 -->
  	<update id="updateReview" parameterType="cosmeticReview">

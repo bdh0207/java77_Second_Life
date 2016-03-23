@@ -17,6 +17,30 @@
 		width: 350px;
 		height: 280px;
 	}
+	@media (min-width: 1200px){
+		.container{
+			width: 1170px !important;
+		}
+	}
+	
+	@media (min-width: 992px){
+		.container{
+			width: 970px;
+		}
+	}
+	
+	@media (min-width: 768px){
+		.container{
+			width: 750px;
+		}
+	}
+	
+	.container, .container-fluid{
+		padding-left: 15px !important;
+		padding-left: 15px !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+	}
 </style>
 
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
@@ -62,7 +86,7 @@
 					div +=	'		<a class="detailLnk" href="#"><img class="img-rounded" reviewNo="'+wish.reviewNo+'" src="'+ afterPath +'"></a>';
 					div +=	'		<div class="caption">                                                           								';
 					div +=	'			<h3 class="title-mylist">'+wish.title+'</h3>                               									 ';
-					div +=	'			<p lang="content-mylist">'+resultObj.id+'</p>                                   						';
+					div +=	'			<p lang="content-mylist">'+wish.memberId+'</p>                                   						';
 					div +=	'			<p class="text-center icon-mylist">                                         							';
 				    div +=      '     	   		<img src="../images/eye.png" width="15px" height="15px" />'+wish.viewCnt;
 				    div +=      '          	<img src="../images/heart.png" width="15px" height="15px" /> 22534      ';
@@ -114,6 +138,7 @@
 		location.href = 'user_review2.html?reviewNo='+$(event.target).attr('reviewNo');
 	}
 	
+	// 정보 받아오기
 	function getInfo(wishNo,reviewNo) {
 		$.getJSON(contextRoot+'/cosmetic/ajax/receiveSugeryInfo.do?wishNo='+wishNo+'&reviewNo=' + reviewNo,function(resultObj){
 			if(resultObj.msg == "success"){
@@ -123,9 +148,24 @@
 				alert('공유된 수술정보가 없습니다.');
 			}
 		});
+		
 	}
+	// 위시 삭제
 	function wishDel(wishNo) {
-		alert('위시삭제 성공');
+		//alert('위시삭제 성공');
+		
+		var retVal = confirm('위시 정보를 삭제 하시겠습니까?');
+		if(retVal == true){
+			$.get(contextRoot + '/cosmetic/ajax/deleteWish.do?wishNo='+wishNo, function(resultObj) {
+				$('#columns').masonry('remove',$('#w_'+wishNo));
+				
+				$('#columns').imagesLoaded(function() {
+					$('#columns').masonry();
+				});
+			},'json');			
+		}
+		
+		
 	}
 </script>
 </head>

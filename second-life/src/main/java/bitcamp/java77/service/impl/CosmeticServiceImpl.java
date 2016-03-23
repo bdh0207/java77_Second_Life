@@ -202,6 +202,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 			cosmeticDao.insertSugeryInfo(cosmeticSugeryInfo);
 			msg = "success";
 		}
+		
 		resultMap.put("msg", msg);
 		
 		return resultMap;
@@ -212,5 +213,14 @@ public class CosmeticServiceImpl implements CosmeticService {
 	public CosmeticReview selectSurgeryInfo(int reviewNo) throws Exception {
 		return cosmeticDao.selectSurgeryInfo(reviewNo);
 	}
-	 
+
+	@Override
+	@Transactional
+	public void deleteWish(CosmeticWish wish) throws Exception {
+		// 테이블 관계 때문에 위시번호에 관련된 수술정보 삭제
+		cosmeticDao.deleteSugeryInfo(wish);
+		cosmeticDao.deleteWish(wish);
+	}
+	
+	
 }
