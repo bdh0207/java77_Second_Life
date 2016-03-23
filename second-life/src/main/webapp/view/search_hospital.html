@@ -5,8 +5,6 @@
     <title>Search Hospital</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
     <link rel="stylesheet" type="text/css" href="../css/searchHospital.css">
-    <script src="../js/common.js" type="text/javascript"></script>
-	<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=32d3bb0127a08daaa98517ba3ffc0655&libraries=services"></script>
 	<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
     <script src="../js/common.js" type="text/javascript"></script>
     <style>
@@ -45,18 +43,27 @@
 		</legend>
 	</fieldset>
 	<br />
-	<div id="map" style="border-radius:5px;width:100%;height:450px;"></div>
-	<br />
-	<br />
-	<div id="list">
-		
+	<div style="width: 1100px; height: 400px;">
+		<!-- 지도 -->
+		<div id="map" style="border-radius:5px;width: 800px;height:415px; float: left; margin-right: 20px;"></div>
+		<!-- 병원 리스트 -->
+		<div style="margin-bottom: 10px;"><input id="search" type="text" class="form-control searchBar" placeholder="병원 이름으로 검색"></div>
+		<div class="mapList" style="width: 280px; height: 375px; float: right; overflow: auto;">
+			
+		</div>
 	</div>
+	<!-- 상담 병원 리스트 -->
+	<p class="lead subTitle">Counseling List</p>
+	<hr style="border-top: 1px soild #e5e5e5; margin-bottom: 30px;">
+	<!-- <dir style="width: 1100px; height: 200px; background-color: #e5e5e5;"> -->
+		<div id="listForm">
+			　
+		</div>
+	<!-- </dir> -->
 	<br />
+	<hr style="border-top: 1px soild #e5e5e5; width: 1100px; margin-top: 5px;">
 	<br />
-	<br />
-	<br />
-	<br />
-	<br />
+	<button class="btn btn-danger buttonStyle">Counseling</button>
 	<br />
 	<br />
 	<br />
@@ -65,6 +72,7 @@
 </div>
 
 
+	<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=32d3bb0127a08daaa98517ba3ffc0655&libraries=services"></script>
 <script>
 var hospitalArr = [];
 
@@ -100,6 +108,14 @@ var hospitalInfo = function hospitalInfo() {
 		hospitalArr = data;
 		var i;
 	 	for(i=0;i<data.length; i++){
+	 		$(".mapList").append('<blockquote><p style="font-size: 15px;">' + data[i].name + '</p>' +
+	 				  			 '<small>' + data[i].addr + '</small>' + 
+	 				  			 '<small>' + data[i].surgeryPart + '</small>' + 
+	 				  			 '<small>'+ data[i].tel + '</small>' + 
+	 					    	 '<div style="float: left;"><a style="font-size: 9pt;" href="'+data[i].link+'" target="_blank" class="link">홈페이지</a></div>' + 
+	 				  			 '</blockquote>'
+	 		)
+	 		
 	 		// 주소로 좌표를 검색합니다.
 	 		var d = data[i];
 	 		regHospitalMarker(d, i);
@@ -142,19 +158,19 @@ var regHospitalMarker = function (data, idx) {
 	    	var data = this.hospitalData; 
 	    	var content = '<div class="wrap">' + 
 	    	'    <div class="info">' + 
-	    	'        <div class="title">' + 
+	    	'        <div class="title lead titleFont">' + 
 	    					data.name + 
 	    	'            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
 	    	'        </div>' + 
 	    	'        <div class="body">' + 
 	    	'            <div class="img">' +
 	    	'                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
-	    	'           </div>' + 
+	    	'           </div>' +
 	    	'            <div class="desc">' + 
 	    	'                <div class="ellipsis">'+data.addr+'</div>' + 
 	    	'                <div class="jibun ellipsis">' + data.surgeryPart +
-	    	'                <div><a href="'+data.link+'" target="_blank" class="link">홈페이지</a></div>' +
-	    	'                <div class="addBtnBox" onclick="addList('+idx+')">추가</div>' + 
+	    	'                <div style="float: left;"><a href="'+data.link+'" target="_blank" class="link">홈페이지</a></div>' + 
+	    	'                <div class="addBtnBox" onclick="addList('+idx+')">　상담신청</div>' + 
 	    	'            </div>' + 
 	    	'        </div>' + 
 	    	'    </div>' +    
@@ -171,19 +187,65 @@ var regHospitalMarker = function (data, idx) {
 	});
 };
 
-
-
+var idx;
+// Counseling List 만들기
 var addList = function(idx) {
 	console.dir(hospitalArr[idx]);
-	$("#list").append('<div>'+  +'</div>')
+	$("#listForm").append('<div class="list lead">'+
+						  '<div class="X">Close</div>' +
+						  '<div class="listText">' + '<div style="font-size: 11pt; font-weight: bold;">' + hospitalArr[idx].name + '<hr class="listHr"/></div>' +
+						  '<span style="font-weight: bold;">' + '주소' + '</span>' + '<br />'　+  hospitalArr[idx].addr + '<br />' + '<br />' +
+						  '<span style="font-weight: bold;">' + '수술부위' + '</span>' + '<br />' + hospitalArr[idx].surgeryPart + '<br />' + '<br />' +
+						  '<span style="font-weight: bold;">' + '전화번호' + '</span>' + '<br />' + hospitalArr[idx].tel + '<br />' +
+						  '</div>' + 
+						  '</div>'
+	)
+	
+	$(".X").on("click", function () {
+		$(this).parent().remove();
+	});
+	idx = idx;
 };
 
-
-//커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
+// 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
 function closeOverlay() {
-    overlay.setMap(null);     
+    overlay.setMap(null);
 }
 
+//키보드 이벤트
+var keyBoard = function () {
+	$("#search").keyup(function name() {
+		var searchVal = $("#search").val();
+		var searchResult;
+		var flag = false;
+		$(".mapList").empty();
+		for(var i = 0; i < hospitalArr.length; i++){
+			var name = hospitalArr[i].name;
+			searchResult = name.indexOf(searchVal);
+			console.dir(name)
+			if(searchResult != -1){
+				console.log("성공")
+				$(".mapList").append('<blockquote><p style="font-size: 15px;">' + name + '</p>' +
+			  			 			 '<small>' + hospitalArr[i].addr + '</small>' + 
+				  			 		 '<small>' + hospitalArr[i].surgeryPart + '</small>' + 
+				  					 '<small>'+ hospitalArr[i].tel + '</small>' + 
+					    			 '<div style="float: left;"><a style="font-size: 9pt;" href="'+ hospitalArr[i].link +'" target="_blank" class="link">홈페이지</a></div>' + 
+				  					 '</blockquote>'
+					);
+				flag = true;
+				continue;
+			}else {
+				console.log("실패")
+			};
+		};
+		
+		if(!flag) {
+			$(".mapList").append('<blockquote><p style="font-size: 15px;">' + '찾으시는 병원이 없습니다.' + '</p>' + '</blockquote>');
+		}
+	});
+};
+
+keyBoard();
 
 </script>
 

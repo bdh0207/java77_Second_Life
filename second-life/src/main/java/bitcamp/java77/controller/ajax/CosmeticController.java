@@ -42,6 +42,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import bitcamp.java77.domain.AjaxResult;
 import bitcamp.java77.domain.CosmeticCounsel;
+import bitcamp.java77.domain.CosmeticEvent;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticReview;
@@ -203,6 +204,27 @@ public class CosmeticController {
 		List<CosmeticReview> list = cosmeticService.selectReviewList(search);
 		HashMap<String, Object> resultMap = new HashMap<>();
 		resultMap.put("reviewList", list);
+		resultMap.put("member", member);
+		resultMap.put("status", "success");
+		
+		return resultMap;
+	}
+	
+	@RequestMapping(value="mainEvent",method=RequestMethod.GET)
+	public Object mainEvent(@RequestParam(name="pageNo",defaultValue="0")int pageNo,HttpServletRequest req) throws Exception{
+		HttpSession session   = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+		
+		CosmeticSearch search = new CosmeticSearch();
+		search.setStart((pageNo - 1) * 6); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 6);
+		
+		List<CosmeticEvent> list 		  = cosmeticService.selectEventList(search);
+		HashMap<String, Object> resultMap = new HashMap<>();
+				
+		resultMap.put("eventList", list);
 		resultMap.put("member", member);
 		resultMap.put("status", "success");
 		

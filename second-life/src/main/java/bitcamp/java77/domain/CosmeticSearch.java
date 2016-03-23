@@ -6,7 +6,14 @@ public class CosmeticSearch implements Serializable {
 	protected int start;
 	protected int end;
 	protected int reviewNo;
+	protected int eventNo;
 	
+	public final int getEventNo() {
+		return eventNo;
+	}
+	public final void setEventNo(int eventNo) {
+		this.eventNo = eventNo;
+	}
 	public int getReviewNo() {
 		return reviewNo;
 	}
@@ -25,6 +32,4 @@ public class CosmeticSearch implements Serializable {
 	public void setEnd(int end) {
 		this.end = end;
 	}
-	
-	
 }
