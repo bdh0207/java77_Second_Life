@@ -16,7 +16,7 @@
     .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('http://i1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
     .info .close:hover {cursor: pointer;}
     .info .body {position: relative;overflow: hidden;}
-    .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+    .info .desc {margin: 4px;height: 81px;background-color: #f2f2f2; padding: 7px; border-radius: 3px;}
     .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
     .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
     .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
@@ -47,7 +47,7 @@
 		<!-- 지도 -->
 		<div id="map" style="border-radius:5px;width: 800px;height:415px; float: left; margin-right: 20px;"></div>
 		<!-- 병원 리스트 -->
-		<div style="margin-bottom: 10px;"><input id="search" type="text" class="form-control searchBar" placeholder="병원 이름으로 검색"></div>
+		<div style="margin-bottom: 10px;"><input id="search" type="text" class="form-control searchBar" placeholder="Q 병원 이름으로 검색"></div>
 		<div class="mapList" style="width: 280px; height: 375px; float: right; overflow: auto;">
 			
 		</div>
@@ -63,7 +63,7 @@
 	<br />
 	<hr style="border-top: 1px soild #e5e5e5; width: 1100px; margin-top: 5px;">
 	<br />
-	<button class="btn btn-danger buttonStyle">Counseling</button>
+	<button id="counseling" class="btn btn-danger buttonStyle">Counseling</button>
 	<br />
 	<br />
 	<br />
@@ -74,6 +74,7 @@
 
 	<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=32d3bb0127a08daaa98517ba3ffc0655&libraries=services"></script>
 <script>
+
 var hospitalArr = [];
 
 
@@ -98,6 +99,7 @@ var map = new daum.maps.Map(mapContainer, mapOption);
 // 주소-좌표 변환 객체를 생성합니다
 var geocoder = new daum.maps.services.Geocoder();
 
+
 // DB에서 주소값 불러내기
 var hospitalInfo = function hospitalInfo() {
 	$.getJSON(contextRoot + "/cosmetic/ajax/hospitalInfo.do", function(resultObj) {
@@ -106,19 +108,21 @@ var hospitalInfo = function hospitalInfo() {
 		var data = ajaxReuslt.data;
 		
 		hospitalArr = data;
-		var i;
-	 	for(i=0;i<data.length; i++){
-	 		$(".mapList").append('<blockquote><p style="font-size: 15px;">' + data[i].name + '</p>' +
-	 				  			 '<small>' + data[i].addr + '</small>' + 
-	 				  			 '<small>' + data[i].surgeryPart + '</small>' + 
-	 				  			 '<small>'+ data[i].tel + '</small>' + 
-	 					    	 '<div style="float: left;"><a style="font-size: 9pt;" href="'+data[i].link+'" target="_blank" class="link">홈페이지</a></div>' + 
+		var idx;
+	 	for(idx=0; idx<data.length; idx++){
+	 		$(".mapList").append('<blockquote class="blockquote"><p style="font-size: 15px; font-weight: bold;">' + data[idx].name + ' ' +
+	 							 '<button class="btn btn-danger mapPoint" onclick="mapPoint('+ idx +')">지도</button>' + '</p>' +
+	 				  			 '<small>' + data[idx].addr + '</small>' + 
+	 				  			 '<small>' + data[idx].surgeryPart + '</small>' + 
+	 				  			 '<small>'+ data[idx].tel + '</small>' +
+	 				  			 '<a href="'+ data[idx].link +'" target="_blank" class="link">홈페이지</a>' + '<span class="bar" > | </span>' +
+	 				  			 '<span class="addBtnBox" style="font-size: 8pt; margin-left: 0px;" onclick="addList('+ idx +')">상담신청</span>' +
 	 				  			 '</blockquote>'
 	 		)
 	 		
 	 		// 주소로 좌표를 검색합니다.
-	 		var d = data[i];
-	 		regHospitalMarker(d, i);
+	 		var d = data[idx];
+	 		regHospitalMarker(d, idx);
 	 	}
 	});
 };
@@ -151,11 +155,11 @@ var regHospitalMarker = function (data, idx) {
 	        marker.hospitalData = d;
 	        
 	    	// 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-	       daum.maps.event.addListener(marker, 'click', function() {
+	        daum.maps.event.addListener(marker, 'click', function() {
+	    	var data = this.hospitalData; 
 	    	//커스텀 오버레이에 표시할 컨텐츠 입니다
 	    	//커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
 	    	//별도의 이벤트 메소드를 제공하지 않습니다 
-	    	var data = this.hospitalData; 
 	    	var content = '<div class="wrap">' + 
 	    	'    <div class="info">' + 
 	    	'        <div class="title lead titleFont">' + 
@@ -163,14 +167,11 @@ var regHospitalMarker = function (data, idx) {
 	    	'            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
 	    	'        </div>' + 
 	    	'        <div class="body">' + 
-	    	'            <div class="img">' +
-	    	'                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
-	    	'           </div>' +
 	    	'            <div class="desc">' + 
 	    	'                <div class="ellipsis">'+data.addr+'</div>' + 
 	    	'                <div class="jibun ellipsis">' + data.surgeryPart +
-	    	'                <div style="float: left;"><a href="'+data.link+'" target="_blank" class="link">홈페이지</a></div>' + 
-	    	'                <div class="addBtnBox" onclick="addList('+idx+')">　상담신청</div>' + 
+	    	'                <div style="float: left;"><a href="'+ data.link +'" target="_blank" class="link">홈페이지</a></div>' +
+	    	'                <div style="margin-left: 60px;" class="addBtnBox" onclick="addList('+idx+')">상담신청</div>' + 
 	    	'            </div>' + 
 	    	'        </div>' + 
 	    	'    </div>' +    
@@ -181,30 +182,34 @@ var regHospitalMarker = function (data, idx) {
 	    	
 		    //마커 위에 커스텀오버레이를 표시합니다
 			//마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
-	    	    overlay.setMap(map);
+	    	overlay.setMap(map);
 	    	});
 		}
 	});
 };
 
-var idx;
 // Counseling List 만들기
 var addList = function(idx) {
 	console.dir(hospitalArr[idx]);
-	$("#listForm").append('<div class="list lead">'+
-						  '<div class="X">Close</div>' +
-						  '<div class="listText">' + '<div style="font-size: 11pt; font-weight: bold;">' + hospitalArr[idx].name + '<hr class="listHr"/></div>' +
-						  '<span style="font-weight: bold;">' + '주소' + '</span>' + '<br />'　+  hospitalArr[idx].addr + '<br />' + '<br />' +
-						  '<span style="font-weight: bold;">' + '수술부위' + '</span>' + '<br />' + hospitalArr[idx].surgeryPart + '<br />' + '<br />' +
-						  '<span style="font-weight: bold;">' + '전화번호' + '</span>' + '<br />' + hospitalArr[idx].tel + '<br />' +
-						  '</div>' + 
-						  '</div>'
-	)
+	console.log($('#h_'+hospitalArr[idx].hospitalNo).length);
+	// 제이쿼리, 스크립트 = $().length : ( 0 : 존재하지 않는다. 1: 존재한다. )
+	if($('#h_'+hospitalArr[idx].hospitalNo).length == 0){
+		$("#listForm").append('<div class="list" id="h_'+ hospitalArr[idx].hospitalNo +'">'+
+							  '<div class="X">Close</div>' +
+							  '<div class="listText">' + '<div style="font-size: 11pt; font-weight: bold;">' + hospitalArr[idx].name + '<hr class="listHr"/></div>' +
+							  '<span style="font-weight: bold;">' + '주소' + '</span>' + '<br />'　+  hospitalArr[idx].addr + '<br />' + '<br />' +
+							  '<span style="font-weight: bold;">' + '수술부위' + '</span>' + '<br />' + hospitalArr[idx].surgeryPart + '<br />' + '<br />' +
+							  '<span style="font-weight: bold;">' + '전화번호' + '</span>' + '<br />' + hospitalArr[idx].tel + '<br />' +
+							  '</div>' + 
+							  '</div>');
+	} else{
+		alert("이미 리스트에 추가되었습니다!");
+	}
 	
 	$(".X").on("click", function () {
 		$(this).parent().remove();
 	});
-	idx = idx;
+
 };
 
 // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
@@ -212,24 +217,26 @@ function closeOverlay() {
     overlay.setMap(null);
 }
 
-//키보드 이벤트
+//키보드 검색 이벤트
 var keyBoard = function () {
 	$("#search").keyup(function name() {
 		var searchVal = $("#search").val();
 		var searchResult;
 		var flag = false;
 		$(".mapList").empty();
-		for(var i = 0; i < hospitalArr.length; i++){
-			var name = hospitalArr[i].name;
+		for(var idx = 0; idx < hospitalArr.length; idx++){
+			var name = hospitalArr[idx].name;
 			searchResult = name.indexOf(searchVal);
 			console.dir(name)
 			if(searchResult != -1){
 				console.log("성공")
-				$(".mapList").append('<blockquote><p style="font-size: 15px;">' + name + '</p>' +
-			  			 			 '<small>' + hospitalArr[i].addr + '</small>' + 
-				  			 		 '<small>' + hospitalArr[i].surgeryPart + '</small>' + 
-				  					 '<small>'+ hospitalArr[i].tel + '</small>' + 
-					    			 '<div style="float: left;"><a style="font-size: 9pt;" href="'+ hospitalArr[i].link +'" target="_blank" class="link">홈페이지</a></div>' + 
+				$(".mapList").append('<blockquote class="blockquote"><p style="font-size: 15px; font-weight: bold;">' + name + ' ' +
+									 '<button class="btn btn-danger mapPoint" onclick="mapPoint('+ idx +')">지도</button>' + '</p>' +
+									 '<small>' + hospitalArr[idx].addr + '</small>' + 
+				  			 		 '<small>' + hospitalArr[idx].surgeryPart + '</small>' + 
+				  					 '<small>' + hospitalArr[idx].tel + '</small>' + 
+		 				  			 '<a href="'+ hospitalArr[idx].link +'" target="_blank" class="link">홈페이지</a>' + '<span class="bar" > | </span>' +
+		 				  			 '<span class="addBtnBox" style="font-size: 8pt; margin-left: 0px;" onclick="addList('+ idx +')"> 상담신청</span>' +
 				  					 '</blockquote>'
 					);
 				flag = true;
@@ -240,15 +247,74 @@ var keyBoard = function () {
 		};
 		
 		if(!flag) {
-			$(".mapList").append('<blockquote><p style="font-size: 15px;">' + '찾으시는 병원이 없습니다.' + '</p>' + '</blockquote>');
+			$(".mapList").append('<p class="lead" style="font-size: 12px; text-align: center;">' + '찾으시는 병원이 없습니다.' + '</p>' + '</blockquote>');
 		}
 	});
 };
 
 keyBoard();
 
+// 지도 버튼
+
+var click_overlay;
+var click_marker;
+
+var mapPoint = function (idx) {
+
+	if(click_overlay!=null) {
+		closeClickOverlay();
+	}	
+	
+	// 주소로 좌표를 검색합니다
+	geocoder.addr2coord(hospitalArr[idx].addr, function(status, result) {
+
+	    // 정상적으로 검색이 완료됐으면
+	     if (status === daum.maps.services.Status.OK) {
+
+	        var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
+
+	        // 결과값으로 받은 위치를 마커로 표시합니다
+	        click_marker = new daum.maps.Marker({
+	            map: map,
+	            position: coords
+	        });
+	        
+		    // 커스텀 오버레이에 표시할 컨텐츠 입니다
+		    // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+		    // 별도의 이벤트 메소드를 제공하지 않습니다 
+		    var content = '<div class="wrap">' + 
+		                '    <div class="info">' + 
+		                '        <div class="title lead titleFont">' + 
+		               					hospitalArr[idx].name + 
+		                '            <div class="close" onclick="closeClickOverlay()" title="닫기"></div>' + 
+		                '        </div>' + 
+		                '        <div class="body">' + 
+		                '            <div class="desc">' + 
+		                '                <div class="ellipsis">' + hospitalArr[idx].addr + '</div>' + 
+		                '                <div class="jibun ellipsis">' + hospitalArr[idx].surgeryPart + '</div>' + 
+		                '                <div style="float: left;"><a href="' + hospitalArr[idx].link +'" target="_blank" class="link">홈페이지</a></div>' + '　' +
+		                '				 <span class="addBtnBox" style="font-size: 8pt; margin-left: 0px;" onclick="addList('+ idx +')">상담신청</span>' +
+		                '            </div>' + 
+		                '        </div>' + 
+		                '    </div>' +    
+		                '</div>';
+			     // 마커 위에 커스텀오버레이를 표시합니다
+	     // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+	     click_overlay = new daum.maps.CustomOverlay({
+	         content: content,
+	         map: map,
+	         position: click_marker.getPosition()
+	     });
+	    }
+	});    
+}; 
+
+var closeClickOverlay = function() {
+	click_overlay.setMap(null);
+	click_marker.setMap(null);
+};
+
+
 </script>
-
-
 </body>
 </html>

@@ -6,7 +6,7 @@
 }
 
 .searchBar{
-	font-size: 10px;
+	font-size: 11px;
 	padding-left: 10px;
 	width: 280px;
 	height: 30px;
@@ -68,6 +68,29 @@
     margin-top: 7px;
     margin-bottom: 7px;
     margin-left: 60px;
+}
+
+.link{
+	font-size: 8pt;
+	margin: 0px;
+}
+
+.bar{
+	font-size: 8pt;
+	margin: 0px;
+	color: #786f6f;
+}
+
+.blockquote{
+	margin-bottom: 10px;
+}
+
+.mapPoint{
+	font-size: 3pt;
+	padding: 0px;
+	background-color: #d4424c;
+	border-color: #d4424c;
+	border-radius: 3px;
 }
 
 /* 
