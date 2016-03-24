@@ -16,7 +16,7 @@ import java.util.UUID;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import javax.swing.plaf.synth.SynthSeparatorUI;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 
@@ -51,6 +51,7 @@ import bitcamp.java77.domain.CosmeticReviewPhoto;
 import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
 import bitcamp.java77.domain.CosmeticWish;
+import bitcamp.java77.domain.CosmeticWishEvent;
 import bitcamp.java77.service.CosmeticService;
 import bitcamp.java77.util.MultipartHelper;
 
@@ -661,6 +662,36 @@ public class CosmeticController {
 		return new AjaxResult(msg, null);
 	}
 	
+	// 찜(이벤트) 등록
+	@RequestMapping(value="wishEventAdd", method=RequestMethod.GET)
+	public void wishEventAdd(int eventNo, HttpServletRequest req) throws Exception{
+		HttpSession session   = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		CosmeticWishEvent wishEvent = new CosmeticWishEvent();
+		
+		wishEvent.setEventNo(eventNo);
+		wishEvent.setMemberNo(member.getMemberNo());
+		
+		cosmeticService.insertWishEvent(wishEvent);
+	}
+	
+	// 찜(이벤트) 등록여부 조회
+	@RequestMapping(value="wishEventSelect", method=RequestMethod.GET)
+	public AjaxResult wishEventSelect(int eventNo, HttpServletRequest req) throws Exception{
+		HttpSession session   = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		CosmeticWishEvent wishEvent = new CosmeticWishEvent();
+		
+		wishEvent.setEventNo(eventNo);
+		wishEvent.setMemberNo(member.getMemberNo());
+		
+		int flag = cosmeticService.selectWishEvent(wishEvent);
+		
+		return new AjaxResult("success", flag);
+	}
+	
 	// 추천 등록
 	@RequestMapping(value="reivewRecomAdd",method=RequestMethod.GET)
 	public AjaxResult reivewRecomAdd(int reviewNo, HttpServletRequest req) throws Exception{
@@ -676,7 +707,7 @@ public class CosmeticController {
 		
 		return new AjaxResult(msg,null);
 	}
-	
+	 
 	// 마이페이지 wish리스트
 	@RequestMapping(value="searchReviewWish", method=RequestMethod.GET)
 	public Object searchReviewWish(HttpServletRequest req) throws Exception{
@@ -722,5 +753,13 @@ public class CosmeticController {
 	public AjaxResult setWordType(String wordType) throws Exception{
 		CosmeticSearch.wordType = wordType;
 		return new AjaxResult("success", null);
+	}
+	// 이벤트 조회수 증가 -> 반환
+	@RequestMapping(value="viewCntAdd",method=RequestMethod.GET)
+	public AjaxResult viewCntAdd(int eventNo) throws Exception {
+		cosmeticService.updateEventViewCnt(eventNo);
+		int viewCnt = cosmeticService.selectEventViewCnt(eventNo);
+		
+		return new AjaxResult("success", viewCnt);
 	}
 }

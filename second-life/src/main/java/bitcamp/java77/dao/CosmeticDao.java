@@ -12,6 +12,7 @@ import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
 import bitcamp.java77.domain.CosmeticSugeryInfo;
 import bitcamp.java77.domain.CosmeticWish;
+import bitcamp.java77.domain.CosmeticWishEvent;
 
 public interface CosmeticDao {
 	int searchID(String id); // ID 중복확인
@@ -49,4 +50,8 @@ public interface CosmeticDao {
 	void deleteSugeryInfo(CosmeticWish wish);
 	void deleteWish(CosmeticWish wish);
 	void updateReviewViewCnt(int reviewNo);
+	void updateEventViewCnt(int eventNo);
+	int selectEventViewCnt(int eventNo);
+	void insertWishEvent(CosmeticWishEvent wishEvent);
+	int selectWishEvent(CosmeticWishEvent wishEvent);
 }
