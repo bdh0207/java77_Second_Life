@@ -42,15 +42,14 @@
 							<span>*</span>ID
 						</label>
 						<div class="col-lg-8">
-							<input type="text" class="form-control" id="inputId"  name="id"><span id="idCheckText"></span>
-						</div>
-						<div class="col-lg-2">
+							<input type="text" class="form-control inputBox" style="display: inline;" id="inputId" name="id" placeholder="아이디">
 							<button type="button" class="btn btn-default buttonGray" id="idCheck"
 								data-container="body" data-toggle="popover"
 								data-placement="right"
 								data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
 								data-original-title="" title="">ID 중복확인
 							</button>
+							<span style="font-size: 7pt; margin-left: 0px; display: block;" id="idCheckText"> </span>
 						</div>
 					</div>
 					<div class="form-group">
@@ -58,9 +57,8 @@
 							<span>*</span>Password
 						</label>
 						<div class="col-lg-10">
-							<input type="password" class="form-control" id="inputPassword" name="pwd"
-								
-								placeholder="영문 대소문자/숫자/특수문자를 혼용하여 8자 이상">
+							<input type="password" class="form-control inputBox" id="inputPassword" name="pwd" placeholder="비밀번호">
+							<span style="font-size: 7pt; margin-left: 0px;">영문 대소문자/숫자/특수문자를 혼용하여 8자 이상</span>
 						</div>
 					</div>
 					<div class="form-group">
@@ -68,30 +66,33 @@
 							<span>*</span>Password Check
 						</label>
 						<div class="col-lg-10">
-							<input type="password" class="form-control" id="inputPassword" name="pwd2"
-								 placeholder="비밀번호 확인">
+							<input type="password" class="form-control inputBox" id="inputPassword" name="pwd2" placeholder="비밀번호 확인">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="inputEmail" class="col-lg-2 control-label"><span>*</span>Name</label>
 						<div class="col-lg-10">
-							<input type="text" class="form-control" id="inputEmail" name="name" >
+							<input type="text" class="form-control inputBox" id="inputEmail" name="name" placeholder="이름">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="inputEmail" class="col-lg-2 control-label">E-mail</label>
 						<div class="col-lg-10">
-							<input type="text" class="form-control" name="email" > 
+							<input type="text" class="form-control inputBox" name="email" placeholder="이메일"> 
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 control-label">
 							<span>*</span>Gender
 						</label>
-						<div class="col-lg-10">
+						<div class="col-lg-8">
 							<div class="radio">
+								<label>
 								<input type="radio" id="optionsRadios1" value="male" name="gender" checked>Male
+								<span style="margin-left: 30px; color: #222222;">
 								<input type="radio" id="optionsRadios2" value="female" name="gender">Female
+								</span>
+								</label>
 							</div>
 						</div>
 					</div>
@@ -99,15 +100,18 @@
 						<label for="select" class="col-lg-2 control-label">
 							<span>*</span>Date Of Birth</label>
 						<div class="col-lg-10">
-							<select class="form-control boxSize" id="select" name="year">
+							<select class="form-control boxSize" id="selectYear" name="year">
 								<option>1990</option>
-							</select><span style="font-size: 9pt; color: gray;">년&nbsp;&nbsp;&nbsp;&nbsp;</span>
-							<select class="form-control boxSize" id="select" name="month">
+							</select>
+							<span style="font-size: 9pt; color: gray;">년&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<select class="form-control boxSize" id="selectMonth" name="month">
 								<option>01</option>
-							</select><span style="font-size: 9pt; color: gray;">월&nbsp;&nbsp;&nbsp;&nbsp;</span>
-							<select class="form-control boxSize" id="select" name="day">
+							</select>
+							<span style="font-size: 9pt; color: gray;">월&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<select class="form-control boxSize" id="selectDate" name="day">
 								<option>01</option>
-							</select><span style="font-size: 9pt; color: gray;">일 </span>
+							</select>
+							<span style="font-size: 9pt; color: gray;">일 </span>
 						</div>
 					</div>
 					<input type="hidden" name="birth" value="19870101">
@@ -117,20 +121,14 @@
 						</label>
 						<div class="col-lg-8">
 							<input type="text" class="form-control addressBox" id="sample4_postcode"  name="posNo">
-						</div>	
-						<div class="col-lg-2">
 							<button type="button" class="btn btn-default buttonGray" data-container="body"
 								data-toggle="popover" data-placement="right"
 								data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
 								onclick="sample4_execDaumPostcode()">우편번호 검색
 							</button>
-						</div>
-						<div class="col-lg-5">
-							<input type="text" class="form-control float-right" id="sample4_roadAddress"  name="addrDef">
-						</div>
-						<div class="col-lg-5">
-							<input type="text" class="form-control float-right" id="sample4_roadAddress"  name="addrDet">
-						</div>
+							<input type="text" class="form-control inputAddr" id="sample4_roadAddress" name="addrDef">
+							<input type="text" class="form-control inputAddr" id="sample4_roadAddress" name="addrDet" placeholder="상세주소">
+						</div>	
 					</div>
 					<div class="form-group">
 						<label for="inputEmail" class="col-lg-2 control-label">Phone</label>
@@ -148,31 +146,36 @@
 					<div class="form-group">
 						<label for="inputPassword" class="col-lg-2 control-label">Interest</label>
 						<div class="col-lg-10 checkbox">
-							<input type="checkbox" name="cPart1"> 눈 <span
-								style="display: inline-block; width: 30px"></span> <input
-								type="checkbox" name="cPart2"> 코 <span
-								style="display: inline-block; width: 30px"></span> <input
-								type="checkbox" name="cPart3"> 턱 <span
-								style="display: inline-block; width: 30px"></span> <input
-								type="checkbox" name="cPart4"> 광대 <span
-								style="display: inline-block; width: 30px"></span> <input
-								type="checkbox" name="cPart5"> 윤곽 <span
-								style="display: inline-block; width: 30px"></span> <input
-								type="checkbox" name="cPart6"> 양악 <span
-								style="display: inline-block; width: 30px"></span> <input
-								type="checkbox" name="cPart7"> 가슴 <br><span
-								style="display: inline-block; width: 30px"></span> <input
-								type="checkbox" name="cPart8"> 지방흡입 <span
-								style="display: inline-block; width: 30px"></span> <input
-								type="checkbox" name="cPart9"> 쁘띠성형
+							<label>
+							<input type="checkbox" name="cPart1"> 눈
+								<span style="display: inline-block; width: 30px"></span>
+							<input type="checkbox" name="cPart2"> 코
+								<span style="display: inline-block; width: 30px"></span>
+							<input type="checkbox" name="cPart3"> 턱
+								<span style="display: inline-block; width: 30px"></span>
+							<input type="checkbox" name="cPart4"> 광대
+								<span style="display: inline-block; width: 30px"></span>
+							<input type="checkbox" name="cPart5"> 윤곽 
+								<span style="display: inline-block; width: 30px"></span>
+							<input type="checkbox" name="cPart6"> 양악 
+								<span style="display: inline-block; width: 30px"></span>
+							<input type="checkbox" name="cPart7"> 가슴 <br>
+							<input type="checkbox" name="cPart8"> 지방흡입 
+								<span style="display: inline-block; width: 30px"></span>
+							<input type="checkbox" name="cPart9"> 쁘띠성형
+							</label>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 control-label">News Mail</label>
 						<div class="col-lg-10">
 							<div class="radio">
+								<label>
 								<input type="radio" name="recEmail" id="optionsRadios1" value="y" checked="checked">받겠습니다.
+								<span style="margin-left: 30px; color: #222222;">
 								<input type="radio" name="recEmail" id="optionsRadios1" value="n">받지 않습니다.
+								</span>
+								</label>
 							</div>
 						</div>
 					</div>
@@ -180,8 +183,12 @@
 						<label class="col-lg-2 control-label">SMS안내</label>
 						<div class="col-lg-10">
 							<div class="radio">
+								<label>
 								<input type="radio" name="recSMS" id="optionsRadios1" value="y" checked="checked">받겠습니다.
+								<span style="margin-left: 30px; color: #222222;">
 								<input type="radio" name="recSMS" id="optionsRadios1" value="n">받지 않습니다.
+								</span>
+								</label>
 							</div>
 						</div>
 					</div>
@@ -203,6 +210,16 @@
 		</div>
 	</div>	
 <script type="text/javascript">
+	// selectBox 값 넣기
+	var selectYear = function () {
+		$("#selectYear").on("click", function () {
+			for(var i = 1910; i < 2016; i++){
+				console.dir(i)
+				$(this).append('<option>' + i + '</option>');
+			}
+		})
+	}
+
 	var idChk;
 	$("#idCheck").click(function() {
 		$.getJSON(contextRoot + "/cosmetic/ajax/idCheck.do", { "id" : $('#inputId').val() },

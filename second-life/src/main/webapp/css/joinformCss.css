@@ -7,6 +7,26 @@
 	
 }
 
+.inputBox{
+	width: 170px;
+	height: 28px;
+	font-size: 9pt;
+	padding: 3px;
+	padding-left: 8px;
+	margin-bottom: 0px;
+	margin-top: 5px;
+}
+
+.inputAddr{
+	width: 500px;
+	height: 28px;
+	font-size: 9pt;
+	padding: 3px;
+	padding-left: 8px;
+	margin-bottom: 0px;
+	margin-top: 5px;
+}
+
 .paddingZero {
 	padding-bottom: 0px;
 	padding-right: 0px;
@@ -24,17 +44,20 @@
 }
 
 .buttonGray {
- 	margin: 0px;
+	height: 28px;
+ 	margin-bottom: 2px;
+ 	margin-left: 5px;
  	padding: 5px;
 	font-size: 8pt;
 }
 
 .boxSize {
 	width: 90px;
-	height: 35px;
+	height: 28px;
 	font-size: 10pt;
 	display: inline;
-	padding-top: 5px;	
+	padding: 3px;
+	padding-left: 5px;
 }
 
 .addressBox {
@@ -53,7 +76,6 @@
 	margin-top: 50px;
 } 
 
-.float-right { float: right; }
 
-span { color: #cf2d39; }
+span { color: #cf2d39;}
 input { font-size: 9pt; }
