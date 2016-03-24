@@ -18,6 +18,7 @@ import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
 import bitcamp.java77.domain.CosmeticSugeryInfo;
 import bitcamp.java77.domain.CosmeticWish;
+import bitcamp.java77.domain.CosmeticWishEvent;
 import bitcamp.java77.service.CosmeticService;
 
 @Service
@@ -225,5 +226,29 @@ public class CosmeticServiceImpl implements CosmeticService {
 	
 	public List<CosmeticEvent> selectEventList(CosmeticSearch search) throws Exception {
 		return cosmeticDao.selectEventList(search);
-	} 
+	}
+
+	@Override
+	@Transactional
+	public void updateEventViewCnt(int eventNo) throws Exception {
+		cosmeticDao.updateEventViewCnt(eventNo);
+	}
+
+	@Override
+	@Transactional
+	public int selectEventViewCnt(int eventNo) throws Exception {
+		return cosmeticDao.selectEventViewCnt(eventNo);
+	}
+
+	@Override
+	@Transactional
+	public void insertWishEvent(CosmeticWishEvent wishEvent) throws Exception {
+		cosmeticDao.insertWishEvent(wishEvent);	
+	}
+
+	@Override
+	@Transactional
+	public int selectWishEvent(CosmeticWishEvent wishEvent) throws Exception {
+		return cosmeticDao.selectWishEvent(wishEvent);	
+	}
 }
