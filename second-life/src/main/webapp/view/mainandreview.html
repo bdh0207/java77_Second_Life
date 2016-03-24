@@ -18,12 +18,30 @@
 		font-size: 17px !important;
 	  }
     }
+   }
+   
+   #main-menu .nav-bar { list-style:none; margin-top: 40px; }
+   #main-menu .nav-bar li { display:inline; padding:0 10px; }
+	
+   #main-menu .nav-bar li a.sortMenu {
+	  text-decoration: none;
+	  padding-left: 0px;
+	  text-transform: uppercase;
+	  color: #333;
+	  text-shadow: 1px 1px 1px #ccc;
+	}
+	.sortIcon{
+		margin-bottom: 5px;
+	}
+	
+
+/* Icons courtesy of Thom : http://pixelb.in/assorted-pixel-perfect-14px-icon-set-286/ */
 </style>
-<!-- 	<link rel="stylesheet" href="../css/bootstrap_yeti.css" type="text/css"> -->
 	<link rel="stylesheet" type="text/css" href="../css/mainCustom.css" />
 	<link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
 	<!-- Bootflat css  -->
 	<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="../css/bootstrap_yeti.css" type="text/css">
 	
 <!-- 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
 	
@@ -40,6 +58,7 @@
 	
 	
 	<script type="text/javascript">
+		var wordType = '';
 		var pageIdx = 2;
 		$(document).ready(function() {	
 			var container = document.querySelector('#masonry');
@@ -51,7 +70,7 @@
 			var container = document.querySelector('#columns');
 			$('#columns').masonry({
 				itemSelector:'.item',
-				columnWidth: 378,
+				columnWidth: 290,
  				percentPosition: true
 			});
 			$('#columns').imagesLoaded(function() {
@@ -115,21 +134,20 @@
 						}
 						index++;
 					}
-					
 					var div = '<div class="item">';	
 						div +=	'<figure>';
 						div +=	'<a class="detailLnk" href="#"><img src="' + afterPath + '" reviewNo="' + list.reviewNo + '" /></a>									';
 						div +=	'<figcaption>																														';
-						div +=	'				<div class="review">'+ list.content +'</div>                                      ';
+						div +=	'				<div class="review">'+ list.title +'</div>                                      ';
 						div +=	'				<hr />                                                                                                              ';
 						div +=	'				<div class="footers">                                                                                               ';
 						div +=	'					<div class="row">                                                                                               ';
 						div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
-						div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
-						div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
+						div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>';
+						div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />'+list.recomCnt+'</div>';
 						div +=	'					  </div>                                                                                                        ';
 						div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
-						div +=	'					  	<div class="wish"><a class="wishLnk" href="#"><img class="starOpa_'+list.reviewNo+'" src="../images/star.png" width="30" height="28"  /></a></div>          ';
+						div +=	'					  	<div class="wish"><button type="button" class="btn btn-danger" onclick="clickWishLnk('+list.reviewNo+')">찜</button></div>';   //<a class="wishLnk" href="#"><img id="s_'+list.reviewNo+'" src="../images/star.png" width="30" height="28"  />
 						div +=	'					  </div>                                                                                                        ';
 						div +=	'					</div>                                                                                                          ';
 						div +=	'				</div>                                                                                                              ';
@@ -146,7 +164,7 @@
 						});
 						$('a.detailLnk').click(clickDetailLnk);
 				}
-						$('a.wishLnk').click(clickWishLnk);
+						//$('a.wishLnk').click(clickWishLnk);
 			});
 			
 			$(window).scroll(function() {
@@ -171,23 +189,21 @@
 								}
 								index++;
 							}
-							console.log(beforePath);	
-							console.log(afterPath);
 							
 							var div = '<div class="item">';	
 								div +=	'<figure>';
 								div +=	'<a class="detailLnk" href="#"><img src="' + afterPath + '" reviewNo="' + list.reviewNo + '" /></a>									';
 								div +=	'<figcaption>																														';
-								div +=	'				<div class="review">'+ list.content +'</div>                                      ';
+								div +=	'				<div class="review">'+ list.title +'</div>                                      ';
 								div +=	'				<hr />                                                                                                              ';
 								div +=	'				<div class="footers">                                                                                               ';
 								div +=	'					<div class="row">                                                                                               ';
 								div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
 								div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
-								div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
+								div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />'+list.recomCnt+'</div>               ';
 								div +=	'					  </div>                                                                                                        ';
 								div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
-								div +=	'					  	<div class="wish"><a class="wishLnk" href="#"><img class="starOpa_'+ list.reviewNo +'" src="../images/star.png" width="30" height="28"  /></a></div>          ';
+								div +=	'					  	<div class="wish"><button type="button" class="btn btn-danger" onclick="clickWishLnk('+list.reviewNo+')">찜</button></div>';
 								div +=	'					  </div>                                                                                                        ';
 								div +=	'					</div>                                                                                                          ';
 								div +=	'				</div>                                                                                                              ';
@@ -208,8 +224,8 @@
 						    	$('a.detailLnk').click(clickDetailLnk);
 						    	
 						    	// 여러번 이벤트 발생되는것을 방지하기위해 off로 이벤트 해제
-						    	$('a.wishLnk').off('click');
-						    	$('a.wishLnk').click(clickWishLnk);
+						    	//$('a.wishLnk').off('click');
+						    	//$('a.wishLnk').click(clickWishLnk);
 						}
 					});
 					
@@ -219,6 +235,12 @@
 			
 		});
 		
+		function searchReviewSort(word) {
+			$.getJSON(contextRoot + '/cosmetic/ajax/setWordType.do?wordType='+word,function(resultObj){
+				console.log('들어옴');
+				window.location.reload(true);
+			});
+		}
 	</script>
 </head>
 <body>
@@ -229,14 +251,28 @@
   	<div id="body-all">
   	<div id="body-contents">
   	
-  	<div class="selectBar">
-		<div class="selectBarItem-1">
-        	<a href="../view/mainandreview.html">USER REVIEW</a>
-        </div>
-        <div class="selectBarItem-2">
-        	<a href="../view/mainandhospital.html">EVENT</a>
-        </div>
-  	</div>
+  	<div class="row">
+			<h1 style="margin-top: 50px; color: #cf2d39; font-weight: bold;">USER REVIEW</h1>
+			<hr>
+	</div>
+  	<div class="row">
+		<nav id="main-menu">
+		     <ul class="nav-bar">
+		          <li class="nav-button-new">
+		          <img class="sortIcon" src="../icon/batch-master/16x16/clock.png">
+		          	<a class="sortMenu" href="#" onclick="searchReviewSort('new'); return false;">최신순</a>
+		          </li>
+		          <li class="nav-button-viewCnt">
+			          <img class="sortIcon" src="../icon/batch-master/16x16/eye.png">
+			          <a class="sortMenu" href="#" onclick="searchReviewSort('viewCount'); return false;">조회순</a>
+		          </li>
+		          <li class="nav-button-recomCnt">
+		          	<img class="sortIcon" src="../icon/batch-master/16x16/heart-full.png">
+		          	<a class="sortMenu" href="#" onclick="searchReviewSort('recomCount'); return false;">추천순</a>
+		          </li>
+		     </ul>
+		</nav>
+	</div>
   	
 	<div id="masonry">
 		<div id="columns">
@@ -244,6 +280,8 @@
 	</div>
 	
 	</div>
+	
+	<!-- 
 	<div id="body-right">
 	  <h3 class="ui-widget-header">Review Wish list</h3>
 	  <div class="ui-widget-content">
@@ -251,11 +289,13 @@
     	</div>
   	  </div>
    </div>
+	 -->
 	
 	
 	
 	</div>
 <script type="text/javascript">
+
 	$(".starClick").click(function() {
         if($(this).css("opacity") == "0.4") {
            $(this).css("opacity", "1.0");
@@ -268,36 +308,47 @@
 		event.preventDefault();
 		location.href = 'user_review2.html?reviewNo=' + $(event.target).attr('reviewNo');
 	}
-	function clickWishLnk(event) {
+	function clickWishLnk(reviewNo) {
 		event.preventDefault();
-		console.log(event.target);
-		alert('한번만 타라.');
+		var flag = false;
 		
-		/*
-		var x = '<img class="x" alt="" src="../images/X.png" width="15px" height="15px">';
-		if($(this).css("opacity") == 0.4){
-			$(this).css({opacity: "1.0"});
-			$("#zzim").append($(".item .review1").clone()
-					  .css({width: "100px", height: "100px"})).append(x);
-		}
-		else if($(this).css("opacity") == 1.0){
-			alert("이미 찜한 후기입니다.");
-		}
-		
-		$(".review1").hover(function () {
-			$("#zzim .review1").css({opacity: "0.4"});
+		// Ajax는 요청 수신이 완료될때까지 기다리지않고 다른 작업을 수행 한다.
+		// 그렇게되면 전역변수 flag값을 변경해줄수 없기때문에 async(비동기적처리) 속성을 false로 설정하여 데이터 수신이 완료된 후 작업을 진행시켜준다.
+		$.ajax({
+			url : contextRoot + '/cosmetic/ajax/loginCheck.do',
+			type : 'GET',
+			dataType : 'json',
+			async : false
 			
-		}, function () {
-			$("#zzim .review1").css({opacity: "1.0"});
+		}).done(function(resultObj) {
+			var ajaxResult = resultObj.ajaxResult;
+			var member = ajaxResult.data;
+			
+			if(member != null){
+				console.log(member.id);
+			}
+			flag = true;
+		}).fail(function(error) {
+			alert('로그인 후 이용해주세요');
+			window.location.href = "login.html";			
 		});
 		
-		$(".x").click(function () {
-			$("#zzim .review1").remove();
-			$(".x").remove();
-			$(".starOpa").css("opacity", "0.4");
-		});
-		*/
+		if(flag == true){
+			
+			$.get(contextRoot + '/cosmetic/ajax/wishAdd.do?reviewNo='+reviewNo,function(resultObj){
+				var ajaxResult = resultObj.ajaxResult;
+				var status = ajaxResult.status;
+				if(status == 'success'){
+					alert('위시리스트에 추가되었습니다.');
+				}
+				else{
+					alert('이미 위시리스트에 있습니다.');
+				}
+			},'json');
+			
+		}
 	}
+	
 </script>
 </body>
 </html>

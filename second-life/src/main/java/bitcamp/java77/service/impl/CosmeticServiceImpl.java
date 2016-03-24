@@ -41,6 +41,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 	@Override
 	@Transactional
 	public CosmeticReview selectReviewListDetail(int reviewNo) throws Exception {
+		cosmeticDao.updateReviewViewCnt(reviewNo);
 		return cosmeticDao.selectReviewListDetail(reviewNo);
 	}
 

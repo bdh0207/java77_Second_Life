@@ -48,4 +48,5 @@ public interface CosmeticDao {
 	CosmeticReview selectSurgeryInfo(int reviewNo);
 	void deleteSugeryInfo(CosmeticWish wish);
 	void deleteWish(CosmeticWish wish);
+	void updateReviewViewCnt(int reviewNo);
 }

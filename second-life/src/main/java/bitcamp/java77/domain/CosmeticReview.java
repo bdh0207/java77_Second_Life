@@ -11,6 +11,7 @@ public class CosmeticReview implements Serializable {
 	protected String title;
 	protected String content;
 	protected int viewCnt;
+	protected int recomCnt;
 	protected String sugeryPart;
 	protected char status;
 	protected String hospitalName;
@@ -23,6 +24,12 @@ public class CosmeticReview implements Serializable {
 	protected List<CosmeticReviewComment> reviewComment;
 	protected CosmeticMember member;
 	
+	public int getRecomCnt() {
+		return recomCnt;
+	}
+	public void setRecomCnt(int recomCnt) {
+		this.recomCnt = recomCnt;
+	}
 	public String getHospitalName() {
 		return hospitalName;
 	}

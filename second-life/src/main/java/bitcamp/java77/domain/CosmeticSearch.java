@@ -7,7 +7,14 @@ public class CosmeticSearch implements Serializable {
 	protected int end;
 	protected int reviewNo;
 	protected int eventNo;
+	public static String wordType;
 	
+	public static String getWordType() {
+		return wordType;
+	}
+	public static void setWordType(String wordType) {
+		CosmeticSearch.wordType = wordType;
+	}
 	public final int getEventNo() {
 		return eventNo;
 	}

@@ -84,7 +84,8 @@ $(document).ready(function() {
  	 		 $('#data-title').text(reviewDetail.review.title);
  			 $('#data-content').text(reviewDetail.review.content);
  	 		 $('#viewCnt').text(reviewDetail.review.viewCnt);
- 			 
+ 	 		 $('#recomCnt').text(reviewDetail.review.recomCnt);
+ 			 $('#commentCnt').text(reviewDetail.commentCnt);
  	 		 
  	 		 for(var photoList of reviewDetail.photo){
  	 			 var li =   '<li data-thumb="'+photoList.filePath+'">	 ';
@@ -457,7 +458,7 @@ function commentDel(commentNo, reviewNo) {
 					<div id="data-content" class="panel-body"></div>
 				</div>
 				<div style="float: right; line-height: 0;">
-					좋아요 330 | <a href="">댓글 2343</a> | 조회 <span id="viewCnt">34231</span>
+					좋아요<span id="recomCnt">330</span> | 댓글<span id="commentCnt">2343</span> | 조회 <span id="viewCnt">34231</span>
 				</div>
 				<br />
 				<br />
@@ -529,12 +530,12 @@ function commentDel(commentNo, reviewNo) {
 				<div style="float: left;">
 					<button id="recomBtn" type="button" class="btn btn-default"
 						aria-label="Left Align">
-						<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+						<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
 						좋아요
 					</button>
 					<button id="wishBtn" type="button" class="btn btn-default"
 						aria-label="Left Align">
-						<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
 						찜
 					</button>
 				</div>

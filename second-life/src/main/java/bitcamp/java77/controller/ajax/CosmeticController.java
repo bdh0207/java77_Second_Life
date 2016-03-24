@@ -176,9 +176,8 @@ public class CosmeticController {
 		pageNo = (pageNo == 0) ? 1 : pageNo;
 		
 		CosmeticSearch search = new CosmeticSearch();
-		search.setStart((pageNo - 1) * 6); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
-		search.setEnd(pageNo * 6);
-		
+		search.setStart((pageNo - 1) * 8); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 8);
 		
 		List<CosmeticReview> list = cosmeticService.selectReviewList(search);
 		HashMap<String, Object> resultMap = new HashMap<>();
@@ -197,9 +196,9 @@ public class CosmeticController {
 		pageNo = (pageNo == 0) ? 1 : pageNo;
 		
 		CosmeticSearch search = new CosmeticSearch();
-		search.setStart((pageNo - 1) * 6); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
-		search.setEnd(pageNo * 6);
-		
+		search.setStart((pageNo - 1) * 8); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 8);
+		System.out.println("wordType : " + search.getWordType());
 		
 		List<CosmeticReview> list = cosmeticService.selectReviewList(search);
 		HashMap<String, Object> resultMap = new HashMap<>();
@@ -716,5 +715,12 @@ public class CosmeticController {
 		cosmeticService.deleteWish(wish);
 		
 		return new AjaxResult("success",null);
+	}
+	
+	// 정렬 키워드
+	@RequestMapping(value="setWordType",method=RequestMethod.GET)
+	public AjaxResult setWordType(String wordType) throws Exception{
+		CosmeticSearch.wordType = wordType;
+		return new AjaxResult("success", null);
 	}
 }

@@ -16,7 +16,8 @@ public class CosmeticInterceptor extends HandlerInterceptorAdapter {
 				requestPath.equals("/second-life/cosmetic/ajax/mainHospital.do")||
 						requestPath.equals("/second-life/cosmetic/ajax/login.do")||
 						requestPath.equals("/second-life/cosmetic/ajax/idCheck.do")||
-						requestPath.equals("/second-life/cosmetic/ajax/join.do")){
+						requestPath.equals("/second-life/cosmetic/ajax/join.do")||
+						requestPath.equals("/second-life/cosmetic/ajax/setWordType.do")){
 			return true;
 		}
 		else{
