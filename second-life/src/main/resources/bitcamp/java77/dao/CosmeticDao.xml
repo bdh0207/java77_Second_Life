@@ -53,7 +53,16 @@
  		values(#{memberNo},#{reviewNo},now())
  	</insert>
  	
-
+ 	<insert id="insertWishEvent" parameterType="CosmeticWishEvent">
+ 		insert into wish_event(eno, mno, reg_date)
+ 		select #{eventNo}, #{memberNo}, now() from dual
+ 		where not exists(select * 
+ 						   from wish_event 
+ 						  where eno = #{eventNo} 
+ 						  	and mno = #{memberNo})
+ 	</insert>
+ 	
+ 	
  	<!-- SELECT 영역 -->
  	<select id="searchID" parameterType="string" resultType="int">
 		select count(*)
@@ -227,6 +236,20 @@
  		 where rno = #{reviewNo} 
  	</select>
  	
+ 	<select id="selectEventViewCnt" parameterType="int" resultType="int">
+ 		select vcnt as viewCnt
+ 		  from event
+ 		 where eno = #{eventNo} 
+ 	</select>
+ 	
+ 	<select id="selectWishEvent" parameterType="CosmeticWishEvent" resultType="int">
+ 		select count(wno)
+ 		  from wish_event
+ 		 where eno = #{eventNo}
+ 		   and mno = #{memberNo} 
+ 	</select>
+ 	
+ 	
  	<!-- DELETE 영역 -->
  	<delete id="deleteReviewPhoto" parameterType="int">
  		delete from review_phot
@@ -287,5 +310,10 @@
  		and rpno = #{photoNo}
  	</update>
  	
+ 	<update id="updateEventViewCnt" parameterType="int">
+ 		update event
+		   set vcnt = vcnt + 1
+		where eno = #{eventNo}
+ 	</update>
  	
 </mapper>

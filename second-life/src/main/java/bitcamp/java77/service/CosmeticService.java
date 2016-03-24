@@ -12,6 +12,7 @@ import bitcamp.java77.domain.CosmeticReviewPhoto;
 import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
 import bitcamp.java77.domain.CosmeticWish;
+import bitcamp.java77.domain.CosmeticWishEvent;
 
 public interface CosmeticService {
 	public int insertReview(CosmeticReview cosmeticReview) throws Exception;
@@ -36,4 +37,8 @@ public interface CosmeticService {
 	public HashMap<String, Object> insertWish(CosmeticWish cosmeticWish) throws Exception;
 	public HashMap<String, Object> insertReviewRecom(CosmeticReviewRecom reviewRecom) throws Exception;
 	public CosmeticReview selectSurgeryInfo(int reviewNo) throws Exception;
+	public void updateEventViewCnt(int eventNo) throws Exception;
+	public int selectEventViewCnt(int eventNo) throws Exception;
+	public void insertWishEvent(CosmeticWishEvent wishEvent) throws Exception;
+	public int selectWishEvent(CosmeticWishEvent wishEvent) throws Exception;
 }
