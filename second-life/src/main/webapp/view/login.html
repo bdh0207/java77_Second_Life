@@ -2,33 +2,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
-<link rel="stylesheet" type="text/css" href="../css/loginCss.css">
 <title>Login</title>
-<style>
-	#square {
-		 background-color: #f3c9cc;
-		 width: 500px;
-		 height: 320px;
-		 margin: auto;
-		 padding: 35px;
-		 padding-left: 70px;
-		 padding-right: 70px;
-	}
-	hr {
-		border-color: #595959;
-		border-width: 0.05px;
-		border-style: solid;
-	}
+<link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
+<style type="text/css">
+	body 	{ margin: 0px; }
+	img 	{ margin-top: 90px; }
+	#square { background-color: #f3c9cc; width: 500px; margin: 0 auto; padding: 35px 70px; }
+	hr 		{ border: 0.05px solid #595959; margin-top: 40px; margin-bottom: 15px; }
+	.joinAlink { color: #595959; font-size: 8pt; padding-left: 0px; }
+	#loginBtn  { background-color: white; color: #cf2d39; border-color: #aab2bd; float: right; }
 </style>
-<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script src="../js/common.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script>
 	$(document).ready(function() {
 		// top 적용
 		$('#top').load('top.html');
-		
-		$('#joinFormMove').attr('href','joinForm.html');
 	});
 </script>
 </head>
@@ -37,58 +26,47 @@
 	<!-- top -->
 	<div id="top"></div>
 	
-	<div class="body-content">
-		<div align="center"><img src="..\images\로그인로고.png"/></div>
-		<div id="square">
-			<div style="margin: auto;">
-				<div class="form-group">
+	<div class="container">
+		<div class="row" align="center">
+			<img src="..\images\로그인로고.png">
+		</div>
+		<div class="row" id="square">
+			<div class="form-group">
 				<label class="control-label" for="inputSmall">ID</label>
 				<input class="form-control input-sm" type="text" id="inputSmall">
-				</div>
-				<div class="form-group">
-				<label class="control-label" for="inputSmall">PASS</label>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="inputSmall">PASSWORD</label>
 				<input class="form-control input-sm" type="password" id="inputSmall">
-				</div>
-				<hr/>
-				<div class="modal-footer paddingZero" style="padding-top: 0px;" >
-			        <button type="button" id="loginBtn"  class="btn btn-default buttonColor" data-dismiss="modal" style="background-color: white; color: #cf2d39;">Login</button>
-			        
-<!-- 				<div class="modal-footer paddingZero" > -->
-<!-- 			        <button type="button" id="loginBtn" class="btn btn-default buttonColor" data-dismiss="modal">Login</button> -->
-<!-- 			    </div> -->
-			    <div style="float: right;">
-				    <a href="#" class="btn btn-link joinAlink">아이디|비번찾기</a>
-				    <a href="#" id="joinFormMove" class="btn btn-link joinAlink">회원가입</a>
-			    </div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<button type="button" id="loginBtn" class="btn">Login</button>
+			    <a href="#" class="btn btn-link joinAlink">아이디|비번찾기</a>
+			    <a href="joinForm.html" id="joinFormMove" class="btn btn-link joinAlink">회원가입</a>
 			</div>
 		</div>
 	</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	
-	<script type="text/javascript">
-		$('#loginBtn').click(function() {
-			$.post(contextRoot+'/cosmetic/ajax/login.do',
-				{
-					id : $('input[type="text"]').val(),
-					password : $('input[type="password"]').val()
-				},
-				function(resultObj){
-					var ajaxResult = resultObj.ajaxResult;
-					var status = ajaxResult.status;
-					console.log(status);
-					if(status == 'success'){
-						alert('로그인 성공');
-						location.href = "mainandreview.html";
-					}
-					else{
-						alert('로그인 정보를 다시 확인해 주세요');
-					}
-			},"json");
-		});
-	</script>
+<script type="text/javascript">
+	$('#loginBtn').click(function() {
+		$.post(contextRoot+'/cosmetic/ajax/login.do',
+			{
+				id : $('input[type="text"]').val(),
+				password : $('input[type="password"]').val()
+			},
+			function(resultObj){
+				var ajaxResult = resultObj.ajaxResult;
+				var status = ajaxResult.status;
+				console.log(status);
+				if(status == 'success'){
+					alert('로그인 성공');
+					location.href = "mainandreview.html";
+				}
+				else{
+					alert('로그인 정보를 다시 확인해 주세요');
+				}
+		},"json");
+	});
+</script>
 </body>
 </html>
