@@ -9,15 +9,15 @@ public class CosmeticMember implements Serializable {
 	protected String pwd;
 	protected String name;
 	protected String email;
-	protected String gender;
-	protected int birth;
-	protected String posNo;		// 우편번호
-	protected String addrDef; 	// 기본주소
-	protected String addrDet; 	// 상세주소
-	protected String tel;		// 전화
-	protected String cPart;		// 관심부위
-	protected String recEmail;
-	protected String cont;
+	protected String gender;	
+	protected String birth;		// int -> String
+	protected String posNo;		// 하지말자
+	protected String addrDef; 	// 하지말자
+	protected String addrDet; 	// 하지말자
+	protected String tel;		
+	protected String cPart;		// 하지말자
+	protected String recEmail;	// 하지말자
+	protected String cont;		// 하지말자
 	protected Date regDate;
 	
 	public int getMemberNo() {
@@ -56,10 +56,10 @@ public class CosmeticMember implements Serializable {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public int getBirth() {
+	public final String getBirth() {
 		return birth;
 	}
-	public void setBirth(int birth) {
+	public final void setBirth(String birth) {
 		this.birth = birth;
 	}
 	public String getPosNo() {

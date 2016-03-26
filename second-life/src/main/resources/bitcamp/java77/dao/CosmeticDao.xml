@@ -7,11 +7,8 @@
 
 	<!-- INSERT 영역 -->
 	<insert id="insertMember" parameterType="CosmeticMember">
-		insert into member(ID, PWD, NAME, EMAIL, GENDER, BIRTH, POSNO, ADDR_DEF, TEL, REC_EMAIL)
-		values(#{id}, #{pwd}, #{name}, #{email}, #{gender}, #{birth}, #{posNo}, #{addrDef}, #{tel}, #{recEmail})
-		<selectKey keyProperty="memberNo" order="AFTER" resultType="int">
-			select max(mno) from member
-		</selectKey>
+		insert into member(ID, PWD, NAME, EMAIL, GENDER, BIRTH, TEL, reg_date)
+		values(#{id}, #{pwd}, #{name}, #{email}, #{gender}, #{birth}, #{tel}, now())
 	</insert>
 	
  	<insert id="insertReview" useGeneratedKeys="true" parameterType="CosmeticReview" keyProperty="reviewNo">
@@ -85,11 +82,20 @@
  		<result property="tel" column="TEL" />
  		<result property="link" column="LINK" />
  		<result property="regDate" column="REG_DATE" />
+ 		<result property="email" column="email" />
  	</resultMap>
+ 	
  	<!-- 병원 정보 select -->
  	<select id="selectHospital" resultMap="hospitalInfoListMap">
- 		select HNO, NAME, SPART, CONT, ADDR, TEL, LINK, REG_DATE
+ 		select HNO, NAME, SPART, CONT, ADDR, TEL, LINK, REG_DATE, email
  		  from HOSPITAL
+ 		 order by name
+ 	</select>
+ 	
+ 	<select id="selectHospitalInfoDetail" parameterType="int" resultType="CosmeticHospital">
+ 		select HNO, NAME, SPART as surgeryPart, CONT as content, ADDR, TEL, LINK, email, REG_DATE
+ 		  from HOSPITAL
+ 		  where HNO = #{hospitalNo}
  	</select>
  	
  	<select id="selectReviewWish" parameterType="int" resultMap="reviewWishMap">
