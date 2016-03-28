@@ -19,7 +19,7 @@ public interface CosmeticService {
 	public void insertReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto) throws Exception;
 	public int searchID(String id) throws Exception;
 	public void insertMember(CosmeticMember cosmeticMember) throws Exception;
-	public List<CosmeticReview> selectReviewList(CosmeticSearch search) throws Exception;
+	public HashMap<String, Object> selectReviewList(CosmeticSearch search) throws Exception;
 	public List<CosmeticEvent> selectEventList(CosmeticSearch search) throws Exception;
 	public CosmeticReview selectReviewListDetail(int reviewNo) throws Exception;
 	public HashMap<String, Object> selectReviewComment(CosmeticSearch search) throws Exception;
@@ -44,4 +44,5 @@ public interface CosmeticService {
 	public int selectEventViewCnt(int eventNo) throws Exception;
 	public void insertWishEvent(CosmeticWishEvent wishEvent) throws Exception;
 	public int selectWishEvent(CosmeticWishEvent wishEvent) throws Exception;
+	public List<CosmeticReview> selectMainReviewList(CosmeticSearch search) throws Exception;
 }

@@ -75,7 +75,17 @@ public class CosmeticServiceImpl implements CosmeticService {
 
 	@Override
 	@Transactional
-	public List<CosmeticReview> selectReviewList(CosmeticSearch search) throws Exception {
+	public HashMap<String, Object> selectReviewList(CosmeticSearch search) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<>();
+		List<CosmeticReview> reviewBest = cosmeticDao.selectReviewBest();
+		List<CosmeticReview> reviewList =cosmeticDao.selectReviewList(search);
+		resultMap.put("reviewBest", reviewBest);
+		resultMap.put("reviewList", reviewList);
+		return resultMap; 
+	}
+
+	@Override
+	public List<CosmeticReview> selectMainReviewList(CosmeticSearch search) throws Exception {
 		return cosmeticDao.selectReviewList(search);
 	}
 

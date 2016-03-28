@@ -100,16 +100,91 @@ span {
 	
 	<script type="text/javascript">
 		$('#reviewLink').click(function() {
-			location.href= 'user_review_list.html';
+			$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+				var ajaxResult = resultObj.ajaxResult;
+				var member = ajaxResult.data;
+				if(member != null){
+					location.href= 'user_review_list.html';
+				}
+			}).error(function(error) {
+				BootstrapDialog.show({
+				    title: 'Error',
+				    message: '로그인 후 이용가능합니다.',
+				    buttons: [{
+				        id: 'btn-ok',   
+				        icon: 'glyphicon glyphicon-check',       
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				            window.location.href = "login.html";
+				        }
+				    }]
+				});
+				//alert('로그인 후 이용 가능합니다.');
+				//window.location.href='login.html';
+			});
+			//location.href= 'user_review_list.html';
 		});
 		$('#eventLink').click(function() {
-			location.href= 'mainandhospital.html';
+			$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+				var ajaxResult = resultObj.ajaxResult;
+				var member = ajaxResult.data;
+				if(member != null){
+					location.href= 'mainandhospital.html';
+				}
+			}).error(function(error) {
+				BootstrapDialog.show({
+				    title: 'Error',
+				    message: '로그인 후 이용가능합니다.',
+				    buttons: [{
+				        id: 'btn-ok',   
+				        icon: 'glyphicon glyphicon-check',       
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				            window.location.href = "login.html";
+				        }
+				    }]
+				});
+				//alert('로그인 후 이용 가능합니다.');
+				//window.location.href='login.html';
+			});
+			//location.href= 'mainandhospital.html';
 		});
 		$('#searchHospitalLink').click(function() {
 			location.href= 'search_hospital.html';
 		});
 		$('#counselLink').click(function() {
-			location.href= 'counsel.html';
+			$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+				var ajaxResult = resultObj.ajaxResult;
+				var member = ajaxResult.data;
+				if(member != null){
+					location.href= 'counsel.html';
+				}
+			}).error(function(error) {
+				BootstrapDialog.show({
+				    title: 'Error',
+				    message: '로그인 후 이용가능합니다.',
+				    buttons: [{
+				        id: 'btn-ok',   
+				        icon: 'glyphicon glyphicon-check',       
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				            window.location.href = "login.html";
+				        }
+				    }]
+				});
+				//alert('로그인 후 이용 가능합니다.');
+				//window.location.href='login.html';
+			});
+			//location.href= 'counsel.html';
 		});
 	</script>
 </body>

@@ -54,4 +54,5 @@ public interface CosmeticDao {
 	int selectEventViewCnt(int eventNo);
 	void insertWishEvent(CosmeticWishEvent wishEvent);
 	int selectWishEvent(CosmeticWishEvent wishEvent);
+	List<CosmeticReview> selectReviewBest();
 }

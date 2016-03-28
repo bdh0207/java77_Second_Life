@@ -116,6 +116,23 @@
  		<collection property="reviewPhoto" column="filePath" resultMap="reviewPhotoMap" ofType="CosmeticReviewPhoto" javaType="ArrayList"></collection>
  	</resultMap>
  	
+ 	<!-- Hot Best 리뷰 TOP5 -->
+ 	<select id="selectReviewBest" resultMap="resultReviewBestMap">
+ 		select a.rno as reviewNo,b.fil_path as filePath,(select count(*) from review_recom where rno = a.rno) as recomCnt 
+		from review a
+		inner join review_phot b
+		on a.rno = b.rno 
+		order by recomCnt desc, reviewNo
+		limit 0,10
+ 	</select>
+ 	
+ 	<resultMap type="CosmeticReview" id="resultReviewBestMap">
+ 		<result property="reviewNo" column="reviewNo"/>
+ 		<result property="recomCnt" column="recomCnt"/>
+ 		<collection property="reviewPhoto" column="filePath" resultMap="reviewPhotoMap" ofType="CosmeticReviewPhoto" javaType="ArrayList"></collection>
+ 	</resultMap>
+ 	
+ 	
  	<select id="selectReviewList" parameterType="CosmeticSearch" resultMap="reviewResultMap">
  		select a.rno as reviewNo, mno as memberNo, a.hno as hospitalNo, a.title as title, a.cont as content, a.vcnt as viewCnt,(select count(*) from review_recom where rno = a.rno) as recomCnt, a.spart as sugeryPart, a.stat as status,b.fil_path as filePath, a.reg_date as regDate
 		from review a inner join review_phot b

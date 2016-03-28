@@ -179,10 +179,9 @@ public class CosmeticController {
 		CosmeticSearch search = new CosmeticSearch();
 		search.setStart((pageNo - 1) * 8); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
 		search.setEnd(pageNo * 8);
+		CosmeticSearch.wordType = "new";
 		
-		List<CosmeticReview> list = cosmeticService.selectReviewList(search);
-		HashMap<String, Object> resultMap = new HashMap<>();
-		resultMap.put("reviewList", list);
+		HashMap<String, Object> resultMap = cosmeticService.selectReviewList(search);
 		resultMap.put("status", "success");
 		resultMap.put("member", member);
 		
@@ -201,7 +200,7 @@ public class CosmeticController {
 		search.setEnd(pageNo * 8);
 		System.out.println("wordType : " + search.getWordType());
 		
-		List<CosmeticReview> list = cosmeticService.selectReviewList(search);
+		List<CosmeticReview> list = cosmeticService.selectMainReviewList(search);
 		HashMap<String, Object> resultMap = new HashMap<>();
 		resultMap.put("reviewList", list);
 		resultMap.put("member", member);
