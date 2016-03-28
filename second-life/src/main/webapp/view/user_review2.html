@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" href="../css/flexslider.css" type="text/css">
 <link rel="stylesheet" href="../lib/bootflat/css/site.min.css">
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">   -->
 <style>
@@ -35,10 +36,11 @@ a, h3, td { font-family: 'Jeju Gothic', serif; }
 	margin-left: 150px;
 } 
 </style>
-<script type="text/javascript" src="../lib/jquery/jquery.js"></script>
-<script type="text/javascript" src="../js/jquery.flexslider.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
+<script src="../lib/jquery/jquery.js"></script>
+<script src="../js/jquery.flexslider.js"></script>
+<script src="../js/common.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="../js/bootstrap-dialog.js"></script>
 <script>
 // 현재 페이지 번호
 var pageNumber = 1;
@@ -155,17 +157,47 @@ $(document).ready(function() {
 			   var status = ajaxResult.status;
 			   
 			   if(status == 'success'){
-				   alert('게시글이 삭제되었습니다.');
-				   location.href = 'user_review_list.html';
+				   BootstrapDialog.show({
+					    title: 'Success',
+					    message: '게시글이 삭제되었습니다.' ,
+					    buttons: [{
+					        id: 'btn-ok',   
+					        icon: 'glyphicon glyphicon-check',       
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					            location.href = 'user_review_list.html';
+					        }
+					    }]
+					});
+				   
+				   //location.href = 'user_review_list.html';
 			   }
 			   else{
-				   alert('권한이 없습니다.');
+				   BootstrapDialog.show({
+					    title: 'Error',
+					    message: '권한이 없습니다.' ,
+					    buttons: [{
+					        id: 'btn-ok',   
+					        icon: 'glyphicon glyphicon-check',       
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					        }
+					    }]
+					});
+				   //alert('권한이 없습니다.');
 			   }
 			   
 		  },'json');
 	 });
  	 
  	 $('#updateBtn').click(function() {
+ 		event.preventDefault();
  		 //권한 체크
  	  $.get(contextRoot+'/cosmetic/ajax/authority.do?reviewNo='+reviewNo,function(resultObj){
  			 var ajaxResult = resultObj.ajaxResult;
@@ -175,7 +207,20 @@ $(document).ready(function() {
  				location.href = 'reviewUpdate.html?reviewNo='+reviewNo; 
  			 }
  			 else{
- 				alert('권한이 없습니다.')
+ 				BootstrapDialog.show({
+				    title: 'Error',
+				    message: '권한이 없습니다.' ,
+				    buttons: [{
+				        id: 'btn-ok',   
+				        icon: 'glyphicon glyphicon-check',       
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				        }
+				    }]
+				});
  			 }
  			 
  		 },'json');
@@ -187,10 +232,40 @@ $(document).ready(function() {
 			var ajaxResult = resultObj.ajaxResult;
 			var status = ajaxResult.status;
 			if(status == 'success'){
-				alert('위시리스트에 추가되었습니다.');
+				 BootstrapDialog.show({
+					    title: 'Success',
+					    message: '위시리스트에 추가되었습니다.' ,
+					    buttons: [{
+					        id: 'btn-ok',   
+					        icon: 'glyphicon glyphicon-check',       
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					        }
+					    }]
+					});
+				
+				//alert('위시리스트에 추가되었습니다.');
 			}
 			else{
-				alert('이미 위시리스트에 있습니다.');
+				
+				BootstrapDialog.show({
+				    title: 'Error',
+				    message: '권한이 없습니다.' ,
+				    buttons: [{
+				        id: 'btn-ok',   
+				        icon: 'glyphicon glyphicon-check',       
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				        }
+				    }]
+				});
+				//alert('이미 위시리스트에 있습니다.');
 			}
 		},'json');	
 	 });
@@ -201,10 +276,38 @@ $(document).ready(function() {
 			 var status = ajaxResult.status;
 			 
 			 if(status == 'success'){
-					alert('추천하였습니다.');
+				 BootstrapDialog.show({
+					    title: 'Success',
+					    message: '추천하였습니다' ,
+					    buttons: [{
+					        id: 'btn-ok',   
+					        icon: 'glyphicon glyphicon-check',       
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					        }
+					    }]
+					});
+				 	//alert('추천하였습니다.');
 				}
 				else{
-					alert('이미 추천하였습니다.');
+					BootstrapDialog.show({
+					    title: 'Success',
+					    message: '이미 추천하였습니다.' ,
+					    buttons: [{
+					        id: 'btn-ok',   
+					        icon: 'glyphicon glyphicon-check',       
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					        }
+					    }]
+					});
+					//alert('이미 추천하였습니다.');
 				}
 		 });
  		 
@@ -401,7 +504,21 @@ function commentDel(commentNo, reviewNo) {
 			pageNumber = data.pageNo;
 		}
 		else{
-			alert('권한이 없습니다.');
+			BootstrapDialog.show({
+			    title: 'Success',
+			    message: '권한이 없습니다.' ,
+			    buttons: [{
+			        id: 'btn-ok',   
+			        icon: 'glyphicon glyphicon-check',       
+			        label: 'OK',
+			        cssClass: 'btn-danger', 
+			        autospin: false,
+			        action: function(dialogRef){    
+			            dialogRef.close();
+			        }
+			    }]
+			});
+			//alert('권한이 없습니다.');
 		}
 	});
  }

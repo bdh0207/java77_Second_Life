@@ -133,12 +133,20 @@
 		$('#masonry').imagesLoaded(function() {
 			$('#masonry').masonry();
 		});
+		
+		
 	});
 	$(document).ready(function(){
 		
 		$('#top').load('top.html').trigger('pagecreate');
 // 		var container = document.querySelector('#masonry');
 		
+		// flickity 설정
+// 		$('.gallery').flickity({
+// 			initialIndex:3,
+// 			lazyLoad : 2,
+// 			autoPlay : 2000
+// 		});
 		
 		$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do',function(resultObj){
 			if(resultObj.member != null){
@@ -147,14 +155,44 @@
 				$('.changeValue2').html('Hello '+ resultObj.member.id).attr('onclick','location.href="mylist.html"');
 			}
 			
+			// 리뷰 베스트 TOP5 
+			for(var best of resultObj.reviewBest){
+				var path1 = '';
+				var path2 = '';
+				
+				var index = 1;
+				for(var photoList of best.reviewPhoto){
+					if(index == 1){
+						path1 = photoList.filePath;
+					}
+					else{
+						path2 = photoList.filePath;
+					}
+					index++;
+				}
+				
+				var div = '<div class="gallery-cell">';
+			    	div +=	'<a class="bestReview" href="#"><img reviewNo='+ best.reviewNo+' class="gallery-cell-image" data-flickity-lazyload="'+path2+'" width="300" height="300"/></a>';
+					div += '</div>';
+				
+				var $cellElem = $(div);
+				$('.gallery').flickity('append',$cellElem);
+				$('.gallery').flickity({
+					initialIndex:2,
+					lazyLoad : 2,
+					autoPlay : 1000
+				});
+				$('a.bestReview').click(clickBestReview);
+			}
+			
 			for(var list of resultObj.reviewList){
 			
 			var beforePath = '';
 			var afterPath = '';
 			
 			// 유저리스트 상세쪽 Before - After사진만 올릴수 있게하고 이 로직은 나중에 바꿔야 됩니다.
+			var index = 1;
 			for(var photoList of list.reviewPhoto){
-				var index = 1;
 				if(index == 1){
 					beforePath = photoList.filePath;
 				}
@@ -185,7 +223,7 @@
 				div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger" style="cursor: pointer;"><a class="detailLnk" href="#" reviewNo="'+list.reviewNo+'">MORE+</a></span></h2></div>';
 				div += '</div>';
 				div	+= '</div>';
-				div += '<div class="col-md-3 col-md-pull-9"><img src="'+ beforePath +'" width="250" height="215" /></div>';
+				div += '<div class="col-md-3 col-md-pull-9"><img src="'+ afterPath +'" width="250" height="215" /></div>';
 				div += '</div>';
 				div	+= '</div>';
 			var $elem = $(div);
@@ -215,8 +253,8 @@
 					var beforePath = '';
 		 			var afterPath = '';
 		 			
+		 			var index = 1;
 		 			for(var photoList of list.reviewPhoto){
-		 				var index = 1;
 		 				if(index == 1){
 		 					beforePath = photoList.filePath;
 		 				}
@@ -245,7 +283,7 @@
 						div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger" style="cursor: pointer;"><a class="detailLnk" href="#" reviewNo="'+list.reviewNo+'">MORE+</a></span></h2></div>';
 						div += '</div>';
 						div	+= '</div>';
-						div += '<div class="col-md-3 col-md-pull-9"><img src="'+ beforePath +'" width="250" height="215" /></div>';
+						div += '<div class="col-md-3 col-md-pull-9"><img src="'+ afterPath +'" width="250" height="215" /></div>';
 						div += '</div>';
 						div	+= '</div>';
 			    	var $elem = $(div);
@@ -281,7 +319,8 @@
 			    	<hr />
 			    <div class="row">
 			      <div class="col-sm-9" style="width: 100%;">
-			        <div class="gallery js-flickity" data-flickity-options='{ "lazyLoad": 2, "initialIndex": 2,"autoPlay": 2000}' style="height: 300px;">
+			        <div class="gallery js-flickity" data-flickity-options='{ "lazyLoad": 2, "initialIndex": 2,"autoPlay": 2000}' style="height: 300px;"><!--js-flickity, data-flickity-options='{ "lazyLoad": 2, "initialIndex": 2,"autoPlay": 2000}' -->
+			        <!--  
 					  <div class="gallery-cell">
 					    <img class="gallery-cell-image" data-flickity-lazyload="../images/review_main1.jpg" width="300" height="300"/>
 					  </div>
@@ -309,6 +348,7 @@
 					  <div class="gallery-cell">
 					    <img class="gallery-cell-image" data-flickity-lazyload="../images/review_main9.jpg" width="300" height="300"/>
 					  </div>
+					  -->
 					</div>
 			        
 			      </div>
@@ -356,6 +396,11 @@
  	
  	function clickDetailLnk(event) {
  		console.log(event);
+		event.preventDefault();
+		location.href = 'user_review2.html?reviewNo=' + $(event.target).attr('reviewNo');
+	}
+ 	function clickBestReview(event) {
+		console.log(event);
 		event.preventDefault();
 		location.href = 'user_review2.html?reviewNo=' + $(event.target).attr('reviewNo');
 	}

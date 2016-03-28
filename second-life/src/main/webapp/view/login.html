@@ -2,8 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" type="text/css" href="../css/loginCss.css">
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
 <title>Login</title>
 <style>
 	#square {
@@ -22,7 +24,9 @@
 	}
 </style>
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
 <script src="../js/common.js"></script>
+<script src="../js/bootstrap-dialog.js"></script>
 <script>
 	$(document).ready(function() {
 		// top 적용
@@ -81,11 +85,40 @@
 					var status = ajaxResult.status;
 					console.log(status);
 					if(status == 'success'){
-						alert('로그인 성공');
-						location.href = "mainandreview.html";
+						BootstrapDialog.show({
+						    title: 'Success',
+						    message: '환영합니다! '+$('input[type="text"]').val()+'님' ,
+						    buttons: [{
+						        id: 'btn-ok',
+						        icon: 'glyphicon glyphicon-check',
+						        label: 'OK',
+						        cssClass: 'btn-danger', 
+						        autospin: false,
+						        action: function(dialogRef){    
+						            dialogRef.close();
+						            location.href = "mainandreview.html";
+						        }
+						    }]
+						});
+						//location.href = "mainandreview.html";
 					}
 					else{
-						alert('로그인 정보를 다시 확인해 주세요');
+						BootstrapDialog.show({
+						    title: 'Error',
+						    message: '로그인 정보를 다시 확인해 주세요' ,
+						    buttons: [{
+						        id: 'btn-ok',  
+						        icon: 'glyphicon glyphicon-check',
+						        label: 'OK',
+						        cssClass: 'btn-danger', 
+						        autospin: false,
+						        action: function(dialogRef){    
+						            dialogRef.close();
+						            //location.href = "mainandreview.html";
+						        }
+						    }]
+						});
+						//alert('로그인 정보를 다시 확인해 주세요');
 					}
 			},"json");
 		});
