@@ -8,19 +8,17 @@
 
 <!-- Bootflat css  -->
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
-<link rel="stylesheet" type="text/css" href="../css/mainandhospital_Modal.css">
 <link rel="stylesheet" type="text/css" href="../css/flexslider.css">
 	
 	<!-- jQuery.js -->
 	<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script>
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- jQuery 최신버전 -->
+	<script src="../js/jquery-2.2.0.js"></script>
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script src="../js/jquery.flexslider.js" type="text/javascript"></script>
 	<script src="../js/isotope-docs.min.js" type="text/javascript"></script>
 	<script src="../js/isotope.pkgd.js" type="text/javascript"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
-	<!-- bootstrap.min.js -->
-	<script src="../lib/bootstrap/js/bootstrap.min.js"></script>
 	<!-- 모달창 관련 -->
 	<script src="http://googledrive.com/host/0B-QKv6rUoIcGREtrRTljTlQ3OTg"></script><!-- ie10-viewport-bug-workaround.js -->
 	<script src="http://googledrive.com/host/0B-QKv6rUoIcGeHd6VV9JczlHUjg"></script><!-- holder.js -->
@@ -49,16 +47,18 @@
 				// 로그인 헤더 처리
 				if(resultObj.member != null){
 					$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-					$('.changeValue2').html('Hello '+ resultObj.member.id).attr('onclick','location.href="mylist.html"');
+					$('.changeValue2').hide();
+					$('.dropdown').show();
+					$('.dropdown-toggle').html('HELLO ' + resultObj.member.id);
 				} 
 
 				for(var list of resultObj.eventList) {
 					var div  = '<div class="item">';
 						div += '<figure>';
-						div += '		<a href="' + list.content + '" target="_blank"><img src="' + list.eventPhoto[0].filePath + '" onclick="viewCntAdd(' + list.eventNo + ')" /></a> ';
+						div += '		<a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" onclick="viewCntAdd(' + list.eventNo + ')" /></a> ';
 						div += '		<figcaption>                                                                              ';
 						div += '			<div class="hReview">                                                                 ';
-						div += '				<a data-toggle="modal" data-target="#myModal" href="#myModal">                    ';
+						div += '				<a onclick="getHospitalNo('+list.hospitalNo+')" data-toggle="modal" data-target="#myModal" href="#myModal">                    ';
 						div += '					<h4 class="title-click">' + list.hospitalName + '</h4>						  ';
 						div += '				</a>                          													  ';
 						div += '				<h5>' + list.title + '</h5>						  		  	  					  ';
@@ -99,7 +99,7 @@
 							
 							var div  = '<div class="item">';
 								div += '<figure>';
-								div += '		<a href="' + list.content + '" target="_blank"><img src="' + list.eventPhoto[0].filePath + '" class="viewCntAdd"/></a> ';
+								div += '		<a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" class="viewCntAdd"/></a> ';
 								div += '		<figcaption>                                                                              ';
 								div += '			<div class="hReview">                                                                 ';
 								div += '				<a data-toggle="modal" data-target="#myModal" href="#myModal">                    ';
@@ -146,12 +146,7 @@
 			<hr>
 		</div>
 		
-		<div class="row" style="margin-bottom: 0px;">
-			<div id="btn-register" style="float: right; margin-top: -20px;">
-				<a href="#" class="btn btn-danger" data-toggle="modal" data-target="#registerEvent" href="#registerEvent" style="width: 200px;">이벤트 등록</a>
-			</div>
-		</div>
-		
+
 		<!-- masonry -->
 		<div class="row">
 		<div id="masonry">
@@ -170,139 +165,59 @@
 		</div>
 	</div> <!-- body-content end -->
 	
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	      	<!-- 상단 X 버튼 -->
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	      </div>
-	      
-	      	<!-- 내용 부분 -->
-	      <div class="modal-body modal-size">
-		      <div class="title" style="margin-bottom: 10px">
-		      	오 <span style="color: white; font-size: 13px; margin-left: 1px;">성형외과</span>
-		      </div>
-		      <!-- 모달 이미지 슬라이드 -->
-		      <div align="center">
-				<div class="flexslider">
-				  <ul class="slides">
-				    <li data-thumb="..\images\hospitalView.jpg">
-				      <img src="..\images\hospitalView.jpg" width="500px" height="350px">
-				    </li>
-				    <li data-thumb="..\images\hospitalView2.jpg">
-				      <img src="..\images\hospitalView2.jpg">
-				    </li>
-				    <li data-thumb="..\images\hospitalView3.jpg">
-				      <img src="..\images\hospitalView3.jpg">
-				    </li>
-				    <li data-thumb="..\images\hospitalView4.jpg">
-				      <img src="..\images\hospitalView4.jpg">
-				    </li>
-				  </ul>
-				</div>
-		      </div>
-		      <div align="center"><hr style="width: 520px;"></div>
-		      <div class="div-size" style="margin-bottom: 25px;">
-		      	우리 병원은 절대 공장이 아닙니다. <br>
-		      	개개인에 맞춤 성형설계시스템, 궁금하쥬? <br>
-		      	배동호 상담받으러 올각 ㅇㅈ? ㅇㅇㅈ 
-		      </div>
-		      <div class="div-size">
-		      	<table style="width: 450px;  margin-top: 15px; margin: auto;">
-		      		<tr>
-		      			<th width="130px" style="text-align: right;">
-		      			연락처
-		      			</th>
-		      			<td>
-		      			02.000.0000
-		      			</td>
-		      		</tr>
-		      		<tr><td>　</td></tr>
-		      		<tr>
-		      			<th rowspan="2" style="text-align: right;">
-		      			영업시간
-		      			</th>
-		      			<td>
-		      			평일(점심시간)09:00~18:00 (12:30~13:30)
-		      			</td>
-		      		</tr>
-		      		<tr>
-		      			<td>
-		      			토요일(점심시간)09:00~15:00 (12:30~13:30)
-		      			</td>
-		      		</tr>
-		      		<tr><td>　</td></tr>
-		      		<tr>
-		      			<th style="text-align: right;">
-		      			주소
-		      			</th>
-		      			<td>
-		      			서울특별시 강남구 도산대로 142
-		      			</td>
-		      		</tr>
-		      	</table>
-		      </div>
-		      <div align="center"><hr style="width: 520px; margin-bottom: 0px; margin-top: 20px;"></div>
-	      </div>
-	      <div style="margin-right: 30px;" class="modal-footer">
-	      	<!-- close 버튼 -->
-	        <button type="button" class="btn btn-default button-size" data-dismiss="modal" 
-	        		style="background-color: #dddddd; color: white; border: 0; outline: 0; font-size: 12pt;">Close</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 이벤트 등록 Modal -->
-	<div class="modal fade" id="registerEvent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<!-- 병원소개 Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header" style="border-bottom: 0px;">
+				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-
-				<!-- 내용 부분 -->
-				<div class="modal-body modal-size">
-					<form class="form-horizontal" id="eventForm">
-						<fieldset>
-							<legend style="border-bottom: 0px;">이벤트 등록</legend>
-							<div class="form-group">
-								<label for="inputEmail" class="col-lg-2 control-label">병원이름</label>
-								<div class="col-lg-10">
-									<input type="text" class="form-control" id="" placeholder="">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="inputEmail" class="col-lg-2 control-label">이벤트명</label>
-								<div class="col-lg-10">
-									<input type="text" class="form-control" id="" placeholder="">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="inputEmail" class="col-lg-2 control-label">사진 URL</label>
-								<div class="col-lg-10">
-									<input type="text" class="form-control" id="" placeholder="이미지 주소 복사로 넣어 주세요.">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="inputEmail" class="col-lg-2 control-label">페이지 URL</label>
-								<div class="col-lg-10">
-									<input type="text" class="form-control" id="" placeholder="사진 클릭 시 이동할 주소를 넣어 주세요.">
-								</div>
-							</div>
-							 
-							<div class="form-group">
-								<div class="col-lg-12">
-									<button type="reset" class="btn btn-default">Cancel</button>
-									<button type="submit" class="btn btn-danger" id="registerBtn">Submit</button>
-								</div>
-							</div>
-						</fieldset>
-					</form>
+				<div class="modal-body">
+					<div class="row">
+						<h3 id="hospitalName" style="font-weight: bold; text-align: center;"></h3>
+					</div>
+					<div class="row">
+						<div class="flexslider">
+							<ul class="slides">
+								<li data-thumb="..\images\hospitalView.jpg"><img
+									src="..\images\hospitalView.jpg" width="500px" height="350px">
+								</li>
+								<li data-thumb="..\images\hospitalView2.jpg"><img
+									src="..\images\hospitalView2.jpg"></li>
+								<li data-thumb="..\images\hospitalView3.jpg"><img
+									src="..\images\hospitalView3.jpg"></li>
+								<li data-thumb="..\images\hospitalView4.jpg"><img
+									src="..\images\hospitalView4.jpg"></li>
+							</ul>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+							<blockquote class="blockquote-new"><p>병원소개</p></blockquote>
+						</div>
+						<div class="col-lg-9" id="hospitalContent"></div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+							<blockquote class="blockquote-new"><p>주소</p></blockquote>
+						</div>
+						<div class="col-lg-9" id="hospitalAddr"></div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+							<blockquote class="blockquote-new"><p>연락처</p></blockquote>
+						</div>
+						<div class="col-lg-9" id="hospitalTel"></div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+							<blockquote class="blockquote-new"><p>이메일</p></blockquote>
+						</div>
+						<div class="col-lg-9" id="hospitalEmail"></div>
+					</div>
 				</div> 
 			</div>
 		</div>
@@ -334,24 +249,18 @@ function zzim(target, eventNo) {
 	}
 }
 
-// 이벤트 등록
-$("#registerBtn").click(function() {
-		if(idChk == '사용 가능한 ID 입니다.'){
-	        $("#eventForm").ajaxSubmit({
-				type : "POST",
-				url : contextRoot + "/cosmetic/ajax/join.do",
-	// 			data : { birth : $("input[name=year]").val()+$("input[name=month]").val()+$("input[name=day]").val() },
-				dataType : "json",
-				success : function(resultObj) {
-					alert('회원가입이 완료되었습니다. 다시 로그인 해주세요.');
-					location.href = 'mainandreview.html';
-				}
-	        });	
-		}
-		else{
-			alert('ID 중복체크를 다시 확인해 주세요.');
-		}
+// 병원정보 나타내기
+function getHospitalNo(hospitalNo) {
+	$.getJSON(contextRoot + '/cosmetic/ajax/hospitalInfoDetail.do', { hospitalNo : hospitalNo }, function(resultObj) {
+		var hospital = resultObj.ajaxResult.data;
+		
+		$("#hospitalName").html(hospital.name);
+		$("#hospitalContent").html(hospital.content);
+		$("#hospitalAddr").html(hospital.addr);
+		$("#hospitalTel").html(hospital.tel);
+		$("#hospitalEmail").html(hospital.email);
 	});
+}
 </script>
 </body>
 </html>
