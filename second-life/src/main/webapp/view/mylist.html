@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
 <style type="text/css">
 	.item{
 		width: 250px;
@@ -47,7 +48,9 @@
 <script src="../js/bootstrap.min.js"></script>
 <script src="../js/masonry-docs.min.js"></script>
 <script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> <!-- marsonry -->
+<script src="../js/bootstrap.min.js"></script>
 <script src="../js/common.js"></script>
+<script src="../js/bootstrap-dialog.js"></script>
 
 <script>
 	$(window).load(function() {
@@ -142,10 +145,23 @@
 	function getInfo(wishNo,reviewNo) {
 		$.getJSON(contextRoot+'/cosmetic/ajax/receiveSugeryInfo.do?wishNo='+wishNo+'&reviewNo=' + reviewNo,function(resultObj){
 			if(resultObj.msg == "success"){
-				alert('수술정보에 추가되었습니다.');
+				BootstrapDialog.alert('수술정보에 추가되었습니다.');
 			}
 			else{
-				alert('공유된 수술정보가 없습니다.');
+				BootstrapDialog.show({
+				    title: 'Error',
+				    message: '공유된 수술정보가 없습니다.' ,
+				    buttons: [{
+				        id: 'btn-ok',   
+				        icon: 'glyphicon glyphicon-check',       
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				        }
+				    }]
+				});
 			}
 		});
 		
@@ -153,7 +169,32 @@
 	// 위시 삭제
 	function wishDel(wishNo) {
 		//alert('위시삭제 성공');
+		BootstrapDialog.confirm({
+            title: 'Information',
+            message: '위시 정보를 삭제 하시겠습니까?',
+            type: BootstrapDialog.TYPE_PRIMARY, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+            closable: true, // <-- Default value is false
+            draggable: true, // <-- Default value is false
+            btnCancelLabel: 'Cancel', // <-- Default value is 'Cancel',
+            btnOKLabel: 'OK', // <-- Default value is 'OK',
+            icon: 'glyphicon glyphicon-check',
+            btnOKClass: 'btn-danger', // <-- If you didn't specify it, dialog type will be used,
+            callback: function(result) {
+                // result will be true if button was click, while it will be false if users close the dialog directly.
+                if(result) {
+                	$.get(contextRoot + '/cosmetic/ajax/deleteWish.do?wishNo='+wishNo, function(resultObj) {
+        				$('#columns').masonry('remove',$('#w_'+wishNo));
+        				
+        				$('#columns').imagesLoaded(function() {
+        					$('#columns').masonry();
+        				});
+        			},'json');
+                }
+            }
+        });
+	
 		
+		/*
 		var retVal = confirm('위시 정보를 삭제 하시겠습니까?');
 		if(retVal == true){
 			$.get(contextRoot + '/cosmetic/ajax/deleteWish.do?wishNo='+wishNo, function(resultObj) {
@@ -164,7 +205,7 @@
 				});
 			},'json');			
 		}
-		
+		*/
 		
 	}
 </script>

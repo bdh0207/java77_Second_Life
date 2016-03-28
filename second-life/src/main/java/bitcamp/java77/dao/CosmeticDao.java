@@ -59,4 +59,5 @@ public interface CosmeticDao {
 	List<CosmeticHospital> selectHospital();
 	void insertHospital(CosmeticHospital cosmeticHospital);
 	void insertEvent(CosmeticEvent cosmeticEvent);
+	List<CosmeticReview> selectReviewBest();
 }

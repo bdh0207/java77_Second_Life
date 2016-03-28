@@ -7,7 +7,6 @@ function logout() {
 		var ajaxResult = resultObj.ajaxResult;
 		var status = ajaxResult.status;
 		if(status == 'success'){
-			alert('로그아웃 성공');
 			top.document.location.reload();
 		}
 	},"json");
