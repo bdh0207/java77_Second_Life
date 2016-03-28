@@ -8,7 +8,7 @@
 	body 	{ margin: 0px; }
 	img 	{ margin-top: 90px; }
 	#square { background-color: #f3c9cc; width: 500px; margin: 0 auto; padding: 35px 70px; }
-	hr 		{ border: 0.05px solid #595959; margin-top: 40px; margin-bottom: 15px; }
+	hr 		{ border: 0.05px solid #595959; margin-top: 30px; margin-bottom: 15px; }
 	.joinAlink { color: #595959; font-size: 8pt; padding-left: 0px; }
 	#loginBtn  { background-color: white; color: #cf2d39; border-color: #aab2bd; float: right; }
 </style>
@@ -49,6 +49,13 @@
 	</div>
 <script type="text/javascript">
 	$('#loginBtn').click(function() {
+		var prevPage = document.referrer;
+		
+		if(prevPage == "") {
+			prevPage = "mainandreview.html";
+		} 
+		
+		console.log(prevPage);
 		$.post(contextRoot+'/cosmetic/ajax/login.do',
 			{
 				id : $('input[type="text"]').val(),
@@ -60,7 +67,7 @@
 				console.log(status);
 				if(status == 'success'){
 					alert('로그인 성공');
-					location.href = "mainandreview.html";
+					location.href = prevPage;
 				}
 				else{
 					alert('로그인 정보를 다시 확인해 주세요');
