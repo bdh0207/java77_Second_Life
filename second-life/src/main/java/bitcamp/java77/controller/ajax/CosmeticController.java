@@ -69,8 +69,21 @@ public class CosmeticController {
 	public AjaxResult hospitalInfo() throws Exception {
 		// 병원 정보 불러오기
 		List<CosmeticHospital> hospitalInfoList = cosmeticService.hospitalInfo();
-		System.out.println(hospitalInfoList.size());
 		return new AjaxResult("success", hospitalInfoList);
+	}
+	
+	// 병원정보 상세조회(번호로)
+	@RequestMapping(value="hospitalInfoDetail")
+	public AjaxResult hospitalInfoDetail(int hospitalNo) throws Exception {
+		CosmeticHospital hospital = cosmeticService.selectHospitalInfoDetail(hospitalNo);
+		return new AjaxResult("success", hospital);
+	}
+	
+	// 병원정보 상세조회(이름으로)
+	@RequestMapping(value="hospitalInfoByName")
+	public AjaxResult hospitalInfoByName(String name) throws Exception {
+		List<CosmeticHospital> list = cosmeticService.selectHospitalInfoByName(name);
+		return new AjaxResult("success", list);
 	}
  
 	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
@@ -150,11 +163,13 @@ public class CosmeticController {
 //        transport.close();  
 //	}
 	
+	// 회원가입
 	@RequestMapping(value="join")
 	public void join(CosmeticMember cosmeticMember) throws Exception {
 		cosmeticService.insertMember(cosmeticMember);
 	}
 	
+	// ID 중복체크
 	@RequestMapping(value="idCheck")
 	public AjaxResult idCheck(CosmeticMember cosmeticMember) throws Exception {
 		int num    = cosmeticService.searchID(cosmeticMember.getId());
@@ -754,6 +769,7 @@ public class CosmeticController {
 		CosmeticSearch.wordType = wordType;
 		return new AjaxResult("success", null);
 	}
+	
 	// 이벤트 조회수 증가 -> 반환
 	@RequestMapping(value="viewCntAdd",method=RequestMethod.GET)
 	public AjaxResult viewCntAdd(int eventNo) throws Exception {
@@ -761,5 +777,33 @@ public class CosmeticController {
 		int viewCnt = cosmeticService.selectEventViewCnt(eventNo);
 		
 		return new AjaxResult("success", viewCnt);
+	}
+	
+	// 병원 등록
+	@RequestMapping(value="hospitalAdd",method=RequestMethod.POST)
+	public void hospitalAdd(CosmeticHospital cosmeticHospital) throws Exception {
+		cosmeticService.insertHospital(cosmeticHospital);
+	}
+	
+	// 이벤트 등록
+	@RequestMapping(value="eventAdd", method=RequestMethod.GET)
+	public AjaxResult eventAdd(HttpServletRequest req) throws Exception {
+		CosmeticEvent event = new CosmeticEvent();
+		
+//		System.out.println(req.getParameter("hospitalNo"));
+//		System.out.println(req.getParameter("hospitalName"));
+//		System.out.println(req.getParameter("title"));
+//		System.out.println(req.getParameter("photoURL"));
+//		System.out.println(req.getParameter("pageURL"));
+		
+		event.setHospitalNo(Integer.parseInt(req.getParameter("hospitalNo")));
+		event.setHospitalName(req.getParameter("hospitalName"));
+		event.setTitle(req.getParameter("title"));
+		event.setPhotoURL(req.getParameter("photoURL"));
+		event.setPageURL(req.getParameter("pageURL"));
+		
+		cosmeticService.insertEvent(event);
+		
+		return new AjaxResult("success", null);
 	}
 }

@@ -252,4 +252,29 @@ public class CosmeticServiceImpl implements CosmeticService {
 	public int selectWishEvent(CosmeticWishEvent wishEvent) throws Exception {
 		return cosmeticDao.selectWishEvent(wishEvent);	
 	}
+
+	@Override
+	@Transactional
+	public CosmeticHospital selectHospitalInfoDetail(int hospitalNo) throws Exception {
+		return cosmeticDao.selectHospitalInfoDetail(hospitalNo); 
+	}
+
+	@Override
+	@Transactional
+	public List<CosmeticHospital> selectHospitalInfoByName(String name) throws Exception {
+		return cosmeticDao.selectHospitalInfoByName(name);
+	}
+
+	@Override
+	@Transactional
+	public void insertHospital(CosmeticHospital cosmeticHospital) throws Exception {
+		cosmeticDao.insertHospital(cosmeticHospital);
+	}
+
+	@Override
+	@Transactional
+	public void insertEvent(CosmeticEvent cosmeticEvent) throws Exception {
+		cosmeticDao.insertEvent(cosmeticEvent);
+		
+	}
 }

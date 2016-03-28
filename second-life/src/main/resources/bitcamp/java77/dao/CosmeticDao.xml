@@ -63,6 +63,16 @@
  						  where eno = #{eventNo} 
  						  	and mno = #{memberNo})
  	</insert>
+ 	
+ 	<insert id="insertHospital" parameterType="CosmeticHospital">
+ 		insert into hospital(name, spart, cont, addr, tel, link, email, reg_date)
+ 		values(#{name}, #{surgeryPart}, #{content}, #{addr}, #{tel}, #{link}, #{email}, now())
+ 	</insert>
+ 	
+ 	<insert id="insertEvent" parameterType="CosmeticEvent">
+ 		insert into event(hno, title, hname, p_url, h_url, vcnt, reg_date)
+ 		values(#{hospitalNo}, #{title}, #{hospitalName}, #{photoURL}, #{pageURL}, 0, now())
+ 	</insert>
  	  
  	  
  	<!-- SELECT 영역 -->
@@ -96,6 +106,12 @@
  		select HNO, NAME, SPART as surgeryPart, CONT as content, ADDR, TEL, LINK, email, REG_DATE
  		  from HOSPITAL
  		  where HNO = #{hospitalNo}
+ 	</select>
+ 	
+ 	<select id="selectHospitalInfoByName" parameterType="string" resultMap="hospitalInfoListMap">
+ 		select HNO, NAME, SPART, CONT, ADDR, TEL, LINK, email, REG_DATE
+ 		  from HOSPITAL
+ 		  where name like CONCAT('%',#{name},'%')
  	</select>
  	
  	<select id="selectReviewWish" parameterType="int" resultMap="reviewWishMap">
@@ -158,29 +174,11 @@
  		<result property="filePath" column="filePath" />
  	</resultMap>
  	
- 	<select id="selectEventList" parameterType="CosmeticSearch" resultMap="eventresultMap">
- 		select a.eno as eventNo, a.hno as hospitalNo, a.title, a.cont as content, a.vcnt as viewCnt, a.reg_date as regDate, b.fil_path as filePath, h.name as hospitalName
-		  from event a inner join event_phot b on a.eno = b.eno
-		  			   inner join hospital h on a.hno = h.hno
-		 order by a.reg_date desc
-		 limit #{start},6
+ 	<select id="selectEventList" parameterType="CosmeticSearch" resultType="CosmeticEvent">
+ 		select eno as eventNo, hno as hospitalNo, title, vcnt as viewCnt, reg_date as regDate, p_url as photoURL, hname as hospitalName, h_url as pageURL
+		  from event 
+		 limit #{start}, 6
  	</select>
- 	
- 	<resultMap id="eventresultMap" type="CosmeticEvent">
- 		<result property="eventNo" column="eventNo" />
- 		<result property="hospitalNo" column="hospitalNo" />
- 		<result property="title" column="title" />
- 		<result property="content" column="content"/>
- 		<result property="viewCnt" column="viewCnt" />
- 		<result property="regDate" column="regDate" />
- 		<result property="hospitalName" column="hospitalName" />
- 		<collection property="eventPhoto" column="filePath"  resultMap="eventPhotoMap" ofType="cosmeticEventPhoto" javaType="ArrayList"></collection>
- 	</resultMap>
- 	
- 	<resultMap id="eventPhotoMap" type="cosmeticEventPhoto">
- 		<result property="filePath" column="filePath" />
- 	</resultMap>
- 	
  	
  	<select id="selectReviewListDetail" parameterType="int" resultType="CosmeticReview">
  		select RNO as reviewNo, MNO as memberNo, HNO as hospitalNo,title as title,CONT as content, VCNT as viewCnt, (select count(*) from review_recom where rno = #{revieweNo}) as recomCnt , SPART as sugeryPart, STAT as status,hos_name as hospitalName,doc_name as doctorName,sway as sugeryWay, sprice as sugeryPrice, sdate as sugeryDate, REG_DATE as regDate 

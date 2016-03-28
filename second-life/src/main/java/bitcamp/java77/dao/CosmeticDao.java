@@ -54,4 +54,9 @@ public interface CosmeticDao {
 	int selectEventViewCnt(int eventNo);
 	void insertWishEvent(CosmeticWishEvent wishEvent);
 	int selectWishEvent(CosmeticWishEvent wishEvent);
+	CosmeticHospital selectHospitalInfoDetail(int hospitalNo);
+	List<CosmeticHospital> selectHospitalInfoByName(String name);
+	List<CosmeticHospital> selectHospital();
+	void insertHospital(CosmeticHospital cosmeticHospital);
+	void insertEvent(CosmeticEvent cosmeticEvent);
 }
