@@ -120,7 +120,9 @@
 				// 로그인 헤더 처리
 				if(resultObj.member != null){
 					$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-					$('.changeValue2').html('Hello '+ resultObj.member.id).attr('onclick','location.href="mylist.html"');
+					$('.changeValue2').hide();
+					$('.dropdown').show();
+					$('.dropdown-toggle').html('HELLO ' + resultObj.member.id);
 				}
 				
 				for(var list of resultObj.reviewList){

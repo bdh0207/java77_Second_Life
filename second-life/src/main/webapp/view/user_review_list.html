@@ -151,8 +151,11 @@
 		$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do',function(resultObj){
 			if(resultObj.member != null){
 				console.log(resultObj.member.id);
+				
 				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-				$('.changeValue2').html('Hello '+ resultObj.member.id).attr('onclick','location.href="mylist.html"');
+				$('.changeValue2').hide();
+				$('.dropdown').show();
+				$('.dropdown-toggle').html('HELLO ' + resultObj.member.id);
 			}
 			
 			// 리뷰 베스트 TOP5 
