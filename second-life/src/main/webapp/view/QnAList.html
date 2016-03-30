@@ -42,7 +42,7 @@ $(document).ready(function() {
 });
 
 // List 데이터 불러오기
-$.getJSON(contextRoot + "/cosmetic/ajax/QnAList.do", function (resultObj) {
+$.getJSON(contextRoot + "/cosmetic/ajax/listQnA.do", function (resultObj) {
 	console.log("List");
 	var ajaxResult = resultObj.ajaxResult;
 	var data = ajaxResult.data;

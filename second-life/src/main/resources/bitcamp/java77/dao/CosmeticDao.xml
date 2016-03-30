@@ -74,7 +74,11 @@
  		values(#{hospitalNo}, #{title}, #{hospitalName}, #{photoURL}, #{pageURL}, 0, now())
  	</insert>
  	  
- 	  
+ 	<insert id="insertQnA" parameterType="cosmeticQnA">
+ 		insert into q_a(MNO, TITLE, CONT, QPART, REG_DATE)
+		values(#{mNo}, #{title}, #{content}, #{qPart},now());
+ 	</insert>
+ 	
  	<!-- SELECT 영역 -->
  	<select id="searchID" parameterType="string" resultType="int">
 		select count(*)
@@ -94,7 +98,9 @@
  	
  	<!-- QnA select -->
  	<select id="selectQnA" parameterType="int" resultMap="QnAMap">
- 		
+ 		select QNO, MNO, TITLE, CONT, QPART, REG_DATE
+ 		from q_n
+ 		where MNO = #{mNo}
  	</select>
  	
  	<!-- 병원 정보 resultMap -->

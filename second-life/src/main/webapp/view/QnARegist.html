@@ -19,7 +19,7 @@
 		<tr>
 			<th>글목적</th>
 			<td>
-			<select id="select">
+			<select id="apart">
 				<option value="홈페이지 사용 문의">홈페이지 사용 문의</option>
 				<option value="계정 사용 문의">계정 사용 문의</option>
 				<option value="성형외과 문의">성형외과 문의</option>
@@ -60,16 +60,26 @@ $(document).ready(function() {
 });
 
 var submit = $("#submit").on("click", function () {
-	var apart = $("#select").val();
+	var apart = $("#apart").val();
 	var title = $("#title").val();
 	var content = $("#content").val();
-	console.dir(apart + title + content);
+	console.dir(apart + "/" + title + "/" + content);
 	
-	$.post(contextRoot + "/cosmetic/ajax/QnARegist.do", 
-		   {title : title, content : content, apart : apart},
-		   function (resultObj) {
-				console.dir("데이터를 보냄");
-	}, "json");
+	$.ajax({
+		url : contextRoot + "/cosmetic/ajax/registQnA.do",
+		type : "POST",
+		data : {title: title, content: content, qPart: apart},
+		dataType : "json",
+	})
+	.done(function (resultObj) {
+		var result = resultObj.ajaxResult;
+		if(result.status == "success"){
+			alert("글 등록됨");
+			document.location.href = contextRoot + "/view/QnAList.html"
+		}
+	})
+	
+	
 })
 </script>
 </body>
