@@ -1,3 +1,50 @@
+<script type="text/javascript">
+	$(document).ready(function() {
+		var member = "";
+		
+		$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do',function(resultObj){
+			member = resultObj.ajaxResult.data;
+			
+			if(member != null){
+				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+				$('.changeValue2').hide();
+				$('#mypage').show();
+				$('#mypage > a').html('HELLO ' + resultObj.ajaxResult.data.id);
+				$('#mypage > a').append('<span class="caret"></span>');
+			}
+		}).error(function(error) {
+			window.location.href='login.html';
+		});
+		
+// 		$("a").click(function() {
+// 			var pageURL = $(this).attr("href");
+			
+// 			$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+	 			
+// 	 			if(member != null){
+// 	 				location.href = pageURL;
+// 	 			}
+// 	 		}).error(function(error) {
+// 	 			BootstrapDialog.show({
+// 	 			    title: 'Error',
+// 	 			    message: '로그인 후 이용가능합니다.',
+// 	 			    buttons: [{
+// 	 			        id: 'btn-ok',   
+// 	 			        icon: 'glyphicon glyphicon-check',       
+// 	 			        label: 'OK',
+// 	 			        cssClass: 'btn-danger', 
+// 	 			        autospin: false,
+// 	 			        action: function(dialogRef){    
+// 	 			            dialogRef.close();
+// 	 			            window.location.href = "login.html";
+// 	 			        }
+// 	 			    }]
+// 	 			});
+// 	 		});
+// 		});
+	});
+</script>
+
 <nav class="navbar" style="background-color: #cf2d39;">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -9,19 +56,27 @@
 				<li><a href="user_review_list.html" style="color: #ffffff;">USER REVIEW</a></li>
 				<li><a href="mainandhospital.html " style="color: #ffffff;">HOSPITAL EVENT</a></li>
 				<li><a href="search_hospital.html" style="color: #ffffff;">SEARCH HOSPITAL</a></li>
-				<li><a href="#" style="color: #ffffff;">CUSTOMER SERVICE</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true" style="color: #ffffff;">CUSTOMER SERVICE 
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu" style="background-color: #cf2d39;">
+						<li><a href="FAQ.html" style="color: #ffffff;">FAQ</a></li>
+						<li><a href="QnAList.html" style="color: #ffffff;">QnA</a></li>
+					</ul>
+				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown" style="display: none;">
+				<li class="dropdown" id="mypage" style="display: none;">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true" style="color: #ffffff;">MY PAGE 
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu" role="menu" style="background-color: #cf2d39;">
 						<li><a href="#" style="color: #ffffff;">정보수정</a></li>
-						<li><a href="counsel.html" style="color: #ffffff;">상담신청서 관리</a></li>
 						<li><a href="#" style="color: #ffffff;">찜한 리뷰/이벤트</a></li>
 						<li><a href="#" style="color: #ffffff;">정보모음</a></li>
 						<li><a href="eventForm.html" style="color: #ffffff;">이벤트 등록</a></li>
+						<!-- 상담내역 조회 만들꺼임 -->
 					</ul>
 				</li>
 				<li><a href="login.html" class="changeValue1" style="color: #ffffff;">LOGIN</a></li>
@@ -30,37 +85,3 @@
 		</div>
 	</div>
 </nav>
-	
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("a").click(function() {
-			var pageURL = $(this).attr("href");
-			
-			$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
-	 			var membe = resultObj.ajaxResult.data;
-	 			
-	 			if(member != null){
-	 				location.href = pageURL;
-	 			}
-	 		}).error(function(error) {
-	 			BootstrapDialog.show({
-	 			    title: 'Error',
-	 			    message: '로그인 후 이용가능합니다.',
-	 			    buttons: [{
-	 			        id: 'btn-ok',   
-	 			        icon: 'glyphicon glyphicon-check',       
-	 			        label: 'OK',
-	 			        cssClass: 'btn-danger', 
-	 			        autospin: false,
-	 			        action: function(dialogRef){    
-	 			            dialogRef.close();
-	 			            window.location.href = "login.html";
-	 			        }
-	 			    }]
-	 			});
-	 		});
-		});
-	});
-</script>
-</body>
-</html>

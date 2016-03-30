@@ -161,8 +161,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 	@Override
 	@Transactional
 	public List<CosmeticHospital> hospitalInfo() throws Exception {
-		return null;
-		//cosmeticDao.selectHospital();
+		return cosmeticDao.selectHospital();
 	}
 
 	@Override
