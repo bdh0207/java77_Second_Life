@@ -124,13 +124,13 @@
 			$('#top').load('top.html').trigger('pagecreate');
 			
 			$.getJSON(contextRoot + '/cosmetic/ajax/mainReview.do',function(resultObj){
-				member = resultObj.ajaxResult.data;
+				var member = resultObj.member;
 				
 				if(member != null){
 					$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
 					$('.changeValue2').hide();
 					$('#mypage').show();
-					$('#mypage > a').html('HELLO ' + resultObj.ajaxResult.data.id);
+					$('#mypage > a').html('HELLO ' + member.id);
 					$('#mypage > a').append('<span class="caret"></span>');
 				}
 				
