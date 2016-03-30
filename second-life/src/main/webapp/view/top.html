@@ -1,48 +1,31 @@
 <script type="text/javascript">
 	$(document).ready(function() {
-		var member = "";
-		
-		$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do',function(resultObj){
-			member = resultObj.ajaxResult.data;
+		$("a").click(function() {
+			var pageURL = $(this).attr("href");
 			
-			if(member != null){
-				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-				$('.changeValue2').hide();
-				$('#mypage').show();
-				$('#mypage > a').html('HELLO ' + resultObj.ajaxResult.data.id);
-				$('#mypage > a').append('<span class="caret"></span>');
-			}
-		}).error(function(error) {
-			window.location.href='login.html';
-		});
-		
-// 		$("a").click(function() {
-// 			var pageURL = $(this).attr("href");
-			
-// 			$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+			$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
 	 			
-// 	 			if(member != null){
-// 	 				location.href = pageURL;
-// 	 			}
-// 	 		}).error(function(error) {
-// 	 			BootstrapDialog.show({
-// 	 			    title: 'Error',
-// 	 			    message: '로그인 후 이용가능합니다.',
-// 	 			    buttons: [{
-// 	 			        id: 'btn-ok',   
-// 	 			        icon: 'glyphicon glyphicon-check',       
-// 	 			        label: 'OK',
-// 	 			        cssClass: 'btn-danger', 
-// 	 			        autospin: false,
-// 	 			        action: function(dialogRef){    
-// 	 			            dialogRef.close();
-// 	 			            window.location.href = "login.html";
-// 	 			        }
-// 	 			    }]
-// 	 			});
-// 	 		});
-// 		});
-	});
+	 			if(member != null){
+	 				location.href = pageURL;
+	 			}
+	 		}).error(function(error) {
+	 			BootstrapDialog.show({
+	 			    title: 'Error',
+	 			    message: '로그인 후 이용가능합니다.',
+	 			    buttons: [{
+	 			        id: 'btn-ok',   
+	 			        icon: 'glyphicon glyphicon-check',       
+	 			        label: 'OK',
+	 			        cssClass: 'btn-danger', 
+	 			        autospin: false,
+	 			        action: function(dialogRef){    
+	 			            dialogRef.close();
+	 			            window.location.href = "login.html";
+	 			        }
+	 			    }]
+	 			});
+	 		});
+		});
 </script>
 
 <nav class="navbar" style="background-color: #cf2d39;">

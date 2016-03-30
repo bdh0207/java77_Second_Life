@@ -6,7 +6,9 @@
 
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
+<link rel="stylesheet" type="text/css" href="../css/AdminLTE.min.css">
 <link rel="stylesheet" type="text/css" href="../css/searchHospital.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
    
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script src="../js/common.js" type="text/javascript"></script>
@@ -39,42 +41,50 @@ body { margin: 0px; }
 	<div id="top"></div>
 
 	<div class="container">
-		<!-- Search Hospital -->
-			<fieldset>
-				<legend  style="color: #cf2d39;">
-				<h2>
-				Search Hospital
-				</h2>
-				</legend>
-			</fieldset>
-			<br />
-			<div style="width: 1100px; height: 400px;">
-				<!-- 지도 -->
-				<div id="map" style="border-radius:5px;width: 800px;height:415px; float: left; margin-right: 20px;"></div>
-				<!-- 병원 리스트 -->
-				<div style="margin-bottom: 10px;"><input id="search" type="text" class="form-control searchBar" placeholder="Q 병원 이름으로 검색"></div>
-				<div class="mapList" style="width: 280px; height: 375px; float: right; overflow: auto;">
-					
+		<div class="page-header">
+			<div class="row">
+				<div class="col-lg-12">
+					<h2 style="color: #cf2d39;">Search Hospital</h2>
 				</div>
 			</div>
-			<!-- 상담 병원 리스트 -->
-			<p class="lead subTitle">Counseling List</p>
-			<hr style="border-top: 1px soild #e5e5e5; margin-bottom: 30px;">
-			<!-- <dir style="width: 1100px; height: 200px; background-color: #e5e5e5;"> -->
-				<div id="listForm">
-					　
-				</div>
-			<!-- </dir> -->
-			<br />
-			<hr style="border-top: 1px soild #e5e5e5; width: 1100px; margin-top: 5px;">
-			<br />
-			<button id="counseling" class="btn btn-danger buttonStyle">Counseling</button>
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
 		</div>
+		<div class="row"> 
+			<div class="col-lg-9"><!-- 지도 -->
+				<div id="map" style="border-radius:5px; width: 100%; height:415px;"></div>
+			</div>
+			<div class="col-lg-3" style="padding-left: 0px;"><!-- 병원 리스트 -->
+				<div style="margin-bottom: 10px;">
+					<input id="search" type="text" class="form-control searchBar" placeholder="Q 병원 이름으로 검색">
+				</div>
+				<div class="mapList" style="width: 100%; height: 375px; overflow: auto;"></div>
+			</div>
+		</div>
+		
+		<!-- 상담 병원 리스트 -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-lg-12">
+					<h2 class="subTitle">Counseling List</h2>
+				</div>
+			</div>
+		</div>
+		<div class="row"> 
+			<div class="info-box infobox-resize">
+				<span class="info-box-icon bg-red"><i class="fa fa-hospital-o"></i></span>
+				<div class="info-box-content" id="listForm"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<hr class="hr-basic">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<button id="counseling" class="btn btn-danger buttonStyle">Counseling</button>
+			</div>
+		</div>
+	</div>
 
 <script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=32d3bb0127a08daaa98517ba3ffc0655&libraries=services"></script>
 <script>

@@ -133,9 +133,8 @@
 		$('#masonry').imagesLoaded(function() {
 			$('#masonry').masonry();
 		});
-		
-		
 	});
+	
 	$(document).ready(function(){
 		
 		$('#top').load('top.html').trigger('pagecreate');
@@ -149,6 +148,16 @@
 // 		});
 		
 		$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do',function(resultObj){
+			member = resultObj.ajaxResult.data;
+			
+			if(member != null){
+				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+				$('.changeValue2').hide();
+				$('#mypage').show();
+				$('#mypage > a').html('HELLO ' + resultObj.ajaxResult.data.id);
+				$('#mypage > a').append('<span class="caret"></span>');
+			}
+			
 			// 리뷰 베스트 TOP5 
 			for(var best of resultObj.reviewBest){
 				var path1 = '';
