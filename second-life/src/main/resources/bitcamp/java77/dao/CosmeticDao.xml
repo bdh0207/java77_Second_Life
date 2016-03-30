@@ -49,6 +49,11 @@
  		</selectKey>
  	</insert>
  	
+ 	<insert id="insertQnA" parameterType="cosmeticQnA">
+ 		insert into q_a(MNO, TITLE, CONT, QPART, REG_DATE)
+		values(#{mNo}, #{title}, #{content}, #{qPart},now());
+ 	</insert>
+ 	
  	<!-- SELECT 영역 -->
  	<!-- QnA resultMap -->
  	<resultMap id="QnAMap" type="CosmeticQnA">
@@ -62,7 +67,9 @@
  	
  	<!-- QnA select -->
  	<select id="selectQnA" parameterType="int" resultMap="QnAMap">
- 		
+ 		select QNO, MNO, TITLE, CONT, QPART, REG_DATE
+ 		from q_n
+ 		where MNO = #{mNo}
  	</select>
  	
  	

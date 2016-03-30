@@ -75,22 +75,22 @@ public class CosmeticController {
 		
 	}
 	
-	@RequestMapping(value="QnARegist", method=RequestMethod.POST)
-	public AjaxResult QnARegist(HttpServletRequest req) throws Exception {
+	@RequestMapping(value="registQnA", method=RequestMethod.POST)
+	public AjaxResult QnARegist(CosmeticQnA qna, HttpServletRequest req) throws Exception {
 		// 로그인 세션
 		HttpSession session = req.getSession();
 		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
 		int mNo = member.getMemberNo();
-		CosmeticQnA qna = new CosmeticQnA();
 		qna.setmNo(mNo);
 		System.out.println("회원번호" + member.getMemberNo());
+		System.out.println("데이터 : " + qna.getmNo() + "/" + qna.getqPart() + "/" + qna.getTitle() + "/" + qna.getContent());
 		
 		// QnA 글등록
 		cosmeticService.insertQnA(qna);
 		return new AjaxResult("success", null);
 	}
 	
-	@RequestMapping(value="QnAList", method=RequestMethod.GET)
+	@RequestMapping(value="listQnA", method=RequestMethod.GET)
 	public AjaxResult QnAList(HttpServletRequest req) throws Exception {
 		// 로그인 세션
 		HttpSession session = req.getSession();
