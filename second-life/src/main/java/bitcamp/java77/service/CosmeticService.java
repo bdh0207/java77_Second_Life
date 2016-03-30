@@ -5,6 +5,7 @@ import java.util.List;
 
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
+import bitcamp.java77.domain.CosmeticQnA;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
@@ -28,4 +29,6 @@ public interface CosmeticService {
 	public void updateReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto) throws Exception;
 	public int insertReviewComment(CosmeticReviewComment cosmeticReviewComment) throws Exception;
 	public List<CosmeticHospital> hospitalInfo() throws Exception;
+	public List<CosmeticQnA> qnaList(int mNo) throws Exception;
+	public void insertQnA(CosmeticQnA cosmeticQnA) throws Exception;
 }

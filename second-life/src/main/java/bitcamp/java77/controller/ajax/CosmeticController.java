@@ -48,6 +48,7 @@ import bitcamp.java77.domain.AjaxResult;
 import bitcamp.java77.domain.CosmeticCounsel;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
+import bitcamp.java77.domain.CosmeticQnA;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
@@ -72,6 +73,34 @@ public class CosmeticController {
 		System.out.println(hospitalInfoList.size());
 		return new AjaxResult("success", hospitalInfoList);
 		
+	}
+	
+	@RequestMapping(value="QnARegist", method=RequestMethod.POST)
+	public AjaxResult QnARegist(HttpServletRequest req) throws Exception {
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
+		int mNo = member.getMemberNo();
+		CosmeticQnA qna = new CosmeticQnA();
+		qna.setmNo(mNo);
+		System.out.println("회원번호" + member.getMemberNo());
+		
+		// QnA 글등록
+		cosmeticService.insertQnA(qna);
+		return new AjaxResult("success", null);
+	}
+	
+	@RequestMapping(value="QnAList", method=RequestMethod.GET)
+	public AjaxResult QnAList(HttpServletRequest req) throws Exception {
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
+		int mNo = member.getMemberNo();
+		System.out.println("회원번호" + member.getMemberNo());
+		
+		// QnA 목록
+		List<CosmeticQnA> QnAList = cosmeticService.qnaList(mNo);
+		return new AjaxResult("success", QnAList);
 	}
 	
 //	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)

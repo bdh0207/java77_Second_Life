@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import bitcamp.java77.dao.CosmeticDao;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
+import bitcamp.java77.domain.CosmeticQnA;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
@@ -123,6 +124,18 @@ public class CosmeticServiceImpl implements CosmeticService {
 	@Transactional
 	public List<CosmeticHospital> hospitalInfo() throws Exception {
 		return cosmeticDao.selectHospital();
+	}
+
+	@Override
+	@Transactional
+	public List<CosmeticQnA> qnaList(int mNo) throws Exception {
+		return cosmeticDao.selectQnA(mNo);
+	}
+
+	@Override
+	@Transactional
+	public void insertQnA(CosmeticQnA cosmeticQnA) throws Exception {
+		cosmeticDao.insertQnA(cosmeticQnA);
 	}
 	
 	

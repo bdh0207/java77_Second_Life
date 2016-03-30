@@ -15,7 +15,7 @@
 <!-- 내용 -->
 <div class="bodyContent" style="margin-top: 70px;">
 <h2 style="color: #cf2d39;">QnA</h2>
-	<table style="width: 100%;">
+	<table style="width: 100%;" id="table">
 		<tr class="tablePadding">
 			<th class="thList" style="width: 20%;">글목적</th>
 			<th class="thList" style="width: 56%;">제목</th>
@@ -30,7 +30,8 @@
 		</tr>
 	</table>
 	<div align="right">
-	<button id="white" type="button" class="btn btn-danger button" style="padding-left: 12px; padding-right: 12px;" title="">White</button>
+	<button id="white" type="button" class="btn btn-danger button" 
+			style="padding-left: 12px; padding-right: 12px;" title="">White</button>
 	</div>
 </div>
 	
@@ -40,13 +41,23 @@ $(document).ready(function() {
     $('#top').load('top.html');
 });
 
-/* // title
-$("#aLink").on("mouseover", function () {
-	$("#aLink").css({"color": "#cf2d39"});
-})
-$("#aLink").on("mouseoff", function () {
-	$("#aLink").css({"color": "#222222"});
-}) */
+// List 데이터 불러오기
+$.getJSON(contextRoot + "/cosmetic/ajax/QnAList.do", function (resultObj) {
+	console.log("List");
+	var ajaxResult = resultObj.ajaxResult;
+	var data = ajaxResult.data;
+	
+	for(var i = 0; i < data.length; i++){
+		$("#table").append('<tr class="tablePadding">' + 
+						   '<td class="tdList">' + data[i].qPart + '</td>' +
+						   '<td class="tdList"><a id="aLink">' + data[i].title + '</a></td>' +
+						   '<td class="tdList">' + 김초롱 + '</td>' +
+						   '<td class="tdList">' + data[i].regDate + '</td>' + 
+						   '</tr>'
+		);
+	}
+});
+
 </script>
 </body>
 </html>

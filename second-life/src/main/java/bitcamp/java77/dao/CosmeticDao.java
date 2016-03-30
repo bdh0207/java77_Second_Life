@@ -4,6 +4,7 @@ import java.util.List;
 
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
+import bitcamp.java77.domain.CosmeticQnA;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
@@ -28,4 +29,6 @@ public interface CosmeticDao {
 	void updateReviewPhoto(CosmeticReviewPhoto cosmeticReviewPhoto);
 	int insertReviewComment(CosmeticReviewComment cosmeticReviewComment);
 	List<CosmeticHospital> selectHospital();
+	List<CosmeticQnA> selectQnA(int mNo);
+	void insertQnA(CosmeticQnA cosmeticQnA);
 }

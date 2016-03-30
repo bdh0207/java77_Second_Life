@@ -50,6 +50,21 @@
  	</insert>
  	
  	<!-- SELECT 영역 -->
+ 	<!-- QnA resultMap -->
+ 	<resultMap id="QnAMap" type="CosmeticQnA">
+ 		<result property="qNo" column="QNO" />
+ 		<result property="mNo" column="MNO" />
+ 		<result property="title" column="TITLE" />
+ 		<result property="content" column="CONT"/>
+ 		<result property="qPart" column="QPART" />
+ 		<result property="regDate" column="REG_DATE" />
+ 	</resultMap>
+ 	
+ 	<!-- QnA select -->
+ 	<select id="selectQnA" parameterType="int" resultMap="QnAMap">
+ 		
+ 	</select>
+ 	
  	
  	<!-- 병원 정보 resultMap -->
  	<resultMap id="hospitalInfoListMap" type="CosmeticHospital">
