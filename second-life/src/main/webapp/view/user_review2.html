@@ -91,7 +91,7 @@ $(document).ready(function() {
  	 		 
  	 		 for(var photoList of reviewDetail.photo){
  	 			 var li =   '<li data-thumb="'+photoList.filePath+'">	 ';
-		             li +=  '<img src="'+photoList.filePath+'" style="width:100%"/>     ';
+		             li +=  '<img src="'+photoList.filePath+'" style="width:inherit; max-width:100%; height: auto;"/>     ';
 		             li +=  '</li>                                     ';
 		         $('.slides').append(li);   
  	 		 }
@@ -253,7 +253,7 @@ $(document).ready(function() {
 				
 				BootstrapDialog.show({
 				    title: 'Error',
-				    message: '권한이 없습니다.' ,
+				    message: '이미 위시리스트에 있습니다.' ,
 				    buttons: [{
 				        id: 'btn-ok',   
 				        icon: 'glyphicon glyphicon-check',       

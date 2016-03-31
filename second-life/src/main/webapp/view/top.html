@@ -92,6 +92,7 @@ span {
 			<span id="eventLink">HOSPITAL EVENT</span>
 			<span id="searchHospitalLink">SEARCH HOSPITAL</span>
 			<span id="counselLink">COUNSEL</span>
+			<span id="informationLink">information</span>
 		</div>
 		<div id="menu2" class="changeValue1" onclick="location.href='login.html'">LOGIN</div>
 		<div id="menu2" class="changeValue2" onclick="location.href='joinForm.html'">REGISTER</div>
@@ -164,6 +165,34 @@ span {
 				var member = ajaxResult.data;
 				if(member != null){
 					location.href= 'counsel.html';
+				}
+			}).error(function(error) {
+				BootstrapDialog.show({
+				    title: 'Error',
+				    message: '로그인 후 이용가능합니다.',
+				    buttons: [{
+				        id: 'btn-ok',   
+				        icon: 'glyphicon glyphicon-check',       
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				            window.location.href = "login.html";
+				        }
+				    }]
+				});
+				//alert('로그인 후 이용 가능합니다.');
+				//window.location.href='login.html';
+			});
+			//location.href= 'counsel.html';
+		});
+		$('#informationLink').click(function() {
+			$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+				var ajaxResult = resultObj.ajaxResult;
+				var member = ajaxResult.data;
+				if(member != null){
+					location.href= 'information.html';
 				}
 			}).error(function(error) {
 				BootstrapDialog.show({

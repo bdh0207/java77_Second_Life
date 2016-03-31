@@ -55,4 +55,10 @@ public interface CosmeticDao {
 	void insertWishEvent(CosmeticWishEvent wishEvent);
 	int selectWishEvent(CosmeticWishEvent wishEvent);
 	List<CosmeticReview> selectReviewBest();
+	List<CosmeticSugeryInfo> selectSurgeryInfoByMemberNo(int memberNo);
+	List<String> selectWishGetNo(int reviewNo);
+	void deleteSugeryInfoByNo(int sugeryNo);
+	int selectWishStatus(CosmeticReview cosmeticReview);
+	void deleteReviewRecom(CosmeticReview cosmeticReview);
+	void deleteWishByNo(int reviewNo);
 }

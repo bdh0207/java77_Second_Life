@@ -1,0 +1,751 @@
+-- 유저리뷰
+DROP TABLE IF EXISTS REVIEW RESTRICT;
+
+-- 유저리뷰-찜
+DROP TABLE IF EXISTS WISH RESTRICT;
+
+-- 병원정보
+DROP TABLE IF EXISTS HOSPITAL RESTRICT;
+
+-- 의사정보
+DROP TABLE IF EXISTS DOCTOR RESTRICT;
+
+-- 병원이벤트
+DROP TABLE IF EXISTS EVENT RESTRICT;
+
+-- 수술정보
+DROP TABLE IF EXISTS SURGERY_INFO RESTRICT;
+
+-- 병원사진
+DROP TABLE IF EXISTS HOSPITAL_PHOT RESTRICT;
+
+-- 리뷰사진
+DROP TABLE IF EXISTS REVIEW_PHOT RESTRICT;
+
+-- 의사사진
+DROP TABLE IF EXISTS DOCTOR_PHOT RESTRICT;
+
+-- 이벤트사진
+DROP TABLE IF EXISTS EVENT_PHOT RESTRICT;
+
+-- 상담신청
+DROP TABLE IF EXISTS COUNSEL RESTRICT;
+
+-- 신청사진
+DROP TABLE IF EXISTS COUNSEL_PHOT RESTRICT;
+
+-- 회원
+DROP TABLE IF EXISTS MEMBER RESTRICT;
+
+-- Q&A
+DROP TABLE IF EXISTS Q_A RESTRICT;
+
+-- FAQ
+DROP TABLE IF EXISTS F_A RESTRICT;
+
+-- 댓글
+DROP TABLE IF EXISTS COMMENT RESTRICT;
+
+-- 유저추천
+DROP TABLE IF EXISTS REVIEW_RECOM RESTRICT;
+
+-- 병원추천
+DROP TABLE IF EXISTS HOSPITAL_RECOM RESTRICT;
+
+-- 이벤트추천
+DROP TABLE IF EXISTS EVENT_RECOM RESTRICT;
+
+-- 유저리뷰 수술정보
+DROP TABLE IF EXISTS REVIEW_SUGERY_INFO RESTRICT;
+
+-- 병원이벤트-찜
+DROP TABLE IF EXISTS TABLE RESTRICT;
+
+-- 병원이벤트-찜
+DROP TABLE IF EXISTS WISH_EVENT RESTRICT;
+
+-- 유저리뷰
+CREATE TABLE REVIEW (
+	RNO      INTEGER      NOT NULL COMMENT '게시물 번호', -- 게시물 번호
+	MNO      INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
+	HNO      INTEGER      NULL     COMMENT '병원번호', -- 병원번호
+	TITLE    VARCHAR(255) NOT NULL COMMENT '제목', -- 제목
+	CONT     TEXT         NOT NULL COMMENT '내용', -- 내용
+	VCNT     INTEGER      NOT NULL COMMENT '조회수', -- 조회수
+	SPART    VARCHAR(30)  NOT NULL COMMENT '시술부위', -- 시술부위
+	STAT     CHAR(1)      NOT NULL COMMENT '등록상태', -- 등록상태
+	HOS_NAME VARCHAR(50)  NULL     COMMENT '병원이름', -- 병원이름
+	DOC_NAME VARCHAR(50)  NULL     COMMENT '담당의사', -- 담당의사
+	SWAY     VARCHAR(100) NULL     COMMENT '수술방법', -- 수술방법
+	SPRICE   INTEGER      NULL     COMMENT '수술가격', -- 수술가격
+	SDATE    DATE         NULL     COMMENT '수술시기', -- 수술시기
+	REG_DATE DATETIME     NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '유저리뷰';
+
+-- 유저리뷰
+ALTER TABLE REVIEW
+	ADD CONSTRAINT PK_REVIEW -- 유저리뷰 기본키
+		PRIMARY KEY (
+			RNO -- 게시물 번호
+		);
+
+ALTER TABLE REVIEW
+	MODIFY COLUMN RNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '게시물 번호';
+
+-- 유저리뷰-찜
+CREATE TABLE WISH (
+	WNO      INTEGER  NOT NULL COMMENT '찜번호', -- 찜번호
+	RNO      INTEGER  NOT NULL COMMENT '게시물 번호', -- 게시물 번호
+	MNO      INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
+	REG_DATE DATETIME NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '유저리뷰-찜';
+
+-- 유저리뷰-찜
+ALTER TABLE WISH
+	ADD CONSTRAINT PK_WISH -- 유저리뷰-찜 기본키
+		PRIMARY KEY (
+			WNO -- 찜번호
+		);
+ALTER TABLE WISH
+	MODIFY COLUMN WNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '찜번호';
+
+-- 유저리뷰-찜 유니크 인덱스
+CREATE UNIQUE INDEX UIX_WISH
+	ON WISH ( -- 유저리뷰-찜
+		RNO ASC, -- 게시물 번호
+		MNO ASC  -- 회원번호
+	);
+
+-- 병원정보
+CREATE TABLE HOSPITAL (
+	HNO      INTEGER      NOT NULL COMMENT '병원번호', -- 병원번호
+	NAME     VARCHAR(50)  NOT NULL COMMENT '이름', -- 이름
+	SPART    VARCHAR(255) NOT NULL COMMENT '수술부위', -- 수술부위
+	CONT     TEXT         NOT NULL COMMENT '내용', -- 내용
+	ADDR     VARCHAR(255) NOT NULL COMMENT '주소', -- 주소
+	TEL      VARCHAR(30)  NOT NULL COMMENT '전화번호', -- 전화번호
+	LINK     VARCHAR(255) NULL     COMMENT '링크', -- 링크
+	EMAIL    VARCHAR(40)  NOT NULL COMMENT '이메일', -- 이메일
+	REG_DATE DATETIME     NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '병원정보';
+
+-- 병원정보
+ALTER TABLE HOSPITAL
+	ADD CONSTRAINT PK_HOSPITAL -- 병원정보 기본키
+		PRIMARY KEY (
+			HNO -- 병원번호
+		);
+ALTER TABLE HOSPITAL
+	MODIFY COLUMN HNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '병원번호';
+
+-- 의사정보
+CREATE TABLE DOCTOR (
+	DNO      INTEGER     NOT NULL COMMENT '의사번호', -- 의사번호
+	HNO      INTEGER     NOT NULL COMMENT '병원번호', -- 병원번호
+	NAME     VARCHAR(50) NOT NULL COMMENT '이름', -- 이름
+	CONT     TEXT        NOT NULL COMMENT '내용', -- 내용
+	SPART    VARCHAR(30) NOT NULL COMMENT '수술부위', -- 수술부위
+	REG_DATE DATETIME    NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '의사정보';
+
+-- 의사정보
+ALTER TABLE DOCTOR
+	ADD CONSTRAINT PK_DOCTOR -- 의사정보 기본키
+		PRIMARY KEY (
+			DNO -- 의사번호
+		);
+ALTER TABLE DOCTOR
+	MODIFY COLUMN DNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '의사번호';
+
+-- 병원이벤트
+CREATE TABLE EVENT (
+	ENO      INTEGER      NOT NULL COMMENT '이벤트번호', -- 이벤트번호
+	HNO      INTEGER      NOT NULL COMMENT '병원번호', -- 병원번호
+	TITLE    VARCHAR(255) NOT NULL COMMENT '제목', -- 제목
+	P_URL    VARCHAR(255) NOT NULL COMMENT '사진경로', -- 사진경로
+	H_URL    VARCHAR(255) NULL     COMMENT '홈페이지주소', -- 홈페이지주소
+	VCNT     INTEGER      NOT NULL COMMENT '조회수', -- 조회수
+	REG_DATE DATETIME     NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '병원이벤트';
+
+-- 병원이벤트
+ALTER TABLE EVENT
+	ADD CONSTRAINT PK_EVENT -- 병원이벤트 기본키
+		PRIMARY KEY (
+			ENO -- 이벤트번호
+		);
+
+ALTER TABLE EVENT
+	MODIFY COLUMN ENO INTEGER NOT NULL AUTO_INCREMENT COMMENT '이벤트번호';
+
+-- 수술정보
+CREATE TABLE SURGERY_INFO (
+	SNO      INTEGER      NOT NULL COMMENT '수술정보번호', -- 수술정보번호
+	WNO      INTEGER      NOT NULL COMMENT '찜번호', -- 찜번호
+	HOS_NAME VARCHAR(50)  NOT NULL COMMENT '병원이름', -- 병원이름
+	DOC_NAME VARCHAR(50)  NOT NULL COMMENT '담당의사', -- 담당의사
+	SWAY     VARCHAR(100) NOT NULL COMMENT '수술방법', -- 수술방법
+	SPRICE   INTEGER      NOT NULL COMMENT '수술가격', -- 수술가격
+	SPART    VARCHAR(30)  NOT NULL COMMENT '수술부위', -- 수술부위
+	SDATE    DATE         NOT NULL COMMENT '수술시기', -- 수술시기
+	REG_DATE DATETIME     NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '수술정보';
+
+-- 수술정보
+ALTER TABLE SURGERY_INFO
+	ADD CONSTRAINT PK_SURGERY_INFO -- 수술정보 기본키
+		PRIMARY KEY (
+			SNO -- 수술정보번호
+		);
+
+ALTER TABLE SURGERY_INFO
+	MODIFY COLUMN SNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '수술정보번호';
+	
+-- 병원사진
+CREATE TABLE HOSPITAL_PHOT (
+	HPNO     INTEGER      NOT NULL COMMENT '병원사진번호', -- 병원사진번호
+	HNO      INTEGER      NOT NULL COMMENT '병원번호', -- 병원번호
+	FIL_PATH VARCHAR(255) NOT NULL COMMENT '사진경로' -- 사진경로
+)
+COMMENT '병원사진';
+
+-- 병원사진
+ALTER TABLE HOSPITAL_PHOT
+	ADD CONSTRAINT PK_HOSPITAL_PHOT -- 병원사진 기본키
+		PRIMARY KEY (
+			HPNO -- 병원사진번호
+		);
+		
+ALTER TABLE HOSPITAL_PHOT
+	MODIFY COLUMN HPNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '병원사진번호';
+
+-- 리뷰사진
+CREATE TABLE REVIEW_PHOT (
+	RPNO     INTEGER      NOT NULL COMMENT '리뷰사진번호', -- 리뷰사진번호
+	RNO      INTEGER      NOT NULL COMMENT '게시물 번호', -- 게시물 번호
+	FIL_PATH VARCHAR(255) NOT NULL COMMENT '사진경로' -- 사진경로
+)
+COMMENT '리뷰사진';
+
+-- 리뷰사진
+ALTER TABLE REVIEW_PHOT
+	ADD CONSTRAINT PK_REVIEW_PHOT -- 리뷰사진 기본키
+		PRIMARY KEY (
+			RPNO -- 리뷰사진번호
+		);
+
+ALTER TABLE REVIEW_PHOT
+	MODIFY COLUMN RPNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '리뷰사진번호';
+	
+-- 의사사진
+CREATE TABLE DOCTOR_PHOT (
+	DPNO     INTEGER      NOT NULL COMMENT '의사사진번호', -- 의사사진번호
+	DNO      INTEGER      NULL     COMMENT '의사번호', -- 의사번호
+	FIL_PATH VARCHAR(255) NULL     COMMENT '사진경로' -- 사진경로
+)
+COMMENT '의사사진';
+
+-- 의사사진
+ALTER TABLE DOCTOR_PHOT
+	ADD CONSTRAINT PK_DOCTOR_PHOT -- 의사사진 기본키
+		PRIMARY KEY (
+			DPNO -- 의사사진번호
+		);
+
+ALTER TABLE DOCTOR_PHOT
+	MODIFY COLUMN DPNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '의사사진번호';
+
+
+-- 상담신청
+CREATE TABLE COUNSEL (
+	CNO      INTEGER     NOT NULL COMMENT '신청번호', -- 신청번호
+	HNO      INTEGER     NOT NULL COMMENT '병원번호', -- 병원번호
+	MNO      INTEGER     NOT NULL COMMENT '회원번호', -- 회원번호
+	NAME     VARCHAR(50) NOT NULL COMMENT '이름', -- 이름
+	AGE      INTEGER     NOT NULL COMMENT '나이', -- 나이
+	SPART    VARCHAR(30) NOT NULL COMMENT '시술부위', -- 시술부위
+	TEL      VARCHAR(30) NOT NULL COMMENT '전화번호', -- 전화번호
+	CONT     TEXT        NOT NULL COMMENT '상담내용', -- 상담내용
+	GNO      INTEGER     NOT NULL COMMENT '그룹번호', -- 그룹번호
+	REG_DATE DATETIME    NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '상담신청';
+
+-- 상담신청
+ALTER TABLE COUNSEL
+	ADD CONSTRAINT PK_COUNSEL -- 상담신청 기본키
+		PRIMARY KEY (
+			CNO -- 신청번호
+		);
+
+ALTER TABLE COUNSEL
+	MODIFY COLUMN CNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '신청번호';
+
+-- 신청사진
+CREATE TABLE COUNSEL_PHOT (
+	CPNO     INTEGER      NOT NULL COMMENT '신청사진번호', -- 신청사진번호
+	CNO      INTEGER      NOT NULL COMMENT '신청번호', -- 신청번호
+	FIL_PATH VARCHAR(255) NOT NULL COMMENT '사진경로' -- 사진경로
+)
+COMMENT '신청사진';
+
+-- 신청사진
+ALTER TABLE COUNSEL_PHOT
+	ADD CONSTRAINT PK_COUNSEL_PHOT -- 신청사진 기본키
+		PRIMARY KEY (
+			CPNO -- 신청사진번호
+		);
+
+ALTER TABLE COUNSEL_PHOT
+	MODIFY COLUMN CPNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '신청사진번호';
+
+-- 회원
+CREATE TABLE MEMBER (
+	MNO      INTEGER     NOT NULL COMMENT '회원번호', -- 회원번호
+	ID       VARCHAR(20) NOT NULL COMMENT '아이디', -- 아이디
+	PWD      VARCHAR(20) NOT NULL COMMENT '암호', -- 암호
+	NAME     VARCHAR(50) NOT NULL COMMENT '이름', -- 이름
+	EMAIL    VARCHAR(40) NULL     COMMENT '이메일', -- 이메일
+	GENDER   VARCHAR(10) NOT NULL COMMENT '성별', -- 성별
+	BIRTH    VARCHAR(20) NOT NULL COMMENT '생년월일', -- 생년월일
+	TEL      VARCHAR(30) NULL     COMMENT '전화번호', -- 전화번호
+	GRADE    CHAR(1)     NULL     COMMENT '회원구분', -- 회원구분
+	REG_DATE DATETIME    NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '회원';
+
+-- 회원
+ALTER TABLE MEMBER
+	ADD CONSTRAINT PK_MEMBER -- 회원 기본키
+		PRIMARY KEY (
+			MNO -- 회원번호
+		);
+		
+ALTER TABLE MEMBER
+	MODIFY COLUMN MNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '회원번호';		
+
+-- 회원 유니크 인덱스
+CREATE UNIQUE INDEX UIX_MEMBER
+	ON MEMBER ( -- 회원
+		ID ASC,    -- 아이디
+		EMAIL ASC  -- 이메일
+	);
+
+-- Q&A
+CREATE TABLE Q_A (
+	QNO      INTEGER      NOT NULL COMMENT 'Q&A번호', -- Q&A번호
+	MNO      INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
+	TITLE    VARCHAR(255) NOT NULL COMMENT '제목', -- 제목
+	CONT     TEXT         NOT NULL COMMENT '내용', -- 내용
+	QPART    VARCHAR(20)  NOT NULL COMMENT '구분', -- 구분
+	REG_DATE DATETIME     NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT 'Q&A';
+
+-- Q&A
+ALTER TABLE Q_A
+	ADD CONSTRAINT PK_Q_A -- Q&A 기본키
+		PRIMARY KEY (
+			QNO -- Q&A번호
+		);
+
+ALTER TABLE Q_A
+	MODIFY COLUMN QNO INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Q&A번호';
+	
+-- FAQ
+CREATE TABLE F_A (
+	FNO      INTEGER      NOT NULL COMMENT 'F&A번호', -- F&A번호
+	TITLE    VARCHAR(255) NOT NULL COMMENT '제목', -- 제목
+	CONT     TEXT         NOT NULL COMMENT '내용', -- 내용
+	FPART    VARCHAR(20)  NOT NULL COMMENT '구분', -- 구분
+	REG_DATE DATETIME     NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT 'FAQ';
+
+-- FAQ
+ALTER TABLE F_A
+	ADD CONSTRAINT PK_F_A -- FAQ 기본키
+		PRIMARY KEY (
+			FNO -- F&A번호
+		);
+
+ALTER TABLE F_A
+	MODIFY COLUMN FNO INTEGER NOT NULL AUTO_INCREMENT COMMENT 'F&A번호';
+
+-- 댓글
+CREATE TABLE COMMENT (
+	CMNO     INTEGER  NOT NULL COMMENT '댓글번호', -- 댓글번호
+	RNO      INTEGER  NOT NULL COMMENT '게시물 번호', -- 게시물 번호
+	MNO      INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
+	CONT     TEXT     NOT NULL COMMENT '내용', -- 내용
+	REG_DATE DATETIME NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '댓글';
+
+-- 댓글
+ALTER TABLE COMMENT
+	ADD CONSTRAINT PK_COMMENT -- 댓글 기본키
+		PRIMARY KEY (
+			CMNO -- 댓글번호
+		);
+
+ALTER TABLE COMMENT
+	MODIFY COLUMN CMNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '댓글번호';
+
+-- 유저추천
+CREATE TABLE REVIEW_RECOM (
+	URNO     INTEGER  NOT NULL COMMENT '추천번호', -- 추천번호
+	MNO      INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
+	RNO      INTEGER  NOT NULL COMMENT '게시물 번호', -- 게시물 번호
+	REG_DATE DATETIME NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '유저추천';
+
+-- 유저추천
+ALTER TABLE REVIEW_RECOM
+	ADD CONSTRAINT PK_REVIEW_RECOM -- 유저추천 기본키
+		PRIMARY KEY (
+			URNO -- 추천번호
+		);
+
+ALTER TABLE REVIEW_RECOM
+	MODIFY COLUMN URNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '추천번호';
+
+-- 유저추천 유니크 인덱스
+CREATE UNIQUE INDEX UIX_REVIEW_RECOM
+	ON REVIEW_RECOM ( -- 유저추천
+		MNO ASC, -- 회원번호
+		RNO ASC  -- 게시물 번호
+	);
+
+-- 병원추천
+CREATE TABLE HOSPITAL_RECOM (
+	HRNO     INTEGER  NOT NULL COMMENT '추천번호', -- 추천번호
+	HNO      INTEGER  NOT NULL COMMENT '병원번호', -- 병원번호
+	MNO      INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
+	REG_DATE DATETIME NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '병원추천';
+
+-- 병원추천
+ALTER TABLE HOSPITAL_RECOM
+	ADD CONSTRAINT PK_HOSPITAL_RECOM -- 병원추천 기본키
+		PRIMARY KEY (
+			HRNO -- 추천번호
+		);
+
+ALTER TABLE HOSPITAL_RECOM
+	MODIFY COLUMN HRNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '추천번호';
+
+-- 병원추천 유니크 인덱스
+CREATE UNIQUE INDEX UIX_HOSPITAL_RECOM
+	ON HOSPITAL_RECOM ( -- 병원추천
+		HNO ASC, -- 병원번호
+		MNO ASC  -- 회원번호
+	);
+
+-- 이벤트추천
+CREATE TABLE EVENT_RECOM (
+	ERNO     INTEGER  NOT NULL COMMENT '추천번호', -- 추천번호
+	ENO      INTEGER  NOT NULL COMMENT '이벤트번호', -- 이벤트번호
+	MNO      INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
+	REG_DATE DATETIME NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '이벤트추천';
+
+-- 이벤트추천
+ALTER TABLE EVENT_RECOM
+	ADD CONSTRAINT PK_EVENT_RECOM -- 이벤트추천 기본키
+		PRIMARY KEY (
+			ERNO -- 추천번호
+		);
+
+ALTER TABLE EVENT_RECOM
+	MODIFY COLUMN ERNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '추천번호';
+
+-- 이벤트추천 유니크 인덱스
+CREATE UNIQUE INDEX UIX_EVENT_RECOM
+	ON EVENT_RECOM ( -- 이벤트추천
+		ENO ASC, -- 이벤트번호
+		MNO ASC  -- 회원번호
+	);
+
+-- 병원이벤트-찜
+CREATE TABLE WISH_EVENT (
+	WNO      INTEGER  NOT NULL COMMENT '찜번호', -- 찜번호
+	ENO      INTEGER  NOT NULL COMMENT '이벤트번호', -- 이벤트번호
+	MNO      INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
+	REG_DATE DATETIME NULL     COMMENT '등록일자' -- 등록일자
+)
+COMMENT '병원이벤트-찜';
+
+-- 병원이벤트-찜
+ALTER TABLE WISH_EVENT
+	ADD CONSTRAINT PK_WISH_EVENT -- 병원이벤트-찜 기본키
+		PRIMARY KEY (
+			WNO -- 찜번호
+		);
+		
+ALTER TABLE WISH_EVENT
+	MODIFY COLUMN WNO INTEGER NOT NULL AUTO_INCREMENT COMMENT '찜번호';
+
+-- 병원이벤트-찜 유니크 인덱스
+CREATE UNIQUE INDEX UIX_WISH_EVENT
+	ON WISH_EVENT ( -- 병원이벤트-찜
+	);
+
+-- 유저리뷰
+ALTER TABLE REVIEW
+	ADD CONSTRAINT FK_MEMBER_TO_REVIEW -- 회원 -> 유저리뷰
+		FOREIGN KEY (
+			MNO -- 회원번호
+		)
+		REFERENCES MEMBER ( -- 회원
+			MNO -- 회원번호
+		);
+
+-- 유저리뷰
+ALTER TABLE REVIEW
+	ADD CONSTRAINT FK_HOSPITAL_TO_REVIEW -- 병원정보 -> 유저리뷰
+		FOREIGN KEY (
+			HNO -- 병원번호
+		)
+		REFERENCES HOSPITAL ( -- 병원정보
+			HNO -- 병원번호
+		);
+
+-- 유저리뷰-찜
+ALTER TABLE WISH
+	ADD CONSTRAINT FK_REVIEW_TO_WISH -- 유저리뷰 -> 유저리뷰-찜
+		FOREIGN KEY (
+			RNO -- 게시물 번호
+		)
+		REFERENCES REVIEW ( -- 유저리뷰
+			RNO -- 게시물 번호
+		);
+
+-- 유저리뷰-찜
+ALTER TABLE WISH
+	ADD CONSTRAINT FK_MEMBER_TO_WISH -- 회원 -> 유저리뷰-찜
+		FOREIGN KEY (
+			MNO -- 회원번호
+		)
+		REFERENCES MEMBER ( -- 회원
+			MNO -- 회원번호
+		);
+
+-- 의사정보
+ALTER TABLE DOCTOR
+	ADD CONSTRAINT FK_HOSPITAL_TO_DOCTOR -- 병원정보 -> 의사정보
+		FOREIGN KEY (
+			HNO -- 병원번호
+		)
+		REFERENCES HOSPITAL ( -- 병원정보
+			HNO -- 병원번호
+		);
+
+-- 병원이벤트
+ALTER TABLE EVENT
+	ADD CONSTRAINT FK_HOSPITAL_TO_EVENT -- 병원정보 -> 병원이벤트
+		FOREIGN KEY (
+			HNO -- 병원번호
+		)
+		REFERENCES HOSPITAL ( -- 병원정보
+			HNO -- 병원번호
+		);
+
+-- 수술정보
+ALTER TABLE SURGERY_INFO
+	ADD CONSTRAINT FK_WISH_TO_SURGERY_INFO -- 유저리뷰-찜 -> 수술정보
+		FOREIGN KEY (
+			WNO -- 찜번호
+		)
+		REFERENCES WISH ( -- 유저리뷰-찜
+			WNO -- 찜번호
+		);
+
+-- 병원사진
+ALTER TABLE HOSPITAL_PHOT
+	ADD CONSTRAINT FK_HOSPITAL_TO_HOSPITAL_PHOT -- 병원정보 -> 병원사진
+		FOREIGN KEY (
+			HNO -- 병원번호
+		)
+		REFERENCES HOSPITAL ( -- 병원정보
+			HNO -- 병원번호
+		);
+
+-- 리뷰사진
+ALTER TABLE REVIEW_PHOT
+	ADD CONSTRAINT FK_REVIEW_TO_REVIEW_PHOT -- 유저리뷰 -> 리뷰사진
+		FOREIGN KEY (
+			RNO -- 게시물 번호
+		)
+		REFERENCES REVIEW ( -- 유저리뷰
+			RNO -- 게시물 번호
+		);
+
+-- 의사사진
+ALTER TABLE DOCTOR_PHOT
+	ADD CONSTRAINT FK_DOCTOR_TO_DOCTOR_PHOT -- 의사정보 -> 의사사진
+		FOREIGN KEY (
+			DNO -- 의사번호
+		)
+		REFERENCES DOCTOR ( -- 의사정보
+			DNO -- 의사번호
+		);
+
+-- 이벤트사진
+ALTER TABLE EVENT_PHOT
+	ADD CONSTRAINT FK_EVENT_TO_EVENT_PHOT -- 병원이벤트 -> 이벤트사진
+		FOREIGN KEY (
+			ENO -- 이벤트번호
+		)
+		REFERENCES EVENT ( -- 병원이벤트
+			ENO -- 이벤트번호
+		);
+
+-- 상담신청
+ALTER TABLE COUNSEL
+	ADD CONSTRAINT FK_HOSPITAL_TO_COUNSEL -- 병원정보 -> 상담신청
+		FOREIGN KEY (
+			HNO -- 병원번호
+		)
+		REFERENCES HOSPITAL ( -- 병원정보
+			HNO -- 병원번호
+		);
+
+-- 상담신청
+ALTER TABLE COUNSEL
+	ADD CONSTRAINT FK_MEMBER_TO_COUNSEL -- 회원 -> 상담신청
+		FOREIGN KEY (
+			MNO -- 회원번호
+		)
+		REFERENCES MEMBER ( -- 회원
+			MNO -- 회원번호
+		);
+
+-- 신청사진
+ALTER TABLE COUNSEL_PHOT
+	ADD CONSTRAINT FK_COUNSEL_TO_COUNSEL_PHOT -- 상담신청 -> 신청사진
+		FOREIGN KEY (
+			CNO -- 신청번호
+		)
+		REFERENCES COUNSEL ( -- 상담신청
+			CNO -- 신청번호
+		);
+
+-- Q&A
+ALTER TABLE Q_A
+	ADD CONSTRAINT FK_MEMBER_TO_Q_A -- 회원 -> Q&A
+		FOREIGN KEY (
+			MNO -- 회원번호
+		)
+		REFERENCES MEMBER ( -- 회원
+			MNO -- 회원번호
+		);
+
+-- 댓글
+ALTER TABLE COMMENT
+	ADD CONSTRAINT FK_REVIEW_TO_COMMENT -- 유저리뷰 -> 댓글
+		FOREIGN KEY (
+			RNO -- 게시물 번호
+		)
+		REFERENCES REVIEW ( -- 유저리뷰
+			RNO -- 게시물 번호
+		);
+
+-- 댓글
+ALTER TABLE COMMENT
+	ADD CONSTRAINT FK_MEMBER_TO_COMMENT -- 회원 -> 댓글
+		FOREIGN KEY (
+			MNO -- 회원번호
+		)
+		REFERENCES MEMBER ( -- 회원
+			MNO -- 회원번호
+		);
+
+-- 유저추천
+ALTER TABLE REVIEW_RECOM
+	ADD CONSTRAINT FK_REVIEW_TO_REVIEW_RECOM -- 유저리뷰 -> 유저추천
+		FOREIGN KEY (
+			RNO -- 게시물 번호
+		)
+		REFERENCES REVIEW ( -- 유저리뷰
+			RNO -- 게시물 번호
+		);
+
+-- 유저추천
+ALTER TABLE REVIEW_RECOM
+	ADD CONSTRAINT FK_MEMBER_TO_REVIEW_RECOM -- 회원 -> 유저추천
+		FOREIGN KEY (
+			MNO -- 회원번호
+		)
+		REFERENCES MEMBER ( -- 회원
+			MNO -- 회원번호
+		);
+
+-- 병원추천
+ALTER TABLE HOSPITAL_RECOM
+	ADD CONSTRAINT FK_HOSPITAL_TO_HOSPITAL_RECOM -- 병원정보 -> 병원추천
+		FOREIGN KEY (
+			HNO -- 병원번호
+		)
+		REFERENCES HOSPITAL ( -- 병원정보
+			HNO -- 병원번호
+		);
+
+-- 병원추천
+ALTER TABLE HOSPITAL_RECOM
+	ADD CONSTRAINT FK_MEMBER_TO_HOSPITAL_RECOM -- 회원 -> 병원추천
+		FOREIGN KEY (
+			MNO -- 회원번호
+		)
+		REFERENCES MEMBER ( -- 회원
+			MNO -- 회원번호
+		);
+
+-- 이벤트추천
+ALTER TABLE EVENT_RECOM
+	ADD CONSTRAINT FK_EVENT_TO_EVENT_RECOM -- 병원이벤트 -> 이벤트추천
+		FOREIGN KEY (
+			ENO -- 이벤트번호
+		)
+		REFERENCES EVENT ( -- 병원이벤트
+			ENO -- 이벤트번호
+		);
+
+-- 이벤트추천
+ALTER TABLE EVENT_RECOM
+	ADD CONSTRAINT FK_MEMBER_TO_EVENT_RECOM -- 회원 -> 이벤트추천
+		FOREIGN KEY (
+			MNO -- 회원번호
+		)
+		REFERENCES MEMBER ( -- 회원
+			MNO -- 회원번호
+		);
+
+-- 병원이벤트-찜
+ALTER TABLE WISH_EVENT
+	ADD CONSTRAINT FK_EVENT_TO_WISH_EVENT -- 병원이벤트 -> 병원이벤트-찜
+		FOREIGN KEY (
+			ENO -- 이벤트번호
+		)
+		REFERENCES EVENT ( -- 병원이벤트
+			ENO -- 이벤트번호
+		);
+
+-- 병원이벤트-찜
+ALTER TABLE WISH_EVENT
+	ADD CONSTRAINT FK_MEMBER_TO_WISH_EVENT -- 회원 -> 병원이벤트-찜
+		FOREIGN KEY (
+			MNO -- 회원번호
+		)
+		REFERENCES MEMBER ( -- 회원
+			MNO -- 회원번호
+		);

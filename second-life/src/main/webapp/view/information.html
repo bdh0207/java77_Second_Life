@@ -4,20 +4,154 @@
 <meta charset="utf-8">
 <title>MY PAGE - INFORMATION</title>
 <link rel="stylesheet" href="../css/mylist.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
 <link rel="stylesheet" href="../css/needpopup.min.css">
+<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="../lib/bootflat/css/site.min.css">
-<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
+
+<style type="text/css">
+	.temp{
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+	}
+</style>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- jQuery 최신버전 -->
+<script src="../js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../js/masonry-docs.min.js" type="text/javascript"></script>
+<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> <!-- marsonry -->
 <script src="../js/common.js" type="text/javascript"></script>
+<script src="../js/bootstrap-dialog.js"></script>
 <script>
+	var selectCount = 0;
+	
 	$(document).ready(function() {
 	    $('#top').load('top.html');
+	    
+	    $.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+			var ajaxResult = resultObj.ajaxResult;
+			var member = ajaxResult.data;
+			if(member != null){
+				console.log(member.id);
+				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+				$('.changeValue2').html('Hello '+member.id).removeAttr('onclick').attr('onclick','location.href="mylist.html"');
+			}
+		}).error(function(error) {
+			window.location.href='login.html';
+		});
+	    
+	    $.getJSON(contextRoot + '/cosmetic/ajax/searchSurgeryInfo.do',function(resultObj){
+	 		console.log(resultObj);
+	 		
+	 		for(info of resultObj.info){
+	 			// 날짜 변환
+				var formattedDate = new Date(info.sugeryDate);
+				var years = formattedDate.getFullYear();
+				var months = formattedDate.getMonth() + 1;
+				var days = formattedDate.getDate();
+				var regDate = years + '.' + months +'.'+ days;
+	 			
+	 			var div = '<div class="item">';
+					div +=		 '<div class="col-sm-6 col-md-4" style="width: 270px;">';
+					div +=		    '<div class="thumbnail" onclick="changeBorder(this,'+info.sugeryNo+')">';
+					div +=		    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="close(this);">&times;</button>';
+					div +=		      '<div class="caption">';
+					div +=		        '<h3 id="h_'+info.sugeryNo+'">'+info.hospitalName+'</h3>'
+					div +=		        '<p class="temp">수술부위 :<span id="sp_'+info.sugeryNo+'">'+info.sugeryPart+'</span></p>';
+					div +=		        '<p class="temp">수술방법 :<span id="w_'+info.sugeryNo+'">'+info.sugeryWay+'</span</p>';
+					div +=		        '<p class="temp">담당의사 :<span id="d_'+info.sugeryNo+'">'+info.doctorName+'</span></p>';
+					div +=		        '<p class="temp">수술가격(단위:만원) :<span id="p_'+info.sugeryNo+'">'+info.sugeryPrice+'</p>';
+					div +=		        '<p class="temp">수술시기 :<span id="sd_'+info.sugeryNo+'">'+regDate+'</span></p>';
+					div +=		      '</div>';
+					div +=		    '</div>';
+					div +=		  '</div>';
+					div +=		'</div>';
+					div +=	'</div>';
+					div += '</div>';
+					
+					var $elem = $(div);
+					
+					$('#columns').append($elem).masonry('appended',$elem);
+					
+					$('#columns').imagesLoaded(function() {
+						$('#columns').masonry();
+					});
+	 		}
+	 		 
+	 	 });
 	});
-
-	function changeBorder(obj) {
-		$(obj).css("border", "1px solid #cf2d39");
+	
+	$(window).load(function() {
+		$('#columns').masonry({
+			itemSelector:'.item',
+			columnWidth: 280,
+				percentPosition: true
+		});
+		$('#columns').imagesLoaded(function() {
+			
+			
+		});
+		
+		$('#myModal').on('shown.bs.modal', function () {
+			  $('#myInput').focus()
+		});
+	});
+	
+	function changeBorder(obj,sugeryNo) {
+		
+		
+		if($(obj).css("background-color")=='rgb(160, 212, 104)'){
+			selectCount--;
+			$(obj).removeAttr('style');
+			$('#tHospital_'+sugeryNo).remove();
+			$('#tSpart_'+sugeryNo).remove();
+			$('#tSway_'+sugeryNo).remove();
+			$('#tDoctor_'+sugeryNo).remove();
+			$('#tPrice_'+sugeryNo).remove();
+			$('#tSdate_'+sugeryNo).remove();
+		}
+		else{
+			selectCount++;
+			if(selectCount > 4){
+				selectCount--;
+				BootstrapDialog.show({
+				    title: 'Info',
+				    message: '선택은 4개까지 가능합니다.' ,
+				    buttons: [{
+				        id: 'btn-ok',   
+				        icon: 'glyphicon glyphicon-check',       
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+							return;
+				        }
+				    }]
+				});
+			}
+			$(obj).css("background-color", "#A0D468");
+			
+			var hospitalName = $('#h_'+sugeryNo).text();
+			var sugeryPart = $('#sp_'+sugeryNo).text();
+			var sugeryWay = $('#w_'+sugeryNo).text();
+			var doctorName = $('#d_'+sugeryNo).text();
+			var price = $('#p_'+sugeryNo).text();
+			var sugeryDate = $('#sd_'+sugeryNo).text();
+			
+			$('#theadHospital').append('<th id="tHospital_'+sugeryNo+'">'+hospitalName+'</th>');
+			$('#tbodySpart').append('<td id="tSpart_'+sugeryNo+'">'+sugeryPart+'</td>');
+			$('#tbodySway').append('<td id="tSway_'+sugeryNo+'">'+sugeryWay+'</td>');
+			$('#tbodyDoctor').append('<td id="tDoctor_'+sugeryNo+'">'+doctorName+'</td>');
+			$('#tbodyPrice').append('<td id="tPrice_'+sugeryNo+'">'+price+'</td>');
+			$('#tbodySdate').append('<td id="tSdate_'+sugeryNo+'">'+sugeryDate+'</td>');
+		}
+		
 	};
 	function close(obj) {
-		$(obj).parent().css("display", "none");
+		//$(obj).parent().css("display", "none");
 	};
 </script>
 </head>
@@ -36,149 +170,88 @@
     <!-- 본문 -->
 	<div class="container documents">
 		<div class="example">
-			<div class="row">
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="close(this);">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
+				<div id="masonry">
+					<div id="columns">
 					</div>
-				</div> 
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-				
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-				
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-			</div> 
-			<div class="row">
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-				
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-				
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-			</div>
-			<div class="row">
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-				
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-				
-				<div class="col-md-3">
-					<div class="alert alert-warning alert-dismissable" onclick="changeBorder(this);">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br /> 병원 및 의사 : 에이트
-						성형외과<br /> 수술 가격 : 하트 주시면 정보 드릴게요!!<br> 수술 시기 : 11월 10일
-					</div>
-				</div> 
-			</div>
-			 
+			
+			<!-- 
 			<div class="row">
 				<button type="button" class="btn btn-danger btn-block" data-needpopup-show="#modal-popup">비교하기</button>
 			</div>
-			
+			-->
 			<!-- '비교하기' 버튼 클릭시 나타나는 메시지 -->
+			<!--
 			<div id="modal-popup" class="needpopup">
 				<div class="panel panel-danger">
 					<div class="panel-heading">비교하기</div>
 					<table class="table">
 						<thead>
-							<tr>
+							<tr id="theadHospital">
 								<th>구분</th>
-								<th>쥬얼리 성형외과</th>
-								<th>디에이 성형외과</th>
-								<th>에이트 성형외과</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>위치</td>
-								<td>강남</td>
-								<td>수원</td>
-								<td>울산</td>
+							<tr id="tbodySpart">
+								<td style="font-weight: bold;">수술부위</td>
 							</tr>
-							<tr>
-								<td>의사</td>
-								<td>배동호</td>
-								<td>신민영</td>
-								<td>김초롱</td>
+							<tr id="tbodySway">
+								<td style="font-weight: bold;">수술방법</td>
 							</tr>
-							<tr>
-								<td>수술 부위/방법</td>
-								<td>비절개</td>
-								<td>눈매교정</td>
-								<td>코성형</td>
+							<tr id="tbodyDoctor">
+								<td style="font-weight: bold;">담당의사</td>
 							</tr>
-							<tr>
-								<td>가격</td>
-								<td>100만원</td>
-								<td>150만원</td>
-								<td>300만원</td>
+							<tr id="tbodyPrice">
+								<td style="font-weight: bold;">가격</td>
+							</tr>
+							<tr id="tbodySdate">
+								<td style="font-weight: bold;">수술시기</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
+			-->
+			
+			<button type="button" class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg">비교하기</button>
+			
+			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+			  <div class="modal-dialog modal-lg">
+			    <div class="modal-content">
+			    <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		     </div>
+			      <div class="panel panel-danger">
+					<div class="panel-heading">비교하기</div>
+					<table class="table">
+						<thead>
+							<tr id="theadHospital">
+								<th>구분</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr id="tbodySpart">
+								<td style="font-weight: bold;">수술부위</td>
+							</tr>
+							<tr id="tbodySway">
+								<td style="font-weight: bold;">수술방법</td>
+							</tr>
+							<tr id="tbodyDoctor">
+								<td style="font-weight: bold;">담당의사</td>
+							</tr>
+							<tr id="tbodyPrice">
+								<td style="font-weight: bold;">가격(단위:만원)</td>
+							</tr>
+							<tr id="tbodySdate">
+								<td style="font-weight: bold;">수술시기</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			    </div>
+			  </div>
+			</div>
+			
+			
 		</div>
 	</div>
 	

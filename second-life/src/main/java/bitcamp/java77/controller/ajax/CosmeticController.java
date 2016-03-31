@@ -50,6 +50,7 @@ import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
 import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
+import bitcamp.java77.domain.CosmeticSugeryInfo;
 import bitcamp.java77.domain.CosmeticWish;
 import bitcamp.java77.domain.CosmeticWishEvent;
 import bitcamp.java77.service.CosmeticService;
@@ -753,6 +754,7 @@ public class CosmeticController {
 		CosmeticSearch.wordType = wordType;
 		return new AjaxResult("success", null);
 	}
+	
 	// 이벤트 조회수 증가 -> 반환
 	@RequestMapping(value="viewCntAdd",method=RequestMethod.GET)
 	public AjaxResult viewCntAdd(int eventNo) throws Exception {
@@ -760,5 +762,18 @@ public class CosmeticController {
 		int viewCnt = cosmeticService.selectEventViewCnt(eventNo);
 		
 		return new AjaxResult("success", viewCnt);
+	}
+	
+	@RequestMapping(value="searchSurgeryInfo",method=RequestMethod.GET)
+	public Object searchSurgeryInfo(HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		int memberNo = member.getMemberNo();
+		HashMap<String, Object> resultMap = new HashMap<>();
+		List<CosmeticSugeryInfo> info =cosmeticService.selectSurgeryInfoByMemberNo(memberNo);
+		
+		resultMap.put("info", info);
+		return resultMap;
 	}
 }

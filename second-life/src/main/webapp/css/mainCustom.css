@@ -81,7 +81,7 @@ div#columns figure {
 	margin: 0 2px 15px;
 	padding: 15px;
 	padding-bottom: 10px;
-	transition: opacity .4s ease-in-out;
+	transition: all 1s; /*opacity .4s ease-in-out;*/
 	column-break-inside: avoid;
 	display: inline-block;
 }
@@ -147,11 +147,15 @@ div#columns figure>a>img {
 	padding-bottom: 15px;
 	margin-bottom: 5px;
 }
-
-div#columns:hover figure:not(:hover) {
-	opacity: 0.4;
+/*
+ div#columns:hover figure:not(:hover) { 
+ 	opacity: 0.4; 
+ }
+ */
+ 
+div#columns:hover figure:hover{
+	border: 3px solid #cf2d39;
 }
-.selectBar
 
 @media screen and (max-width: 1024px) {
 		#columns { column-gap: 0px; }

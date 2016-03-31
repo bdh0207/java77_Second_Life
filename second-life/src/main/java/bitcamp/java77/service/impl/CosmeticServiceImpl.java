@@ -110,9 +110,25 @@ public class CosmeticServiceImpl implements CosmeticService {
 	@Override
 	@Transactional
 	public void deleteReview(CosmeticReview cosmeticReview) throws Exception {
-		cosmeticDao.deleteReviewCommentByReviewNo(cosmeticReview.getReviewNo());
-		cosmeticDao.deleteReviewPhoto(cosmeticReview.getReviewNo());
+		CosmeticWish cosmeticWish = new CosmeticWish();
 		cosmeticDao.deleteReview(cosmeticReview);
+		//cosmeticWish.setMemberNo(cosmeticReview.getMemberNo());
+		// 위시 있는지 여부부터 체크를 해야됨...
+		
+		//int wishNo = 0;
+		//List<String> wno = cosmeticDao.selectWishGetNo(cosmeticReview.getReviewNo());
+		//if(wno != null){
+		//	wishNo = Integer.parseInt(wno);
+			
+		//}
+		//wishNo = cosmeticDao.selectWishGetNo(cosmeticReview.getReviewNo());
+		//cosmeticWish.setWishNo(wishNo);
+		//cosmeticDao.deleteSugeryInfoByNo(wishNo);
+		
+		//cosmeticDao.deleteWishByNo(cosmeticReview.getReviewNo());
+		//cosmeticDao.deleteReviewCommentByReviewNo(cosmeticReview.getReviewNo());
+		//cosmeticDao.deleteReviewPhoto(cosmeticReview.getReviewNo());
+		//cosmeticDao.deleteReviewRecom(cosmeticReview);
 	}
 
 	@Override
@@ -262,4 +278,12 @@ public class CosmeticServiceImpl implements CosmeticService {
 	public int selectWishEvent(CosmeticWishEvent wishEvent) throws Exception {
 		return cosmeticDao.selectWishEvent(wishEvent);	
 	}
+
+	@Override
+	@Transactional
+	public List<CosmeticSugeryInfo> selectSurgeryInfoByMemberNo(int memberNo) throws Exception {
+		return cosmeticDao.selectSurgeryInfoByMemberNo(memberNo);
+	}
+	
+	
 }

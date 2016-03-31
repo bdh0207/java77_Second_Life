@@ -11,6 +11,7 @@ import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
 import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
+import bitcamp.java77.domain.CosmeticSugeryInfo;
 import bitcamp.java77.domain.CosmeticWish;
 import bitcamp.java77.domain.CosmeticWishEvent;
 
@@ -45,4 +46,5 @@ public interface CosmeticService {
 	public void insertWishEvent(CosmeticWishEvent wishEvent) throws Exception;
 	public int selectWishEvent(CosmeticWishEvent wishEvent) throws Exception;
 	public List<CosmeticReview> selectMainReviewList(CosmeticSearch search) throws Exception;
+	public List<CosmeticSugeryInfo> selectSurgeryInfoByMemberNo(int memberNo) throws Exception;
 }
