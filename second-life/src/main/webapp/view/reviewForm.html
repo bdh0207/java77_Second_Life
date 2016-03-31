@@ -114,7 +114,7 @@ function ckSubmit() {
 		-moz-ime-mode:disabled !important; 
 		-ms-ime-mode:disabled !important; 
 		ime-mode:disabled !important; 
-	} 
+	}
 </style>
 <script>
 $(document).ready(function() {
@@ -124,7 +124,7 @@ $(document).ready(function() {
 		if(member != null){
 			console.log(member.id);
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-			$('.changeValue2').html('Hello '+member.id).removeAttr('onclick');
+			$('.changeValue2').html('Hello '+member.id).attr('onclick','location.href="mylist.html"');
 		}
 	}).error(function(error) {
 		window.location.href='login.html';
@@ -298,19 +298,21 @@ $(document).ready(function() {
 			  <span class="help-block textMargin" style="font-size: 8pt; color: #cf2d39;"> *수술받은 부위를 체크해주세요.　(중복가능)</span>
 	      </div>
 	    </div>
-	    <div class="form-group">
-	      <label for="inputEmail" class="col-lg-2 control-label">공유 여부</label>
-	      <div class="col-lg-10" >
-	        <div class="checkbox">
-	            <div  style="margin-left: 20px;">
-	            <input id="ckStatus" type="checkbox" checked="checked" name="share" 
-	            	    onclick="checkDisable(this.form)">
-	            </div>
-				<span style="margin-left: 20px; font-size: 9pt;">당신의 성형 정보를 공유 하시겠습니까?</span>
-	          <span class="help-block textMargin" style="font-size: 6pt; color: #cf2d39;"> *공유하지 않는다면, 다른 이용자들의 정보 요청 쪽지 세례를 받으실 수 있습니다.</span>
-	        </div>
-	      </div>
-	    </div>
+	    
+<!-- 	    <div class="form-group"> -->
+<!-- 	      <label for="inputEmail" class="col-lg-2 control-label">공유 여부</label> -->
+<!-- 	      <div class="col-lg-10" > -->
+<!-- 	        <div class="checkbox"> -->
+<!-- 	            <div  style="margin-left: 20px;"> -->
+<!-- 	            <input id="ckStatus" type="checkbox" checked="checked" name="share"  -->
+<!-- 	            	    onclick="checkDisable(this.form)"> -->
+<!-- 	            </div> -->
+<!-- 				<span style="margin-left: 20px; font-size: 9pt;">당신의 성형 정보를 공유 하시겠습니까?</span> -->
+<!-- 	          <span class="help-block textMargin" style="font-size: 6pt; color: #cf2d39;"> *공유하지 않는다면, 다른 이용자들의 정보 요청 쪽지 세례를 받으실 수 있습니다.</span> -->
+<!-- 	        </div> -->
+<!-- 	      </div> -->
+<!-- 	    </div> -->
+	    
 	    <div class="form-group">
 	      <label for="inputPassword" class="col-lg-2 control-label">공유 여부</label>
 	      <div class="col-lg-10">
@@ -349,9 +351,11 @@ $(document).ready(function() {
 	        <input name="price" type="text" class="form-control fontStyle boxSize" id="inputEmail" placeholder="단위 : 만원" value="" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" />
 	      </div>
 	    </div>
+	    
 	    <div class="form-group">
 	      <label for="inputEmail" class="col-lg-2 control-label">수술 시기</label>
 	      <div class="col-lg-10">
+
 	        <input name="date" type="date" class="form-control fontStyle boxSize" id="inputEmail" placeholder="수술 받은 날짜를 입력해주세요.">
 	      </div>
 	    </div>

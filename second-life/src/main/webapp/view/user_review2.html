@@ -7,9 +7,12 @@
 <style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 <style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
 <title>꽃보다 아름다운</title>  
-<link rel="stylesheet" href="../css/flexslider.css" type="text/css">
-<style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>  
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
+<link rel="stylesheet" href="../css/flexslider.css" type="text/css">
+<link rel="stylesheet" href="../lib/bootflat/css/site.min.css">
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
+<style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
+<!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">   -->
 <style>
 a, h3, td { font-family: 'Jeju Gothic', serif; }
 .body-content{
@@ -33,11 +36,15 @@ a, h3, td { font-family: 'Jeju Gothic', serif; }
 	margin-left: 150px;
 } 
 </style>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> -->
-<script type="text/javascript" src="../lib/jquery/jquery.js"></script>
-<script type="text/javascript" src="../js/jquery.flexslider.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
+<script src="../lib/jquery/jquery.js"></script>
+<script src="../js/jquery.flexslider.js"></script>
+<script src="../js/common.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="../js/bootstrap-dialog.js"></script>
 <script>
+// 현재 페이지 번호
+var pageNumber = 1;
+
 $(window).load(function() {
 	/*
   $('.flexslider').flexslider({
@@ -70,7 +77,7 @@ $(document).ready(function() {
  		// 로그인 헤더 처리
 		if(reviewDetail.member != null){
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-			$('.changeValue2').html('Hello '+ reviewDetail.member.id).removeAttr('onclick');
+			$('.changeValue2').html('Hello '+ reviewDetail.member.id).attr('onclick','location.href="mylist.html"');
 			$('#commentId').text(reviewDetail.member.id);
 		}
  		
@@ -79,8 +86,8 @@ $(document).ready(function() {
  	 		 $('#data-title').text(reviewDetail.review.title);
  			 $('#data-content').text(reviewDetail.review.content);
  	 		 $('#viewCnt').text(reviewDetail.review.viewCnt);
- 			 
- 	 		
+ 	 		 $('#recomCnt').text(reviewDetail.review.recomCnt);
+ 			 $('#commentCnt').text(reviewDetail.commentCnt);
  	 		 
  	 		 for(var photoList of reviewDetail.photo){
  	 			 var li =   '<li data-thumb="'+photoList.filePath+'">	 ';
@@ -107,60 +114,90 @@ $(document).ready(function() {
 				var hours = formattedDate.getHours();
 				var minutes = formattedDate.getMinutes();
 				var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
-				
- 	 			 var tr = '<tr id=c_'+commentList.commentNo+'>';
-	                 tr+=     '	<td>'+coomentList.commentNo+'</td>                                                                                            															';
+ 	 			var tr = '<tr id=c_'+commentList.commentNo+'>';
+	                 tr+=     '	<td>'+commentList.commentNo+'</td>                                                                                            															';
 	                 tr+=     '	<td>'+commentList.member[0].id+'</td>                                                                                         															';
 	                 tr+=     '	<td>'+commentList.content+'</td>                                                                                              															';
 	                 tr+=     '	<td>'+regDate+'</td>                                                                                                          															';
-	                 tr+=     '<td class="favorite"><a href="#" class="btn btn-danger btn-xs">수정</a><a href="#" onclick=commentDel('+commentList.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
+	                 tr+=     '<td class="favorite"><a class="btn btn-danger btn-xs">수정</a><a onclick=commentDel('+commentList.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
 	                 tr+= '</tr>		                                                                                                                    															';
  	 		 	 $('#comment-area').append(tr);
  	 		 }
- 	 		 
  	 		 if(emptyCheck){
  	 			var tr = '<tr>';
                 tr+=     '	<td colspan=5 align="center">작성된 댓글이 없습니다.</td>                                                                                                                      ';
                 tr+=     '</tr>		                                                                                                                    ';
  		 	 	$('#comment-area').append(tr);
  	 		 }
- 	 		 
+ 	 		 pageNumber = reviewDetail.pageNo;
+ 	 		 if(reviewDetail.pageNo != 1){
+ 	 			var li = '<li><a href="#" onclick="commentPage('+(pageNumber-1)+','+reviewNo+');return false;">&laquo;</a></li>';
+	 			$('.pagination').append(li);
+ 	 		 }
+ 	 		 for(var i = reviewDetail.beginPage; i <= reviewDetail.endPage; i++){
+ 	 			 var li = '<li id=p_'+ i +'><a href="#" onclick="commentPage('+ i +','+reviewNo+'); return false;" style="cursor: pointer;">'+i+'</a></li>';
+ 	 			 $('.pagination').append(li);
+ 	 		 }
+ 	 		 if(reviewDetail.pageNo != reviewDetail.lastPage){
+ 	 			 var li = '<li><a href="#" onclick="commentPage('+(pageNumber+1)+','+reviewNo+');return false;">&raquo;</a></li>';
+ 	 			 $('.pagination').append(li);
+ 	 		 }
+ 	 		pageNumber = reviewDetail.pageNo;
  		 }
  		 
  	 }).error(function(error) {
 		 window.location.href='login.html';
 	 });
  	 
- 	 function commentDel(commentNo, reviewNo) {
-		$.ajax({
-			url: contextRoot + '/cosmetic/ajax/reviewCommentDelete.do',
-			data : {
-				commentNo : commentNo,
-				reviewNo : reviewNo
-			}
-		}).done(function(resultObj) {
-			
-		});
-	 }
- 	 
- 	 $('#deleteBtn').click(function() {
+ 	 $('#deleteBtn').click(function(event) {
+ 		event.preventDefault();
 		  $.get(contextRoot+'/cosmetic/ajax/reviewDelete.do?reviewNo='+reviewNo,function(resultObj){
 			   var ajaxResult = resultObj.ajaxResult;
 			   console.log(ajaxResult.status);
 			   var status = ajaxResult.status;
 			   
 			   if(status == 'success'){
-				   alert('게시글이 삭제되었습니다.');
-				   location.href = 'user_review_list.html';
+				   BootstrapDialog.show({
+					    title: 'Success',
+					    message: '게시글이 삭제되었습니다.' ,
+					    buttons: [{
+					        id: 'btn-ok',   
+					        icon: 'glyphicon glyphicon-check',       
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					            location.href = 'user_review_list.html';
+					        }
+					    }]
+					});
+				   
+				   //location.href = 'user_review_list.html';
 			   }
 			   else{
-				   alert('권한이 없습니다.');
+				   BootstrapDialog.show({
+					    title: 'Error',
+					    message: '권한이 없습니다.' ,
+					    buttons: [{
+					        id: 'btn-ok',   
+					        icon: 'glyphicon glyphicon-check',       
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					        }
+					    }]
+					});
+				   //alert('권한이 없습니다.');
 			   }
 			   
 		  },'json');
 	 });
  	 
  	 $('#updateBtn').click(function() {
+ 		event.preventDefault();
  		 //권한 체크
  	  $.get(contextRoot+'/cosmetic/ajax/authority.do?reviewNo='+reviewNo,function(resultObj){
  			 var ajaxResult = resultObj.ajaxResult;
@@ -170,186 +207,503 @@ $(document).ready(function() {
  				location.href = 'reviewUpdate.html?reviewNo='+reviewNo; 
  			 }
  			 else{
- 				 alert('권한이 없습니다.')
+ 				BootstrapDialog.show({
+				    title: 'Error',
+				    message: '권한이 없습니다.' ,
+				    buttons: [{
+				        id: 'btn-ok',   
+				        icon: 'glyphicon glyphicon-check',       
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				        }
+				    }]
+				});
  			 }
  			 
  		 },'json');
 		 
 	 });
  	 
- 	 $('#submitBtn').click(function() {
+ 	 $('#wishBtn').click(function() {
+		$.get(contextRoot + '/cosmetic/ajax/wishAdd.do?reviewNo='+reviewNo,function(resultObj){
+			var ajaxResult = resultObj.ajaxResult;
+			var status = ajaxResult.status;
+			if(status == 'success'){
+				 BootstrapDialog.show({
+					    title: 'Success',
+					    message: '위시리스트에 추가되었습니다.' ,
+					    buttons: [{
+					        id: 'btn-ok',   
+					        icon: 'glyphicon glyphicon-check',       
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					        }
+					    }]
+					});
+				
+				//alert('위시리스트에 추가되었습니다.');
+			}
+			else{
+				
+				BootstrapDialog.show({
+				    title: 'Error',
+				    message: '권한이 없습니다.' ,
+				    buttons: [{
+				        id: 'btn-ok',   
+				        icon: 'glyphicon glyphicon-check',       
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				        }
+				    }]
+				});
+				//alert('이미 위시리스트에 있습니다.');
+			}
+		},'json');	
+	 });
+ 	 
+ 	 $('#recomBtn').click(function() {
+		 $.getJSON(contextRoot + '/cosmetic/ajax/reivewRecomAdd.do?reviewNo='+reviewNo,function(resultObj){
+			 var ajaxResult = resultObj.ajaxResult;
+			 var status = ajaxResult.status;
+			 
+			 if(status == 'success'){
+				 BootstrapDialog.show({
+					    title: 'Success',
+					    message: '추천하였습니다' ,
+					    buttons: [{
+					        id: 'btn-ok',   
+					        icon: 'glyphicon glyphicon-check',       
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					        }
+					    }]
+					});
+				 	//alert('추천하였습니다.');
+				}
+				else{
+					BootstrapDialog.show({
+					    title: 'Success',
+					    message: '이미 추천하였습니다.' ,
+					    buttons: [{
+					        id: 'btn-ok',   
+					        icon: 'glyphicon glyphicon-check',       
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					        }
+					    }]
+					});
+					//alert('이미 추천하였습니다.');
+				}
+		 });
+ 		 
+	 });
+ 	 
+ 	 $('#submitBtn').click(function(event) {
+ 		event.preventDefault();
 		$.post(contextRoot+'/cosmetic/ajax/reviewCommentAdd.do',{
 			reviewNo : reviewNo,
 			content : $('#textArea').val()
 		},function(resultObj){
-			var ajaxResult = resultObj.ajaxResult;
-			var status = ajaxResult.status;
-			var data = ajaxResult.data;
-			var comment = data.comment;
-			console.log(comment);
+			$('#comment-area').children('tr').remove();
 			
-			if(status == 'success'){
+			console.log(resultObj);
+			for(var comment of resultObj.commentList){
 				
+				// 날짜 변환
+		 		var formattedDate = new Date(comment.regDate);
+				var years = formattedDate.getFullYear();
+				var months = formattedDate.getMonth() + 1;
+				var days = formattedDate.getDate();
+				var hours = formattedDate.getHours();
+				var minutes = formattedDate.getMinutes();
+				var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
+				
+				// 결과값을 태그에 추가
+ 	 			var tr = '<tr id=c_'+comment.commentNo+'>';
+	                 tr+=     '	<td>'+comment.commentNo+'</td>                                                                                            															';
+	                 tr+=     '	<td>'+comment.member[0].id+'</td>                                                                                         															';
+	                 tr+=     '	<td>'+comment.content+'</td>                                                                                              															';
+	                 tr+=     '	<td>'+regDate+'</td>                                                                                                          															';
+	                 tr+=     '<td class="favorite"><a class="btn btn-danger btn-xs">수정</a><a onclick=commentDel('+comment.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
+	                 tr+= '</tr>		                                                                                                                    															';
+ 	 		 	$('#comment-area').append(tr);
+ 	 		 	$('#textArea').val('');
+ 	 		 	
+ 	 		 	$('.pagination').children('li').remove();
+ 	 			
+ 	 			// 다시 페이지번호 출력
+ 	 	 		if(resultObj.pageNo != 1){
+ 	 	 			var li = '<li><a href="#" onclick="commentPage('+(resultObj.pageNo-1)+','+reviewNo+');return false;">&laquo;</a></li>';
+ 	 	 			$('.pagination').append(li);
+ 	 	 		}
+ 	 	 		
+ 	 			for(var i = resultObj.beginPage; i <= resultObj.endPage; i++){
+ 	 	 			 var li = '<li id=p_'+ i +'><a href="#" onclick="commentPage('+ i +','+reviewNo+'); return false;" style="cursor: pointer;">'+i+'</a></li>';
+ 	 	 			 $('.pagination').append(li);
+ 	 	 		}
+ 	 			
+ 	 	 		if(resultObj.pageNo != resultObj.lastPage){
+ 	 	 			 var li = '<li><a href="#" onclick="commentPage('+(resultObj.pageNo+1)+','+reviewNo+');return false;">&raquo;</a></li>';
+ 	 	 			 $('.pagination').append(li);
+ 	 	 		}
 			}
+			pageNumber = resultObj.pageNo;
 			
 		},'json');
 	 });
  	 
+ 	// 정보보기
+ 	$("#viewInfo").click(function() {
+ 		$.getJSON(contextRoot + '/cosmetic/ajax/viewInfo.do?reviewNo='+reviewNo, 
+			function(resultObj) {	
+	 			var info = resultObj.ajaxResult.data;
+	 			
+	 			var formattedDate = new Date(info.sugeryDate);
+				var year 	= formattedDate.getFullYear();
+				var month 	= formattedDate.getMonth() + 1;
+				var day 	= formattedDate.getDate();
+				var regDate = year + '년 ' + month +'월 '+ day + '일';
+	 			
+	 			if(info.status == 0) {
+	 				$(".modal-body").html("수술정보가 등록되어있지 않습니다.");
+	 			} else {
+		 			$("#surgeryWay").html(info.sugeryWay);
+		 			$("#hospitalName").html(info.hospitalName);
+		 			$("#doctorName").html(info.doctorName);
+		 			$("#surgeryPrice").html(info.sugeryPrice);
+		 			$("#surgeryDate").html(regDate);
+	 			}
+ 			}
+ 		);
+ 	});
 });
+
+function commentPage(pageNo,reviewNo) {
+	
+	$.getJSON(contextRoot + '/cosmetic/ajax/searchComment.do?pageNo='+pageNo+'&reviewNo='+reviewNo,function(resultObj){
+		$('#comment-area').children('tr').remove();
+		
+		for(var comment of resultObj.comment){
+			
+			// 날짜 변환
+	 		var formattedDate = new Date(comment.regDate);
+			var years = formattedDate.getFullYear();
+			var months = formattedDate.getMonth() + 1;
+			var days = formattedDate.getDate();
+			var hours = formattedDate.getHours();
+			var minutes = formattedDate.getMinutes();
+			var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
+			
+			// 결과값을 태그에 추가
+	 		var tr = '<tr id=c_'+comment.commentNo+'>';
+                tr+=     '	<td>'+comment.commentNo+'</td>                                                                                            															';
+                tr+=     '	<td>'+comment.member[0].id+'</td>                                                                                         															';
+                tr+=     '	<td>'+comment.content+'</td>                                                                                              															';
+                tr+=     '	<td>'+regDate+'</td>                                                                                                          															';
+                tr+=     '<td class="favorite"><a class="btn btn-danger btn-xs">수정</a><a onclick=commentDel('+comment.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
+                tr+= '</tr>		                                                                                                                    															';
+	 		 	$('#comment-area').append(tr);
+	 		 	$('#textArea').val('');
+		}
+		$('.pagination').children('li').remove();
+		
+		// 다시 페이지번호 출력
+ 		if(resultObj.pageNo != 1){
+ 			var li = '<li><a href="#" onclick="commentPage('+(pageNo-1)+','+reviewNo+');return false;">&laquo;</a></li>';
+ 			$('.pagination').append(li);
+ 		}
+ 		
+		for(var i = resultObj.beginPage; i <= resultObj.endPage; i++){
+ 			 var li = '<li id=p_'+ i +'><a href="#" onclick="commentPage('+ i +','+reviewNo+'); return false;" style="cursor: pointer;">'+i+'</a></li>';
+ 			 $('.pagination').append(li);
+ 		}
+		
+ 		if(resultObj.pageNo != resultObj.lastPage){
+ 			 var li = '<li><a href="#" onclick="commentPage('+(pageNo+1)+','+reviewNo+');return false;">&raquo;</a></li>';
+ 			 $('.pagination').append(li);
+ 		}
+		pageNumber = resultObj.pageNo;
+	});
+	
+	console.log(pageNumber);
+}
+
+function commentDel(commentNo, reviewNo) {
+	$.ajax({
+		url: contextRoot + '/cosmetic/ajax/reviewCommentDelete.do',
+		type: "GET",
+		dataType:"json",
+		data : {
+			pageNo : pageNumber,
+			commentNo : commentNo,
+			reviewNo : reviewNo
+		}
+	}).done(function(resultObj) {
+		var ajaxResult = resultObj.ajaxResult;
+		var status = ajaxResult.status;
+		var data = ajaxResult.data;
+		if(status == 'success'){
+// 			console.log(data);
+// 			$('#c_'+commentNo).remove();
+			console.log(data);
+			$('#comment-area').children('tr').remove();
+			for(var comment of data.commentList){
+				
+				// 날짜 변환
+		 		var formattedDate = new Date(comment.regDate);
+				var years = formattedDate.getFullYear();
+				var months = formattedDate.getMonth() + 1;
+				var days = formattedDate.getDate();
+				var hours = formattedDate.getHours();
+				var minutes = formattedDate.getMinutes();
+				var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
+				
+				// 결과값을 태그에 추가
+		 		var tr = '<tr id=c_'+comment.commentNo+'>';
+	                tr+=     '	<td>'+comment.commentNo+'</td>                                                                                            															';
+	                tr+=     '	<td>'+comment.member[0].id+'</td>                                                                                         															';
+	                tr+=     '	<td>'+comment.content+'</td>                                                                                              															';
+	                tr+=     '	<td>'+regDate+'</td>                                                                                                          															';
+	                tr+=     '<td class="favorite"><a class="btn btn-danger btn-xs">수정</a><a onclick=commentDel('+comment.commentNo+','+reviewNo+') class="btn btn-danger btn-xs">삭제</a></td>';
+	                tr+= '</tr>		                                                                                                                    															';
+		 		 	$('#comment-area').append(tr);
+		 		 	$('#textArea').val('');
+			}
+			$('.pagination').children('li').remove();
+			
+			// 다시 페이지번호 출력
+	 		if(data.pageNo != 1){
+	 			var li = '<li><a href="#" onclick="commentPage('+(data.pageNo-1)+','+reviewNo+');return false;">&laquo;</a></li>';
+	 			$('.pagination').append(li);
+	 		}
+	 		
+			for(var i = data.beginPage; i <= data.endPage; i++){
+	 			 var li = '<li id=p_'+ i +'><a href="#" onclick="commentPage('+ i +','+reviewNo+'); return false;" style="cursor: pointer;">'+i+'</a></li>';
+	 			 $('.pagination').append(li);
+	 		}
+			
+	 		if(data.pageNo != data.lastPage){
+	 			 var li = '<li><a href="#" onclick="commentPage('+(data.pageNo+1)+','+reviewNo+');return false;">&raquo;</a></li>';
+	 			 $('.pagination').append(li);
+	 		}
+			pageNumber = data.pageNo;
+		}
+		else{
+			BootstrapDialog.show({
+			    title: 'Success',
+			    message: '권한이 없습니다.' ,
+			    buttons: [{
+			        id: 'btn-ok',   
+			        icon: 'glyphicon glyphicon-check',       
+			        label: 'OK',
+			        cssClass: 'btn-danger', 
+			        autospin: false,
+			        action: function(dialogRef){    
+			            dialogRef.close();
+			        }
+			    }]
+			});
+			//alert('권한이 없습니다.');
+		}
+	});
+ }
 </script>
 </head>
 
 <body>
 	<!-- top -->
 	<div data-role="page" id="top"></div>
-<<<<<<< HEAD
 	<!-- 유저리뷰 표시줄 -->
     <p class="lead" style="margin-top: 30px; margin-left: 160px; color: #cf2d39; font-size: 20pt;">User Review</p>
     <div style="width: 1065px; margin-left: 160px; margin-top: 0px;"><hr /></div>
-    
-=======
     <div id="title"><h1 id="data-title"></h1></div>
->>>>>>> 20177c8f920af017a2f7c84d5535b73eafa15511
-    <div class="body-content"> 
-    	<!-- 본문_좌 --> 
-        <div class="left">
-        	<div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">PHOTO</h3>
-              </div>
-              <div class="panel-body">
-              	<div class="flexslider">
-                  <ul class="slides">
-<!--                     <li data-thumb="../images/성형전.PNG"> -->
-<!--                       <img src="../images/성형전.PNG" /> -->
-<!--                     </li> -->
-<!--                     <li data-thumb="../images/after2.jpg"> -->
-<!--                       <img src="../images/after2.jpg" /> -->
-<!--                     </li> -->
-<!--                     <li data-thumb="../images/after3.jpg"> -->
-<!--                       <img src="../images/after3.jpg" /> -->
-<!--                     </li> -->
-<!--                     <li data-thumb="../images/일반인후기3.jpg"> -->
-<!--                       <img src="../images/일반인후기3.jpg" /> -->
-<!--                     </li> -->
-                  </ul>
-                </div>	 
-            </div>	 
-        </div> 
-        </div>
-        
-      <!-- 본문_우 -->
-      <div class="right"> 
-          <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">CONTENT</h3>
-              </div>
-              <div id="data-content" class="panel-body">
-              </div>
-        	</div> 
-            <div style="float: right; line-height: 0;">좋아요 330 | <a href="">댓글 2343</a> | 조회 <span id="viewCnt">34231</span></div><br/><br/>
-            
-            <!-- 댓글 -->
-            <div class="panel panel-default">
-  				<div class="panel-heading">
-                	<h3 class="panel-title">COMMENT</h3>
-                </div>
-                  <div class="panel-body">
-                    <table class="table table-striped table-hover">
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th>글쓴이</th>
-                      <th>내용</th>
-                      <th>등록일</th>
-                      <th>수정 | 삭제</th>
-                    </tr>
-                  </thead>
-                  <tbody id="comment-area"> 
-<!--                     <tr> -->
-<!--                       <td>1</td> -->
-<!--                       <td>김초롱</td> -->
-<!--                       <td>와전다 진시 다른 사람</td> -->
-<!--                       <td>2016-02-19 14:95</td> -->
-<!--                       <td class="favorite"><a href="#" class="btn btn-danger btn-xs">좋아요</a><a href="#" class="btn btn-danger btn-xs">신고</a></td> -->
-<!--                     </tr>  -->
-                  </tbody> 
-                </table>	 
-                  </div>
-<!--                   <div style="padding: 0px; margin: 0px; line-height: none; text-align: center;"> -->
-<!--                   	<ul class="pagination pagination-sm"> -->
-<!--                       <li class="disabled"><a href="#">&laquo;</a></li> -->
-<!--                       <li class="active"><a href="#">1</a></li> -->
-<!--                       <li><a href="#">2</a></li> -->
-<!--                       <li><a href="#">3</a></li> -->
-<!--                       <li><a href="#">4</a></li> -->
-<!--                       <li><a href="#">5</a></li> -->
-<!--                       <li><a href="#">&raquo;</a></li> -->
-<!--                     </ul> -->
-<!--                   </div> -->
-                <div class="row">
-						<div class="col-xs-12 col-sm-6 col-md-8" style="margin-left: 20px; width: 90%">
-								<form class="form-horizontal">
-								  <fieldset>
-								    <legend>Comment Regist</legend>
-								    <div class="form-group">
-								      <label id="commentId" for="textArea" class="col-lg-2 control-label"></label>
-								      <div class="col-lg-10">
-								        <textarea class="form-control" rows="3" id="textArea"></textarea>
-								      </div>
-								    </div>
-								    
-								    <div class="form-group">
-								      <div class=".col-md-3 .col-md-offset-3" style="float: right; margin-right: 13px;">
-								        <button type="button" id="submitBtn" class="btn btn-info">Submit</button>
-								      </div>
-								    </div>
-								    
-								  </fieldset>
-								</form>
+
+	<div class="body-content">
+		<div class="row">
+			<a href="#" class="btn btn-danger" id="viewInfo" data-toggle="modal" data-target="#myModal" style="float: right;">정보보기</a> 
+		</div>
+		
+		<div class="row">
+			<!-- 본문_좌 -->
+			<div class="left">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">PHOTO</h3>
+					</div>
+					<div class="panel-body">
+						<div class="flexslider">
+							<ul class="slides">
+								<!--                     <li data-thumb="../images/성형전.PNG"> -->
+								<!--                       <img src="../images/성형전.PNG" /> -->
+								<!--                     </li> -->
+								<!--                     <li data-thumb="../images/after2.jpg"> -->
+								<!--                       <img src="../images/after2.jpg" /> -->
+								<!--                     </li> -->
+								<!--                     <li data-thumb="../images/after3.jpg"> -->
+								<!--                       <img src="../images/after3.jpg" /> -->
+								<!--                     </li> -->
+								<!--                     <li data-thumb="../images/일반인후기3.jpg"> -->
+								<!--                       <img src="../images/일반인후기3.jpg" /> -->
+								<!--                     </li> -->
+							</ul>
 						</div>
+					</div>
 				</div>
-              </div>
-              
-            <div style="float: left;">
-            	<button type="button" class="btn btn-default" aria-label="Left Align">
-				  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 좋아요
-				</button>
-            	<button type="button" class="btn btn-default" aria-label="Left Align">
-				  <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 찜
-				</button>
-            </div>
-            
-            <div style="float: right;">
-            	<a href="#" id="updateBtn" class="btn btn-warning">UPDATE</a>
-	      		<a href="#" id="deleteBtn" class="btn btn-danger">DELETE</a>
-	      		<a href="user_review_list.html" class="btn btn-primary">LIST</a>
-            </div>
-            </div>
-      </div>
-      
-      <script>
-      </script>  
+			</div>
+
+			<!-- 본문_우 -->
+			<div class="right">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">CONTENT</h3>
+					</div>
+					<div id="data-content" class="panel-body"></div>
+				</div>
+				<div style="float: right; line-height: 0;">
+					좋아요<span id="recomCnt">330</span> | 댓글<span id="commentCnt">2343</span> | 조회 <span id="viewCnt">34231</span>
+				</div>
+				<br />
+				<br />
+
+				<!-- 댓글 -->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">COMMENT</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>No.</th>
+									<th>글쓴이</th>
+									<th>내용</th>
+									<th>등록일</th>
+									<th>수정 | 삭제</th>
+								</tr>
+							</thead>
+							<tbody id="comment-area">
+								<!--                     <tr> -->
+								<!--                       <td>1</td> -->
+								<!--                       <td>김초롱</td> -->
+								<!--                       <td>와전다 진시 다른 사람</td> -->
+								<!--                       <td>2016-02-19 14:95</td> -->
+								<!--                       <td class="favorite"><a href="#" class="btn btn-danger btn-xs">좋아요</a><a href="#" class="btn btn-danger btn-xs">신고</a></td> -->
+								<!--                     </tr>  -->
+							</tbody>
+						</table>
+					</div>
+					<div
+						style="padding: 0px; margin: 0px; line-height: none; text-align: center;">
+						<ul class="pagination pagination-sm">
+							<!--                       <li><a href="#" id="p_1" style="cursor: pointer;">1</a></li> -->
+							<!--                       <li><a href="#" id="p_2" style="cursor: pointer;">2</a></li> -->
+							<!--                       <li><a href="#" id="p_3" style="cursor: pointer;">3</a></li> -->
+							<!--                       <li><a href="#" id="p_4" style="cursor: pointer;">4</a></li> -->
+							<!--                       <li><a href="#" id="p_5" style="cursor: pointer;">5</a></li> -->
+						</ul>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-8"
+							style="margin-left: 20px; width: 90%">
+							<form class="form-horizontal">
+								<fieldset>
+									<legend>Comment Regist</legend>
+									<div class="form-group">
+										<label id="commentId" for="textArea"
+											class="col-lg-2 control-label"></label>
+										<div class="col-lg-10">
+											<textarea class="form-control" rows="3" id="textArea"></textarea>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class=".col-md-3 .col-md-offset-3"
+											style="float: right; margin-right: 13px;">
+											<button type="button" id="submitBtn" class="btn btn-info">Submit</button>
+										</div>
+									</div>
+
+								</fieldset>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<div style="float: left;">
+					<button id="recomBtn" type="button" class="btn btn-default"
+						aria-label="Left Align">
+						<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+						좋아요
+					</button>
+					<button id="wishBtn" type="button" class="btn btn-default"
+						aria-label="Left Align">
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+						찜
+					</button>
+				</div>
+
+				<div style="float: right;">
+					<a href="#" id="updateBtn" class="btn btn-warning">UPDATE</a> 
+					<a href="#" id="deleteBtn" class="btn btn-danger">DELETE</a> 
+					<a href="user_review_list.html" class="btn btn-primary">LIST</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">수술정보</h4>
+				</div>
+				<div class="modal-body">
+					<table>
+						<tr>
+							<th>수술방법　:　</th>
+							<td id="surgeryWay"></td>
+						</tr>
+						<tr>
+							<th>병　　원　:　</th>
+							<td id="hospitalName"></td>
+						</tr>
+						<tr>
+							<th>담당의사　:　</th>
+							<td id="doctorName"></td>
+						</tr>
+						<tr>
+							<th>수술비용　:　</th>
+							<td id="surgeryPrice"></td>
+						</tr>
+						<tr>
+							<th>수술시기　:　</th>
+							<td id="surgeryDate"></td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,18 +1,14 @@
 @CHARSET "UTF-8";
-
-.bodyContent{
-	width: 1100px;
-	margin: auto;
-}
-
-.searchBar{
+ 
+.searchBar {
 	font-size: 11px;
 	padding-left: 10px;
-	width: 280px;
+	width: 100%;
 	height: 30px;
 	border-radius: 3px;
+	margin-bottom: 10px;
 }
-
+ 
 #listForm{
 	overflow: auto;
 	width: auto;
@@ -42,6 +38,7 @@
 	text-align: center;
 	font-size: 5pt;
 	margin-bottom: 5px;
+	cursor: pointer;
 }
 .titleFont{
 	font-size: 15px !important;
@@ -57,9 +54,8 @@
 .buttonStyle{
 	padding: 3px;
 	background-color: #d4424c;
-	border-color: #d4424c;
 	border-radius: 3px;
-	width: 1100px;
+	width: 100%;
 	font-size: 15px;
 }
 
@@ -91,19 +87,15 @@
 	background-color: #d4424c;
 	border-color: #d4424c;
 	border-radius: 3px;
+} 
+
+.hr-basic {
+	border-top: 1px soild #e5e5e5; 
+	width: 100%; 
+	margin-top: 5px;
 }
 
-/* 
-.text-center{
-	text-align: center !important;
-	margin: 10px !important;
+.infobox-resize {
+	margin-left: 15px;
+	height: 280px;
 }
- */
-/* 
-.listForm{
-	width: 1100px;
-	height: 200px;
-	background-color: #e5e5e5;
-}
- */
- 

@@ -54,12 +54,25 @@
 </div>
 	
 <script>
-//해더
+// 해더
 $(document).ready(function() {
     $('#top').load('top.html');
 });
 
+// 글 등록하기
 var submit = $("#submit").on("click", function () {
+	// null 방지
+	if($("#title").val().trim() == ""){
+		alert("제목을 입력하세요!");
+		$("#title").focus();
+		return false;
+	}
+	if($("#content").val().trim() == ""){
+		alert("내용을 입력하세요!");
+		$("#content").focus();
+		return false;
+	}
+	
 	var apart = $("#apart").val();
 	var title = $("#title").val();
 	var content = $("#content").val();
@@ -75,12 +88,16 @@ var submit = $("#submit").on("click", function () {
 		var result = resultObj.ajaxResult;
 		if(result.status == "success"){
 			alert("글 등록됨");
-			document.location.href = contextRoot + "/view/QnAList.html"
+			/* document.location.href = contextRoot + "/view/QnAList.html" */
 		}
-	})
-	
-	
-})
+	});
+});
+
+// cancle
+var cancle = $("#cancle").on("click", function () {
+	document.location.href = contextRoot + "/view/QnAList.html";
+});
+
 </script>
 </body>
 </html>

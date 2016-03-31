@@ -1,6 +1,7 @@
 package bitcamp.java77.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class CosmeticHospital {
 	protected int hospitalNo;
@@ -11,7 +12,15 @@ public class CosmeticHospital {
 	protected String tel;
 	protected String link;
 	protected Date regDate;
+	protected String email;
+	protected List<CosmeticHospitalPhoto> hospitalPhoto;
 	
+	public final String getEmail() {
+		return email;
+	}
+	public final void setEmail(String email) {
+		this.email = email;
+	}
 	public int getHospitalNo() {
 		return hospitalNo;
 	}

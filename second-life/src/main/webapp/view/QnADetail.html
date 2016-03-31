@@ -15,39 +15,87 @@
 <!-- 내용 -->
 <div class="bodyContent" style="margin-top: 70px;">
 <h2 style="color: #cf2d39;">QnA</h2>
-	<div align="right" style="margin-bottom: 5px;"><span class="qnaPart">홈페이지 사용 문의</span></div>
+	<div align="right" style="margin-bottom: 5px;"><span class="qnaPart"></span></div>
 	<table style="width: 100%; margin-top: 3px;">
 		<tr>
 			<td class="tablePadding" colspan="2">
 			<div align="center">
-				<span style="font-weight: bold; font-size: 12pt; color: #595959;">송해 나빠</span>
+				<span class="title" style="font-weight: bold; font-size: 12pt; color: #595959;"></span>
 			</div>
 			<div align="right" style="margin: 0px;">
-				<span>김초롱</span>|<span>2016-03-28</span>
+				<span class="name"></span>|<span class="date"></span>
 			</div>
 			</td>
 		</tr>
 		<tr>
-			<td height="100px" style="padding-left: 100px; padding-right: 100px;">
-			넘나 나쁜 사람이수다
+			<td class="content" height="100px" style="padding-left: 100px; padding-right: 100px;">
+				
 			</td>
 		</tr>
 	</table>
 	<div align="left" style="float: left;">
-	<button id="cancle" type="button" class="btn btn-default button" title="">Modify</button>
-	<button id="cancle" type="button" class="btn btn-default button" title="">Delete</button>
+	<button id="modify" type="button" class="btn btn-default button">Modify</button>
+	<button id="delete" type="button" class="btn btn-default button">Delete</button>
 	</div>
 	<div align="right">
-	<button id="list" type="button" class="btn btn-danger button" style="padding-left: 16px; padding-right: 16px;" title="">List</button>
+	<button id="list" type="button" class="btn btn-danger button" 
+			style="padding-left: 16px; padding-right: 16px;">List</button>
 	</div>
 </div>
 	
 <script>
-//해더
+// 해더
 $(document).ready(function() {
     $('#top').load('top.html');
 });
 
+var qno = location.href.split('=')[1];
+console.log(qno);
+// 상세보기 데이터 불러오기
+$.getJSON(contextRoot + "/cosmetic/ajax/detailQnA.do?qno="+qno, function(resultObj) {
+	console.log(resultObj);
+	var member = resultObj.member;
+	var detailQnA = resultObj.detailQnA;
+	
+	if(member != null){
+		$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+		$('.changeValue2').hide();
+		$('#mypage').show();
+		$('#mypage > a').html('HELLO ' + member.id);
+		$('#mypage > a').append('<span class="caret"></span>');
+	};
+	
+	// 날짜 변환
+	var formattedDate = new Date(detailQnA.regDate);
+	var years = formattedDate.getFullYear();
+	var months = formattedDate.getMonth() + 1;
+	var days = formattedDate.getDate();
+	var hours = formattedDate.getHours();
+	var minutes = formattedDate.getMinutes();
+	var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
+	
+	$(".qnaPart").html(detailQnA.qPart);
+	$(".title").html(detailQnA.title);
+	$(".name").html(member.name + " ");
+	$(".date").html(" " + regDate);
+	$(".content").html(detailQnA.content);
+	
+});
+
+var deleteQnA = $("#delete").on("click", function () {
+	$.getJSON(contextRoot + "/cosmetic/ajax/deleteQnA.do",{qno : qno} ,function (resultObj) {
+		alert("삭제되었습니다.");
+		document.location.href = contextRoot + "/view/QnAList.html";
+	});
+});
+
+var list = $("#list").on("click", function () {
+	document.location.href = contextRoot + "/view/QnAList.html";
+});
+
+var updateQnA = $("#modify").on("click", function () {
+	document.location.href = contextRoot + "/view/QnAUpdate.html?qno="+qno;
+})
 
 </script>
 </body>

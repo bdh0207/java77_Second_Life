@@ -18,12 +18,31 @@
 		font-size: 17px !important;
 	  }
     }
+   }
+   
+   #main-menu .nav-bar { list-style:none; margin-top: 40px; }
+   #main-menu .nav-bar li { display:inline; padding:0 10px; }
+	
+   #main-menu .nav-bar li a.sortMenu {
+	  text-decoration: none;
+	  padding-left: 0px;
+	  text-transform: uppercase;
+	  color: #333;
+	  text-shadow: 1px 1px 1px #ccc;
+	}
+	.sortIcon{
+		margin-bottom: 5px;
+	}
+	
+
+/* Icons courtesy of Thom : http://pixelb.in/assorted-pixel-perfect-14px-icon-set-286/ */
 </style>
-<!-- 	<link rel="stylesheet" href="../css/bootstrap_yeti.css" type="text/css"> -->
 	<link rel="stylesheet" type="text/css" href="../css/mainCustom.css" />
 	<link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
 	<!-- Bootflat css  -->
 	<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="../css/bootstrap_yeti.css" type="text/css">
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
 	
 <!-- 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
 	
@@ -37,15 +56,34 @@
 	<script src="../js/masonry-docs.min.js" type="text/javascript"></script>
 	<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> <!-- marsonry -->
 	<script src="../js/common.js" type="text/javascript"></script>
+	<script src="../js/bootstrap-dialog.js"></script>
 	
 	
 	<script type="text/javascript">
+		var wordType = '';
 		var pageIdx = 2;
 		$(document).ready(function() {	
 			var container = document.querySelector('#masonry');
-
+		});
+		
+		$(window).load(function() {
+			
+		
+			var container = document.querySelector('#columns');
+			$('#columns').masonry({
+				itemSelector:'.item',
+				columnWidth: 290,
+ 				percentPosition: true
+			});
+			$('#columns').imagesLoaded(function() {
+				
+			});
+			
+			
 			/* 찜하기 함수  */
-			$(".starOpa").click(function() {
+			/*
+			$('.starOpa').click(function() {
+				
 				var x = '<img class="x" alt="" src="../images/X.png" width="15px" height="15px">';
 				if($(this).css("opacity") == 0.4){
 					$(this).css({opacity: "1.0"});
@@ -76,35 +114,24 @@
 				itemSelector:'.item',
 				columnWidth: 379,
  				percentPosition: true
-				
-			});
-			
-			imagesLoaded(container).on('progress', function() {
-				  msnry.layout();
+				return false;
 			});
 			*/
-		
-		$(window).load(function() {
 			
-		
-			var container = document.querySelector('#columns');
-			$('#columns').masonry({
-				itemSelector:'.item',
-				columnWidth: 378,
- 				percentPosition: true
-			});
-			$('#columns').imagesLoaded(function() {
-				
-			});
 		});
 		
 		$(document).ready(function() {	
 			$('#top').load('top.html').trigger('pagecreate');
+			
 			$.getJSON(contextRoot + '/cosmetic/ajax/mainReview.do',function(resultObj){
-				// 로그인 헤더 처리
-				if(resultObj.member != null){
+				var member = resultObj.member;
+				
+				if(member != null){
 					$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-					$('.changeValue2').html('Hello '+ resultObj.member.id).attr('onclick','location.href="mylist.html"');
+					$('.changeValue2').hide();
+					$('#mypage').show();
+					$('#mypage > a').html('HELLO ' + member.id);
+					$('#mypage > a').append('<span class="caret"></span>');
 				}
 				
 				for(var list of resultObj.reviewList){
@@ -121,21 +148,20 @@
 						}
 						index++;
 					}
-					
 					var div = '<div class="item">';	
 						div +=	'<figure>';
 						div +=	'<a class="detailLnk" href="#"><img src="' + afterPath + '" reviewNo="' + list.reviewNo + '" /></a>									';
 						div +=	'<figcaption>																														';
-						div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
+						div +=	'				<div class="review">'+ list.title +'</div>                                      ';
 						div +=	'				<hr />                                                                                                              ';
 						div +=	'				<div class="footers">                                                                                               ';
 						div +=	'					<div class="row">                                                                                               ';
 						div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
-						div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
-						div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
+						div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>';
+						div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />'+list.recomCnt+'</div>';
 						div +=	'					  </div>                                                                                                        ';
 						div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
-						div +=	'					  	<div class="wish"><img class="starOpa" src="../images/star.png" width="30" height="28"  /></div>          ';
+						div +=	'					  	<div class="wish"><button type="button" class="btn btn-danger" onclick="clickWishLnk('+list.reviewNo+')">찜</button></div>';   //<a class="wishLnk" href="#"><img id="s_'+list.reviewNo+'" src="../images/star.png" width="30" height="28"  />
 						div +=	'					  </div>                                                                                                        ';
 						div +=	'					</div>                                                                                                          ';
 						div +=	'				</div>                                                                                                              ';
@@ -150,9 +176,9 @@
 						$('#columns').imagesLoaded(function() {
 							$('#columns').masonry();
 						});
-						
 						$('a.detailLnk').click(clickDetailLnk);
 				}
+						//$('a.wishLnk').click(clickWishLnk);
 			});
 			
 			$(window).scroll(function() {
@@ -161,14 +187,14 @@
 				
 				if(scrollHeight==documentHeight){
 					$.getJSON(contextRoot + '/cosmetic/ajax/mainReview.do?pageNo='+pageIdx, function(resultObj) {
+						if(resultObj.reviewList.length != 0) pageIdx++;
 						for(var list of resultObj.reviewList){
-							if(resultObj.reviewList.length != 0) pageIdx++;
 							
 							var beforePath = '';
 							var afterPath = '';
 								
+							var index = 1;
 							for(var photoList of list.reviewPhoto){
-								var index = 1;
 								if(index ==1){
 									beforePath += photoList.filePath;
 								}
@@ -177,21 +203,21 @@
 								}
 								index++;
 							}
-								
+							
 							var div = '<div class="item">';	
 								div +=	'<figure>';
-								div +=	'<a class="detailLnk" href="#"><img src="' + beforePath + '" reviewNo="' + list.reviewNo + '" /></a>									';
+								div +=	'<a class="detailLnk" href="#"><img src="' + afterPath + '" reviewNo="' + list.reviewNo + '" /></a>									';
 								div +=	'<figcaption>																														';
-								div +=	'				<a class="detailLnk" href="#" reviewNo="' + list.reviewNo + '"><div class="review">'+ list.content +'</div>                                      ';
+								div +=	'				<div class="review">'+ list.title +'</div>                                      ';
 								div +=	'				<hr />                                                                                                              ';
 								div +=	'				<div class="footers">                                                                                               ';
 								div +=	'					<div class="row">                                                                                               ';
 								div +=	'					  <div class="col-xs-12 col-md-8">                                                                              ';
 								div +=	'					  	<div class="viewCount"><img src="../images/조회수.png" width="30" height="28" alt="" />'+list.viewCnt+'</div>           ';
-								div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />2442</div>               ';
+								div +=	'						<div class="recom"><img src="../images/추천수.png" width="30" height="28" alt="" />'+list.recomCnt+'</div>               ';
 								div +=	'					  </div>                                                                                                        ';
 								div +=	'					  <div class="col-xs-6 col-md-4">                                                                               ';
-								div +=	'					  	<div class="wish"><img class="starOpa" src="../images/star.png" width="30" height="28"  /></div>          ';
+								div +=	'					  	<div class="wish"><button type="button" class="btn btn-danger" onclick="clickWishLnk('+list.reviewNo+')">찜</button></div>';
 								div +=	'					  </div>                                                                                                        ';
 								div +=	'					</div>                                                                                                          ';
 								div +=	'				</div>                                                                                                              ';
@@ -208,12 +234,13 @@
 									$('#columns').masonry();
 								});
 						    	// 다시 리로드
-						    	$('#columns').masonry('reloadItems');
-						    	
+						    	$('#columns').masonry();
 						    	$('a.detailLnk').click(clickDetailLnk);
+						    	
+						    	// 여러번 이벤트 발생되는것을 방지하기위해 off로 이벤트 해제
+						    	//$('a.wishLnk').off('click');
+						    	//$('a.wishLnk').click(clickWishLnk);
 						}
-						
-						
 					});
 					
 					
@@ -221,6 +248,12 @@
 			});
 			
 		});
+		
+		function searchReviewSort(word) {
+			$.getJSON(contextRoot + '/cosmetic/ajax/setWordType.do?wordType='+word,function(resultObj){
+				window.location.reload();
+			});
+		}
 	</script>
 </head>
 <body>
@@ -231,21 +264,37 @@
   	<div id="body-all">
   	<div id="body-contents">
   	
-  	<div class="selectBar">
-		<div class="selectBarItem-1">
-        	<a href="../view/mainandreview.html">USER REVIEW</a>
-        </div>
-        <div class="selectBarItem-2">
-        	<a href="../view/mainandhospital.html">EVENT</a>
-        </div>
-  	</div>
-  	
+  	<div class="row">
+			<h1 style="margin-top: 50px; color: #cf2d39; font-weight: bold;">USER REVIEW</h1>
+			<hr>
+	</div>
+  	<div class="row">
+		<nav id="main-menu">
+		     <ul class="nav-bar">
+		          <li class="nav-button-new">
+		          <img class="sortIcon" src="../icon/batch-master/16x16/clock.png">
+		          	<a class="sortMenu" href="#" onclick="searchReviewSort('new'); return false;">최신순</a>
+		          </li>
+		          <li class="nav-button-viewCnt">
+			          <img class="sortIcon" src="../icon/batch-master/16x16/eye.png">
+			          <a class="sortMenu" href="#" onclick="searchReviewSort('viewCount'); return false;">조회순</a>
+		          </li>
+		          <li class="nav-button-recomCnt">
+		          	<img class="sortIcon" src="../icon/batch-master/16x16/heart-full.png">
+		          	<a class="sortMenu" href="#" onclick="searchReviewSort('recomCount'); return false;">추천순</a>
+		          </li>
+		     </ul>
+		</nav>
+	</div>
 	<div id="masonry">
 		<div id="columns">
 		</div><!-- columns end -->
 	</div>
 	
+  	</div>
 	</div>
+	
+	<!-- 
 	<div id="body-right">
 	  <h3 class="ui-widget-header">Review Wish list</h3>
 	  <div class="ui-widget-content">
@@ -253,11 +302,29 @@
     	</div>
   	  </div>
    </div>
+	 -->
 	
+	<div class="modal fade">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header" style="background-color: #cf2d39;">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	        <h4 class="modal-title">Modal title</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>One fine body…</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 	
-	
-	</div>
 <script type="text/javascript">
+	
+	
 	$(".starClick").click(function() {
         if($(this).css("opacity") == "0.4") {
            $(this).css("opacity", "1.0");
@@ -270,34 +337,62 @@
 		event.preventDefault();
 		location.href = 'user_review2.html?reviewNo=' + $(event.target).attr('reviewNo');
 	}
+	function clickWishLnk(reviewNo) {
+		event.preventDefault();
+		var flag = false;
+		
+		// Ajax는 요청 수신이 완료될때까지 기다리지않고 다른 작업을 수행 한다.
+		// 그렇게되면 전역변수 flag값을 변경해줄수 없기때문에 async(비동기적처리) 속성을 false로 설정하여 데이터 수신이 완료된 후 작업을 진행시켜준다.
+		$.ajax({
+			url : contextRoot + '/cosmetic/ajax/loginCheck.do',
+			type : 'GET',
+			dataType : 'json',
+			async : false
+			
+		}).done(function(resultObj) {
+			var ajaxResult = resultObj.ajaxResult;
+			var member = ajaxResult.data;
+			
+			if(member != null){
+				console.log(member.id);
+			}
+			flag = true;
+		}).fail(function(error) {
+			
+			BootstrapDialog.show({
+			    title: 'Error',
+			    message: '로그인 후 이용가능합니다.',
+			    buttons: [{
+			        id: 'btn-ok',   
+			        icon: 'glyphicon glyphicon-check',       
+			        label: 'OK',
+			        cssClass: 'btn-danger', 
+			        autospin: false,
+			        action: function(dialogRef){    
+			            dialogRef.close();
+			            window.location.href = "login.html";
+			        }
+			    }]
+			});
+					
+		});
+		
+		if(flag == true){
+			
+			$.get(contextRoot + '/cosmetic/ajax/wishAdd.do?reviewNo='+reviewNo,function(resultObj){
+				var ajaxResult = resultObj.ajaxResult;
+				var status = ajaxResult.status;
+				if(status == 'success'){
+					alert('위시리스트에 추가되었습니다.');
+				}
+				else{
+					alert('이미 위시리스트에 있습니다.');
+				}
+			},'json');
+			
+		}
+	}
+	
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

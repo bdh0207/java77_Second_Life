@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://npmcdn.com/flickity@1.1/dist/flickity.min.css">
+<link rel="stylesheet" href="../lib/bootflat/css/site.min.css">
 
 <!-- Script -->
 <script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- jQuery 최신버전 -->
@@ -133,17 +134,58 @@
 			$('#masonry').masonry();
 		});
 	});
+	
 	$(document).ready(function(){
 		
 		$('#top').load('top.html').trigger('pagecreate');
 // 		var container = document.querySelector('#masonry');
 		
+		// flickity 설정
+// 		$('.gallery').flickity({
+// 			initialIndex:3,
+// 			lazyLoad : 2,
+// 			autoPlay : 2000
+// 		});
 		
 		$.getJSON(contextRoot + '/cosmetic/ajax/reviewList.do',function(resultObj){
-			if(resultObj.member != null){
-				console.log(resultObj.member.id);
+			var member = resultObj.member;
+			
+			if(member != null){
 				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-				$('.changeValue2').html('Hello '+ resultObj.member.id).removeAttr('onclick');
+				$('.changeValue2').hide();
+				$('#mypage').show();
+				$('#mypage > a').html('HELLO ' + member.id);
+				$('#mypage > a').append('<span class="caret"></span>');
+			}
+			
+			// 리뷰 베스트 TOP5 
+			for(var best of resultObj.reviewBest){
+				var path1 = '';
+				var path2 = '';
+				
+				var index = 1;
+				for(var photoList of best.reviewPhoto){
+					if(index == 1){
+						path1 = photoList.filePath;
+					}
+					else{
+						path2 = photoList.filePath;
+					}
+					index++;
+				}
+				
+				var div = '<div class="gallery-cell">';
+			    	div +=	'<a class="bestReview" href="#"><img reviewNo='+ best.reviewNo+' class="gallery-cell-image" data-flickity-lazyload="'+path2+'" width="300" height="300"/></a>';
+					div += '</div>';
+				
+				var $cellElem = $(div);
+				$('.gallery').flickity('append',$cellElem);
+				$('.gallery').flickity({
+					initialIndex:2,
+					lazyLoad : 2,
+					autoPlay : 1000
+				});
+				$('a.bestReview').click(clickBestReview);
 			}
 			
 			for(var list of resultObj.reviewList){
@@ -152,8 +194,8 @@
 			var afterPath = '';
 			
 			// 유저리스트 상세쪽 Before - After사진만 올릴수 있게하고 이 로직은 나중에 바꿔야 됩니다.
+			var index = 1;
 			for(var photoList of list.reviewPhoto){
-				var index = 1;
 				if(index == 1){
 					beforePath = photoList.filePath;
 				}
@@ -177,14 +219,14 @@
 		    	div += '<div class="col-md-9 col-md-push-3">';
 		    	div += '<div class="row">'
 				div +=  '<div class="col-xs-12 col-md-8 col-md-8-title"><h3>'+ list.title +'</h3></div>'
-				div +=  '<div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />' + list.viewCnt +'</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />'+regDate+'</span></div>';
+				div +=  '<div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />' + list.viewCnt +'</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />'+list.recomCnt+'</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />'+regDate+'</span></div>';
 				div += '</div>';
 				div += '<div class="row">';
 				div += '<div class="col-md-8" style="white-space:nowrap; text-overflow:ellipsis; overflow: hidden;">'+list.content+'</div>';
 				div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger" style="cursor: pointer;"><a class="detailLnk" href="#" reviewNo="'+list.reviewNo+'">MORE+</a></span></h2></div>';
 				div += '</div>';
 				div	+= '</div>';
-				div += '<div class="col-md-3 col-md-pull-9"><img src="'+ beforePath +'" width="250" height="215" /></div>';
+				div += '<div class="col-md-3 col-md-pull-9"><img src="'+ afterPath +'" width="250" height="215" /></div>';
 				div += '</div>';
 				div	+= '</div>';
 			var $elem = $(div);
@@ -214,8 +256,8 @@
 					var beforePath = '';
 		 			var afterPath = '';
 		 			
+		 			var index = 1;
 		 			for(var photoList of list.reviewPhoto){
-		 				var index = 1;
 		 				if(index == 1){
 		 					beforePath = photoList.filePath;
 		 				}
@@ -237,14 +279,14 @@
 				    	div += '<div class="col-md-9 col-md-push-3">';
 				    	div += '<div class="row">'
 						div +=  '<div class="col-xs-12 col-md-8 col-md-8-title"><h3>'+ list.title +'</h3></div>'
-						div +=  '<div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />' + list.viewCnt +'</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />2525</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />'+regDate+'</span></div>';
+						div +=  '<div class="col-xs-6 col-md-4"><span class="top-right-data"><img src="../images/조회수.png" />' + list.viewCnt +'</span>&nbsp;<span class="top-right-data"><img src="../images/추천수.png" />'+list.recomCnt+'</span>&nbsp;<span class="top-right-data"><img src="../images/등록일자.png" />'+regDate+'</span></div>';
 						div += '</div>';
 						div += '<div class="row">';
 						div += '<div class="col-md-8">'+list.content+'</div>';
 						div += '<div class="col-md-4 col-md-4-bottom-right"><h2><span class="label label-danger" style="cursor: pointer;"><a class="detailLnk" href="#" reviewNo="'+list.reviewNo+'">MORE+</a></span></h2></div>';
 						div += '</div>';
 						div	+= '</div>';
-						div += '<div class="col-md-3 col-md-pull-9"><img src="'+ beforePath +'" width="250" height="215" /></div>';
+						div += '<div class="col-md-3 col-md-pull-9"><img src="'+ afterPath +'" width="250" height="215" /></div>';
 						div += '</div>';
 						div	+= '</div>';
 			    	var $elem = $(div);
@@ -280,7 +322,8 @@
 			    	<hr />
 			    <div class="row">
 			      <div class="col-sm-9" style="width: 100%;">
-			        <div class="gallery js-flickity" data-flickity-options='{ "lazyLoad": 2, "initialIndex": 2,"autoPlay": 2000}' style="height: 300px;">
+			        <div class="gallery js-flickity" data-flickity-options='{ "lazyLoad": 2, "initialIndex": 2,"autoPlay": 2000}' style="height: 300px;"><!--js-flickity, data-flickity-options='{ "lazyLoad": 2, "initialIndex": 2,"autoPlay": 2000}' -->
+			        <!--  
 					  <div class="gallery-cell">
 					    <img class="gallery-cell-image" data-flickity-lazyload="../images/review_main1.jpg" width="300" height="300"/>
 					  </div>
@@ -308,6 +351,7 @@
 					  <div class="gallery-cell">
 					    <img class="gallery-cell-image" data-flickity-lazyload="../images/review_main9.jpg" width="300" height="300"/>
 					  </div>
+					  -->
 					</div>
 			        
 			      </div>
@@ -355,6 +399,11 @@
  	
  	function clickDetailLnk(event) {
  		console.log(event);
+		event.preventDefault();
+		location.href = 'user_review2.html?reviewNo=' + $(event.target).attr('reviewNo');
+	}
+ 	function clickBestReview(event) {
+		console.log(event);
 		event.preventDefault();
 		location.href = 'user_review2.html?reviewNo=' + $(event.target).attr('reviewNo');
 	}

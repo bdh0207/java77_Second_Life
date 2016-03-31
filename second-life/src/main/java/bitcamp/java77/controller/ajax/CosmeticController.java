@@ -11,16 +11,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import javax.swing.plaf.synth.SynthSeparatorUI;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 
@@ -46,20 +42,23 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import bitcamp.java77.domain.AjaxResult;
 import bitcamp.java77.domain.CosmeticCounsel;
+import bitcamp.java77.domain.CosmeticEvent;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
 import bitcamp.java77.domain.CosmeticQnA;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
+import bitcamp.java77.domain.CosmeticReviewRecom;
 import bitcamp.java77.domain.CosmeticSearch;
+import bitcamp.java77.domain.CosmeticWish;
+import bitcamp.java77.domain.CosmeticWishEvent;
 import bitcamp.java77.service.CosmeticService;
 import bitcamp.java77.util.MultipartHelper;
 
 @Controller("ajax.CosmeticController")
 @RequestMapping("/cosmetic/ajax/*")
 public class CosmeticController {
-	
 	
 	@Autowired
 	CosmeticService cosmeticService;
@@ -70,11 +69,71 @@ public class CosmeticController {
 	public AjaxResult hospitalInfo() throws Exception {
 		// 병원 정보 불러오기
 		List<CosmeticHospital> hospitalInfoList = cosmeticService.hospitalInfo();
-		System.out.println(hospitalInfoList.size());
 		return new AjaxResult("success", hospitalInfoList);
+	}
+	
+	// 병원정보 상세조회(번호로)
+	@RequestMapping(value="hospitalInfoDetail")
+	public AjaxResult hospitalInfoDetail(int hospitalNo) throws Exception {
+		CosmeticHospital hospital = cosmeticService.selectHospitalInfoDetail(hospitalNo);
+		return new AjaxResult("success", hospital);
+	}
+	
+	// 병원정보 상세조회(이름으로)
+	@RequestMapping(value="hospitalInfoByName")
+	public AjaxResult hospitalInfoByName(String name) throws Exception {
+		List<CosmeticHospital> list = cosmeticService.selectHospitalInfoByName(name);
+		return new AjaxResult("success", list);
+	}
+ 
+	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
+	public AjaxResult selectMemInfo(HttpServletRequest req) throws Exception {
+		HttpSession session   = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+
+		member = cosmeticService.selectMember(member);
+		
+		return new AjaxResult("success", member);
+	}
+	
+	@RequestMapping(value="viewInfo")
+	public AjaxResult viewInfo(int reviewNo) throws Exception {
+		CosmeticReview review = cosmeticService.selectSurgeryInfo(reviewNo);
+		return new AjaxResult("success", review);
+	}
+	
+	// QnA 수정
+	@RequestMapping(value="updateQnA", method=RequestMethod.POST)
+	public AjaxResult updateQnA(CosmeticQnA qna, HttpServletRequest req) throws Exception{
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		// 수정하기
+		cosmeticService.updateQnA(qna);
+		return new AjaxResult("success", null);
 		
 	}
 	
+	// QnA 상세보기
+	@RequestMapping(value="detailQnA", method=RequestMethod.GET)
+	public Object detailQnA(int qno, HttpServletRequest req) throws Exception{
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		// 상세보기 불러오기
+		CosmeticQnA detailQnA = cosmeticService.detailQnA(qno);
+		HashMap<String, Object> resultMap = new HashMap<>();
+		System.out.println(detailQnA);
+		
+		resultMap.put("detailQnA", detailQnA);
+		resultMap.put("member", member);
+		
+		return resultMap;
+	}
+	
+	// QnA 글등록
 	@RequestMapping(value="registQnA", method=RequestMethod.POST)
 	public AjaxResult QnARegist(CosmeticQnA qna, HttpServletRequest req) throws Exception {
 		// 로그인 세션
@@ -82,31 +141,41 @@ public class CosmeticController {
 		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
 		int mNo = member.getMemberNo();
 		qna.setmNo(mNo);
-		System.out.println("회원번호" + member.getMemberNo());
-		System.out.println("데이터 : " + qna.getmNo() + "/" + qna.getqPart() + "/" + qna.getTitle() + "/" + qna.getContent());
+		// System.out.println("회원번호" + member.getMemberNo());
+		// System.out.println("데이터 : " + qna.getmNo() + "/" + qna.getqPart() + "/" + qna.getTitle() + "/" + qna.getContent());
 		
-		// QnA 글등록
 		cosmeticService.insertQnA(qna);
 		return new AjaxResult("success", null);
 	}
 	
+	// QnA 목록
 	@RequestMapping(value="listQnA", method=RequestMethod.GET)
-	public AjaxResult QnAList(HttpServletRequest req) throws Exception {
+	public Object listQnA(HttpServletRequest req) throws Exception {
 		// 로그인 세션
 		HttpSession session = req.getSession();
-		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
-		int mNo = member.getMemberNo();
-		System.out.println("회원번호" + member.getMemberNo());
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+ 
+		List<CosmeticQnA> qnaList = cosmeticService.selectQnA(member.getMemberNo());
+		HashMap<String, Object> resultMap = new HashMap<>();
 		
-		// QnA 목록
-		List<CosmeticQnA> QnAList = cosmeticService.qnaList(mNo);
-		return new AjaxResult("success", QnAList);
+		resultMap.put("qnaList", qnaList);
+		resultMap.put("member", member);
+		
+		return resultMap;
+	}
+	
+	// QnA 삭제
+	@RequestMapping(value="deleteQnA", method=RequestMethod.GET)
+	public AjaxResult deleteQnA(int qno, HttpServletRequest req) throws Exception{
+		cosmeticService.deleteQnA(qno);
+		return new AjaxResult("success", null);
 	}
 	
 //	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
 //	public void selectMemInfo(String id) throws Exception {
 //		 System.out.println(id);
 //	}
+
 	
 //	@RequestMapping(value="sendMail", method=RequestMethod.POST)
 //	public void sendMail(CosmeticCounsel cosmeticConsel) throws Exception, MessagingException {
@@ -169,11 +238,13 @@ public class CosmeticController {
 //        transport.close();  
 //	}
 	
+	// 회원가입
 	@RequestMapping(value="join")
 	public void join(CosmeticMember cosmeticMember) throws Exception {
 		cosmeticService.insertMember(cosmeticMember);
 	}
 	
+	// ID 중복체크
 	@RequestMapping(value="idCheck")
 	public AjaxResult idCheck(CosmeticMember cosmeticMember) throws Exception {
 		int num    = cosmeticService.searchID(cosmeticMember.getId());
@@ -196,13 +267,11 @@ public class CosmeticController {
 		pageNo = (pageNo == 0) ? 1 : pageNo;
 		
 		CosmeticSearch search = new CosmeticSearch();
-		search.setStart((pageNo - 1) * 6); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
-		search.setEnd(pageNo * 6);
+		search.setStart((pageNo - 1) * 8); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 8);
+		CosmeticSearch.wordType = "new";
 		
-		
-		List<CosmeticReview> list = cosmeticService.selectReviewList(search);
-		HashMap<String, Object> resultMap = new HashMap<>();
-		resultMap.put("reviewList", list);
+		HashMap<String, Object> resultMap = cosmeticService.selectReviewList(search);
 		resultMap.put("status", "success");
 		resultMap.put("member", member);
 		
@@ -217,11 +286,11 @@ public class CosmeticController {
 		pageNo = (pageNo == 0) ? 1 : pageNo;
 		
 		CosmeticSearch search = new CosmeticSearch();
-		search.setStart((pageNo - 1) * 6); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
-		search.setEnd(pageNo * 6);
+		search.setStart((pageNo - 1) * 8); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 8);
+		System.out.println("wordType : " + search.getWordType());
 		
-		
-		List<CosmeticReview> list = cosmeticService.selectReviewList(search);
+		List<CosmeticReview> list = cosmeticService.selectMainReviewList(search);
 		HashMap<String, Object> resultMap = new HashMap<>();
 		resultMap.put("reviewList", list);
 		resultMap.put("member", member);
@@ -230,20 +299,75 @@ public class CosmeticController {
 		return resultMap;
 	}
 	
+	@RequestMapping(value="mainEvent",method=RequestMethod.GET)
+	public Object mainEvent(@RequestParam(name="pageNo",defaultValue="0")int pageNo,HttpServletRequest req) throws Exception{
+		HttpSession session   = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+		
+		CosmeticSearch search = new CosmeticSearch();
+		search.setStart((pageNo - 1) * 6); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 6);
+		
+		List<CosmeticEvent> list 		  = cosmeticService.selectEventList(search);
+		HashMap<String, Object> resultMap = new HashMap<>();
+				
+		resultMap.put("eventList", list);
+		resultMap.put("member", member);
+		resultMap.put("status", "success");
+		
+		return resultMap;
+	}
+	
 	@RequestMapping(value="reviewListDetail",method=RequestMethod.GET)
 	public AjaxResult reviewListDetail(@RequestParam(name="pageNo",defaultValue="0")int pageNo,int reviewNo,HttpServletRequest req) throws Exception{
+		
 		// 로그인 세션정보 가져오기
 		HttpSession session = req.getSession();
 		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
 		
+		// 페이징 관련변수
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+		CosmeticSearch search = new CosmeticSearch();
+		
+		search.setStart((pageNo-1)*5);
+		search.setEnd(pageNo * 5);
+		search.setReviewNo(reviewNo);
+		
 		HashMap<String, Object> resultMap = new HashMap<>();
 		CosmeticReview review = cosmeticService.selectReviewListDetail(reviewNo);
-		List<CosmeticReviewComment> comment  = cosmeticService.selectReviewComment(reviewNo);
+		HashMap<String, Object> result  = cosmeticService.selectReviewComment(search);
+		// 댓글 리스트 가져오기
+		List<CosmeticReviewComment> comment = (List<CosmeticReviewComment>)result.get("comment");
 		List<CosmeticReviewPhoto> reviewPhoto = cosmeticService.selectReviewPhoto(reviewNo);
+		
+		// 페이징을 위한 변수 정리
+		// 전체 게시물 수
+		int cnt = (Integer)result.get("cnt");
+		
+		// 마지막 페이지
+		int lastPage = (cnt % 5 ==0) ? cnt / 5 : cnt/ 5 + 1;
+		
+		// 현재 화면의 탭
+		int currTab = (pageNo-1)/5 + 1;
+		
+		// 화면의 시작 페이지 번호
+		int beginPage = (currTab-1) * 5 +1;
+		
+		// 화면의 마지막 페이지 번호
+		int endPage = (currTab * 5 > lastPage) ? lastPage : currTab * 5;
+		
+		
 		resultMap.put("review", review);
 		resultMap.put("comment", comment);
 		resultMap.put("photo", reviewPhoto);
 		resultMap.put("member", member);
+		resultMap.put("pageNo", pageNo);
+		resultMap.put("beginPage", beginPage);
+		resultMap.put("lastPage", lastPage);
+		resultMap.put("endPage", endPage);
+		resultMap.put("commentCnt", cnt);
 		
 		return new AjaxResult("success", resultMap);
 	}
@@ -465,26 +589,295 @@ public class CosmeticController {
 	}
 	
 	@RequestMapping(value="reviewCommentAdd", method=RequestMethod.POST)
-	public AjaxResult reviewCommentAdd(CosmeticReviewComment cosmeticReviewComment, HttpServletRequest req) throws Exception{
-		HashMap<String, Object> resultMap = new HashMap<>();
+	public Object reviewCommentAdd(CosmeticReviewComment cosmeticReviewComment, HttpServletRequest req) throws Exception{
+		
+		int pageNo = 1;
 		// 세션정보 가져오기
 		HttpSession session = req.getSession();
 		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
 		cosmeticReviewComment.setMemberNo(member.getMemberNo());
 		
+		CosmeticSearch search = new CosmeticSearch();
+		search.setStart((pageNo - 1) * 5); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 5);
+		search.setReviewNo(cosmeticReviewComment.getReviewNo());
+		
+		HashMap<String, Object> paramMap = new HashMap<>();
+		
+		paramMap.put("search", search);
+		paramMap.put("cosmeticReviewComment", cosmeticReviewComment);
+		
+		
 		
 		// 댓글 등록 서비스
 		// 수정 삭제를 위한 댓글번호 반환
-		int commentNo = cosmeticService.insertReviewComment(cosmeticReviewComment);
-		cosmeticReviewComment.setCommentNo(commentNo);
-		resultMap.put("comment", cosmeticReviewComment);
+		HashMap<String, Object> resultMap = cosmeticService.insertReviewComment(paramMap);
+		HashMap<String, Object> result  = cosmeticService.selectReviewComment(search);
+		
+		// 페이징을 위한 변수 정리
+		int cnt = (Integer)result.get("cnt");
+		
+		
+		// 마지막 페이지
+		int lastPage = (cnt % 5 ==0) ? cnt / 5 : cnt/ 5 + 1;
+				
+		// 현재 화면의 탭
+		int currTab = (pageNo-1)/5 + 1;
+				
+		// 화면의 시작 페이지 번호
+		int beginPage = (currTab-1) * 5 +1;
+				
+		// 화면의 마지막 페이지 번호
+		int endPage = (currTab * 5 > lastPage) ? lastPage : currTab * 5;
+		
 		resultMap.put("id", member.getId());
-		return new AjaxResult("success",resultMap);
+		resultMap.put("pageNo", pageNo);
+		resultMap.put("beginPage", beginPage);
+		resultMap.put("lastPage", lastPage);
+		resultMap.put("endPage", endPage);
+		resultMap.put("commentCnt", cnt);
+		return resultMap;
 	}
 	
 	@RequestMapping(value="reviewCommentDelete", method=RequestMethod.GET)
-	public AjaxResult reviewCommentDelete(CosmeticReviewComment cosmeticReviewComment, HttpServletRequest req) throws Exception{
+	public AjaxResult reviewCommentDelete(@RequestParam(name="pageNo",defaultValue="0")int pageNo,CosmeticReviewComment cosmeticReviewComment, HttpServletRequest req) throws Exception{
+		// 세션정보 가져오기
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		cosmeticReviewComment.setMemberNo(member.getMemberNo());
+		int reviewNo = cosmeticReviewComment.getReviewNo();
+		
+		// 페이징 관련변수
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+		
+		CosmeticSearch search = new CosmeticSearch();
+		search.setStart((pageNo - 1)*5);
+		search.setReviewNo(reviewNo);
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("search", search);
+		paramMap.put("cosmeticReviewComment", cosmeticReviewComment);
+		
+		String msg = "fail";
+		HashMap<String, Object> resultMap = cosmeticService.deleteReviewCommentByNo(paramMap);
+		HashMap<String, Object> result  = cosmeticService.selectReviewComment(search);
+		// 권한이 있는지
+		int resultCnt = (Integer)resultMap.get("resultCnt");
+		
+		// 페이징을 위한 변수 정리
+		int cnt = (Integer)result.get("cnt");
+				
+				
+		// 마지막 페이지
+		int lastPage = (cnt % 5 ==0) ? cnt / 5 : cnt/ 5 + 1;
+						
+		// 현재 화면의 탭
+		int currTab = (pageNo-1)/5 + 1;
+						
+		// 화면의 시작 페이지 번호
+		int beginPage = (currTab-1) * 5 +1;
+						
+		// 화면의 마지막 페이지 번호
+		int endPage = (currTab * 5 > lastPage) ? lastPage : currTab * 5;
+		
+		if(resultCnt != 0){
+			msg = "success";
+			resultMap.put("pageNo", pageNo);
+			resultMap.put("beginPage", beginPage);
+			resultMap.put("lastPage", lastPage);
+			resultMap.put("endPage", endPage);
+			resultMap.put("commentCnt", cnt);
+		}
+		
+		
+		return new AjaxResult(msg,resultMap);
+	}
+	
+	@RequestMapping(value="searchComment",method=RequestMethod.GET)
+	public Object searchComment(@RequestParam(name="pageNo",defaultValue="0")int pageNo,int reviewNo) throws Exception{
+//		// 세션정보 가져오기
+//		HttpSession session = req.getSession();
+//		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+		
+		HashMap<String, Object> resultMap = new HashMap<>();
+		CosmeticSearch search = new CosmeticSearch();
+		search.setStart((pageNo - 1) * 5); // +1을 안하는 이유는 Mysql limit함수 인덱스가 0부터 시작하기 때문이다...
+		search.setEnd(pageNo * 5);
+		search.setReviewNo(reviewNo);
+		
+		HashMap<String, Object> result =cosmeticService.selectReviewComment(search);
+		List<CosmeticReviewComment> comment = (List<CosmeticReviewComment>)result.get("comment");
+		
+		// 페이징을 위한 변수 정리
+		// 전체 게시물 수
+		int cnt = (Integer)result.get("cnt");
+				
+		// 마지막 페이지
+		int lastPage = (cnt % 5 ==0) ? cnt / 5 : cnt/ 5 + 1;
+				
+		// 현재 화면의 탭
+		int currTab = (pageNo-1)/5 + 1;
+				
+		// 화면의 시작 페이지 번호
+		int beginPage = (currTab-1) * 5 +1;
+				
+		// 화면의 마지막 페이지 번호
+		int endPage = (currTab * 5 > lastPage) ? lastPage : currTab * 5;
+		
+		resultMap.put("comment", comment);
+		resultMap.put("commentCnt", cnt);
+		resultMap.put("lastPage", lastPage);
+		resultMap.put("pageNo", pageNo);
+		resultMap.put("beginPage", beginPage);
+		resultMap.put("endPage", endPage);
+		
+		return resultMap;
+	}
+	
+	// 찜 등록
+	@RequestMapping(value="wishAdd", method=RequestMethod.GET)
+	public AjaxResult wishAdd(int reviewNo, HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		CosmeticWish cosmeticWish = new CosmeticWish();
+		cosmeticWish.setReviewNo(reviewNo);
+		cosmeticWish.setMemberNo(member.getMemberNo());
+		
+		HashMap<String, Object> resultMap = cosmeticService.insertWish(cosmeticWish);
+		String msg = (String)resultMap.get("msg");
+		
+		return new AjaxResult(msg, null);
+	}
+	
+	// 찜(이벤트) 등록
+	@RequestMapping(value="wishEventAdd", method=RequestMethod.GET)
+	public void wishEventAdd(int eventNo, HttpServletRequest req) throws Exception{
+		HttpSession session   = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		CosmeticWishEvent wishEvent = new CosmeticWishEvent();
+		
+		wishEvent.setEventNo(eventNo);
+		wishEvent.setMemberNo(member.getMemberNo());
+		
+		cosmeticService.insertWishEvent(wishEvent);
+	}
+	
+	// 찜(이벤트) 등록여부 조회
+	@RequestMapping(value="wishEventSelect", method=RequestMethod.GET)
+	public AjaxResult wishEventSelect(int eventNo, HttpServletRequest req) throws Exception{
+		HttpSession session   = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		CosmeticWishEvent wishEvent = new CosmeticWishEvent();
+		
+		wishEvent.setEventNo(eventNo);
+		wishEvent.setMemberNo(member.getMemberNo());
+		
+		int flag = cosmeticService.selectWishEvent(wishEvent);
+		
+		return new AjaxResult("success", flag);
+	}
+	
+	// 추천 등록
+	@RequestMapping(value="reivewRecomAdd",method=RequestMethod.GET)
+	public AjaxResult reivewRecomAdd(int reviewNo, HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		CosmeticReviewRecom reviewRecom = new CosmeticReviewRecom();
+		reviewRecom.setMemberNo(member.getMemberNo());
+		reviewRecom.setReviewNo(reviewNo);
+		
+		HashMap<String, Object> resultMap = cosmeticService.insertReviewRecom(reviewRecom);
+		String msg = (String)resultMap.get("msg");
+		
+		return new AjaxResult(msg,null);
+	}
+	 
+	// 마이페이지 wish리스트
+	@RequestMapping(value="searchReviewWish", method=RequestMethod.GET)
+	public Object searchReviewWish(HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		HashMap<String, Object> resultMap = new HashMap<>();
+		List<CosmeticWish> reviewWish = cosmeticService.selectReviewWish(member.getMemberNo());
+		resultMap.put("reviewWish", reviewWish);
+		resultMap.put("id", member.getId());
+		
+		return resultMap;
+	}
+	
+	// 정보받기
+	@RequestMapping(value="receiveSugeryInfo", method=RequestMethod.GET)
+	public Object receiveSugeryInfo(int wishNo, int reviewNo, HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		HashMap<String, Object> resultMap = cosmeticService.insertSugeryInfo(wishNo,reviewNo);
+		
+		return resultMap;
+	}
+	
+	// 리뷰 위시삭제
+	// 테이블 관계로 인해 관련된 수술정보같이 삭제
+	@RequestMapping(value="deleteWish", method=RequestMethod.GET)
+	public AjaxResult deleteWish(int wishNo, HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		CosmeticWish wish = new CosmeticWish();
+		wish.setMemberNo(member.getMemberNo());
+		wish.setWishNo(wishNo);
+		
+		cosmeticService.deleteWish(wish);
 		
 		return new AjaxResult("success",null);
+	}
+	
+	// 정렬 키워드
+	@RequestMapping(value="setWordType",method=RequestMethod.GET)
+	public AjaxResult setWordType(String wordType) throws Exception{
+		CosmeticSearch.wordType = wordType;
+		return new AjaxResult("success", null);
+	}
+	
+	// 이벤트 조회수 증가 -> 반환
+	@RequestMapping(value="viewCntAdd",method=RequestMethod.GET)
+	public AjaxResult viewCntAdd(int eventNo) throws Exception {
+		cosmeticService.updateEventViewCnt(eventNo);
+		int viewCnt = cosmeticService.selectEventViewCnt(eventNo);
+		
+		return new AjaxResult("success", viewCnt);
+	}
+	
+	// 병원 등록
+	@RequestMapping(value="hospitalAdd",method=RequestMethod.POST)
+	public void hospitalAdd(CosmeticHospital cosmeticHospital) throws Exception {
+		cosmeticService.insertHospital(cosmeticHospital);
+	}
+	
+	// 이벤트 등록
+	@RequestMapping(value="eventAdd", method=RequestMethod.GET)
+	public AjaxResult eventAdd(HttpServletRequest req) throws Exception {
+		CosmeticEvent event = new CosmeticEvent();
+		
+//		System.out.println(req.getParameter("hospitalNo"));
+//		System.out.println(req.getParameter("hospitalName"));
+//		System.out.println(req.getParameter("title"));
+//		System.out.println(req.getParameter("photoURL"));
+//		System.out.println(req.getParameter("pageURL"));
+		
+		event.setHospitalNo(Integer.parseInt(req.getParameter("hospitalNo")));
+		event.setHospitalName(req.getParameter("hospitalName"));
+		event.setTitle(req.getParameter("title"));
+		event.setPhotoURL(req.getParameter("photoURL"));
+		event.setPageURL(req.getParameter("pageURL"));
+		
+		cosmeticService.insertEvent(event);
+		
+		return new AjaxResult("success", null);
 	}
 }
