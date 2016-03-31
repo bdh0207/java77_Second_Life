@@ -17,9 +17,8 @@ div#columns figure {
 	display: inline-block;
 }
 
-div#columns figure>a>img {
+#thumbnail {
 	width: 250px;
-	height: auto;
 	margin-bottom: 10px;
 }
  

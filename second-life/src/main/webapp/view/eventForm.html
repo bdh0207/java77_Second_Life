@@ -4,14 +4,18 @@
 <meta charset="UTF-8">
 <title>SECOND LIFE</title>
 
+<link type="text/css" rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="../css/bootstrap_yeti.css">
+<link type="text/css" rel="stylesheet" href="../css/bootstrap-dialog.css" />
 <link type="text/css" rel="stylesheet" href="../css/common.css">
 
-<script type="text/javascript" src="../js/jquery-2.2.0.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script type="text/javascript" src='../js/jquery.form.js' ></script>
 <script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap-dialog.js"></script>
+<!-- <script type="text/javascript" src="../js/bootstrap.min.js"></script> -->
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="http://googledrive.com/host/0B-QKv6rUoIcGREtrRTljTlQ3OTg"></script>
 <script src="http://googledrive.com/host/0B-QKv6rUoIcGeHd6VV9JczlHUjg"></script>
 
@@ -24,11 +28,12 @@ $(document).ready(function() {
 	$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
 		var member = resultObj.ajaxResult.data;
 		
-		if(resultObj.member != null){
+		if(member != null){
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
 			$('.changeValue2').hide();
-			$('.dropdown').show();
-			$('.dropdown-toggle').html('HELLO ' + resultObj.member.id);
+			$('#mypage').show();
+			$('#mypage > a').html('HELLO ' + member.id);
+			$('#mypage > a').append('<span class="caret"></span>');
 		} 
 	}).error(function(error) {
 		window.location.href='login.html';
@@ -88,17 +93,33 @@ $(document).ready(function() {
 	
 	// 병원등록
 	$("#registerHospital").click(function() {
+		$("input[name=addr]").val($("input[name=postcode]").val()+" "+$("input[name=addr1]").val()+" "+$("input[name=addr2]").val());
+		
 		 $("#hospitalForm").ajaxSubmit({
-				type : "POST",
-				url : contextRoot + "/cosmetic/ajax/hospitalAdd.do",
-				dataType : "json",
-				success : function(resultObj) {
-					alert('병원이 등록되었습니다');
-					location.href = 'eventForm.html';
+			type : "POST",
+			url : contextRoot + "/cosmetic/ajax/hospitalAdd.do",
+			dataType : "json",
+			success : function(resultObj) {
+				if(resultObj.ajaxResult.status == 'success') {
+					BootstrapDialog.show({
+					    title: 'Success',
+					    message: '병원이 등록되었습니다' ,
+					    buttons: [{
+					        id: 'btn-ok',
+					        icon: 'glyphicon glyphicon-check',
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					            location.href = 'eventForm.html';
+					        }
+					    }]
+					});
 				}
-	     });	
+			}
+		}, "json");
 	});
-	
 	
 	$("#choice").click(function() {
 		$("#hospitalName").val($(this).html());
@@ -135,8 +156,23 @@ $(document).ready(function() {
 					photoURL : $("input[name=photoURL]").val(),
 					pageURL : $("input[name=pageURL]").val()
 				}, function(resultObj) {
-					alert("이벤트가 등록되었습니다.");
-					location.href = 'mainandhospital.html';
+					if(resultObj.ajaxResult.status == 'success') {
+						BootstrapDialog.show({
+						    title: 'Success',
+						    message: '이벤트가 등록되었습니다' ,
+						    buttons: [{
+						        id: 'btn-ok',
+						        icon: 'glyphicon glyphicon-check',
+						        label: 'OK',
+						        cssClass: 'btn-danger', 
+						        autospin: false,
+						        action: function(dialogRef){    
+						            dialogRef.close();
+						            location.href = 'mainandhospital.html';
+						        }
+						    }]
+						});
+					}
 			});
 
 		}
@@ -314,6 +350,7 @@ td 	 	 { vertical-align: middle !important; line-height: 1 !important; }
 										</div>
 									</div>
 								</div>
+								<input type="hidden" name="addr">
 								<div class="form-group">
 									<div class="col-lg-5 col-lg-offset-2">
 										<input type="text" class="form-control" name="addr1" id="sample4_roadAddress" placeholder="기본주소">
@@ -328,7 +365,6 @@ td 	 	 { vertical-align: middle !important; line-height: 1 !important; }
 										<input type="text" class="form-control" name="tel">
 									</div>
 								</div>
-
 								<div class="form-group">
 									<label for="inputPassword" class="col-lg-2 control-label">* E-mail</label>
 									<div class="col-lg-10">

@@ -215,6 +215,7 @@
  	<select id="selectEventList" parameterType="CosmeticSearch" resultType="CosmeticEvent">
  		select eno as eventNo, hno as hospitalNo, title, vcnt as viewCnt, reg_date as regDate, p_url as photoURL, hname as hospitalName, h_url as pageURL
 		  from event 
+		 order by reg_date desc
 		 limit #{start}, 6
  	</select>
  	

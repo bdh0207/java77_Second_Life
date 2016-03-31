@@ -44,10 +44,35 @@
 			$('#top').load('top.html').trigger('pagecreate');
 			
 			$.getJSON(contextRoot + '/cosmetic/ajax/mainEvent.do', function(resultObj) {
+				var member = resultObj.member;
+				
+				if(member != null){
+					$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+					$('.changeValue2').hide();
+					$('#mypage').show();
+					$('#mypage > a').html('HELLO ' + member.id);
+					$('#mypage > a').append('<span class="caret"></span>');
+				}
+				
+				var imgObj = new Image();
+				var num    = 0;
+				
 				for(var list of resultObj.eventList) {
+// 					imgObj.src = list.photoURL;
+					
+// 					var height = imgObj.naturalHeight;
+// 					num = num + 1;
+// 					if(height > 400) {
+// 						$("#thumbDiv"+num).css("height", "400");
+// 						alert("big");
+// 					} else {
+// 						$("#thumbDiv"+num).css("height", height);
+// 						alert("small");
+// 					}
+					
 					var div  = '<div class="item">';
 						div += '<figure>';
-						div += '		<a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" onclick="viewCntAdd(' + list.eventNo + ')" /></a> ';
+						div += '		<div id="thumbDiv' + num + '" style="width: 250px;"><a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" id="thumbnail" onclick="viewCntAdd(' + list.eventNo + ',this)" /></a></div> ';
 						div += '		<figcaption>                                                                              ';
 						div += '			<div class="hReview">                                                                 ';
 						div += '				<a onclick="getHospitalNo('+list.hospitalNo+')" data-toggle="modal" data-target="#myModal" href="#myModal">                    ';
@@ -223,10 +248,14 @@ $('.flexslider').flexslider({
  });
  
 //조회수 증가
-function viewCntAdd(eventNo) {
+function viewCntAdd(eventNo, targer) {
 	$.getJSON(contextRoot + '/cosmetic/ajax/viewCntAdd.do', { eventNo : eventNo }, function(resultObj) {
 		var viewCnt = resultObj.ajaxResult.data;
+		var imgObj = new Image();
+		imgObj.src = $(targer).attr("src");
+		alert(imgObj.src);
 		$("#viewCnt"+eventNo).html(viewCnt);
+		alert(imgObj.naturalHeight);
 	});
 }
 

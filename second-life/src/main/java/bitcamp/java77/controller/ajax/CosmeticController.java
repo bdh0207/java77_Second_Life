@@ -815,8 +815,10 @@ public class CosmeticController {
 	
 	// 병원 등록
 	@RequestMapping(value="hospitalAdd",method=RequestMethod.POST)
-	public void hospitalAdd(CosmeticHospital cosmeticHospital) throws Exception {
+	public AjaxResult hospitalAdd(CosmeticHospital cosmeticHospital) throws Exception {
 		cosmeticService.insertHospital(cosmeticHospital);
+		
+		return new AjaxResult("success", null);
 	}
 	
 	// 이벤트 등록
