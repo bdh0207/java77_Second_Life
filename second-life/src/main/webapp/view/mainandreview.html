@@ -106,7 +106,14 @@
 					$(".x").remove();
 					$(".starOpa").css("opacity", "0.4");
 				});
-				
+				return false;
+			});
+		});
+			/*
+			var msnry = new Masonry(container,{
+				itemSelector:'.item',
+				columnWidth: 379,
+ 				percentPosition: true
 				return false;
 			});
 			*/
@@ -114,13 +121,17 @@
 		});
 		
 		$(document).ready(function() {	
-			
 			$('#top').load('top.html').trigger('pagecreate');
+			
 			$.getJSON(contextRoot + '/cosmetic/ajax/mainReview.do',function(resultObj){
-				// 로그인 헤더 처리
-				if(resultObj.member != null){
+				var member = resultObj.member;
+				
+				if(member != null){
 					$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-					$('.changeValue2').html('Hello '+ resultObj.member.id).attr('onclick','location.href="mylist.html"');
+					$('.changeValue2').hide();
+					$('#mypage').show();
+					$('#mypage > a').html('HELLO ' + member.id);
+					$('#mypage > a').append('<span class="caret"></span>');
 				}
 				
 				for(var list of resultObj.reviewList){
@@ -385,31 +396,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

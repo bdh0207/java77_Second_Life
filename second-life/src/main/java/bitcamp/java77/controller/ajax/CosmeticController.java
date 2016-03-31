@@ -45,6 +45,7 @@ import bitcamp.java77.domain.CosmeticCounsel;
 import bitcamp.java77.domain.CosmeticEvent;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
+import bitcamp.java77.domain.CosmeticQnA;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
@@ -70,8 +71,21 @@ public class CosmeticController {
 	public AjaxResult hospitalInfo() throws Exception {
 		// 병원 정보 불러오기
 		List<CosmeticHospital> hospitalInfoList = cosmeticService.hospitalInfo();
-		System.out.println(hospitalInfoList.size());
 		return new AjaxResult("success", hospitalInfoList);
+	}
+	
+	// 병원정보 상세조회(번호로)
+	@RequestMapping(value="hospitalInfoDetail")
+	public AjaxResult hospitalInfoDetail(int hospitalNo) throws Exception {
+		CosmeticHospital hospital = cosmeticService.selectHospitalInfoDetail(hospitalNo);
+		return new AjaxResult("success", hospital);
+	}
+	
+	// 병원정보 상세조회(이름으로)
+	@RequestMapping(value="hospitalInfoByName")
+	public AjaxResult hospitalInfoByName(String name) throws Exception {
+		List<CosmeticHospital> list = cosmeticService.selectHospitalInfoByName(name);
+		return new AjaxResult("success", list);
 	}
  
 	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
@@ -83,12 +97,46 @@ public class CosmeticController {
 		
 		return new AjaxResult("success", member);
 	}
-
+	
 	@RequestMapping(value="viewInfo")
 	public AjaxResult viewInfo(int reviewNo) throws Exception {
 		CosmeticReview review = cosmeticService.selectSurgeryInfo(reviewNo);
 		return new AjaxResult("success", review);
 	}
+
+	@RequestMapping(value="registQnA", method=RequestMethod.POST)
+	public AjaxResult QnARegist(CosmeticQnA qna, HttpServletRequest req) throws Exception {
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
+		int mNo = member.getMemberNo();
+		qna.setmNo(mNo);
+		System.out.println("회원번호" + member.getMemberNo());
+		System.out.println("데이터 : " + qna.getmNo() + "/" + qna.getqPart() + "/" + qna.getTitle() + "/" + qna.getContent());
+		
+		// QnA 글등록
+		cosmeticService.insertQnA(qna);
+		return new AjaxResult("success", null);
+	}
+	
+	@RequestMapping(value="listQnA", method=RequestMethod.GET)
+	public AjaxResult QnAList(HttpServletRequest req) throws Exception {
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
+		int mNo = member.getMemberNo();
+		System.out.println("회원번호" + member.getMemberNo());
+		
+		// QnA 목록
+		List<CosmeticQnA> QnAList = cosmeticService.qnaList(mNo);
+		return new AjaxResult("success", QnAList);
+	}
+	
+//	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
+//	public void selectMemInfo(String id) throws Exception {
+//		 System.out.println(id);
+//	}
+
 	
 //	@RequestMapping(value="sendMail", method=RequestMethod.POST)
 //	public void sendMail(CosmeticCounsel cosmeticConsel) throws Exception, MessagingException {
@@ -151,11 +199,13 @@ public class CosmeticController {
 //        transport.close();  
 //	}
 	
+	// 회원가입
 	@RequestMapping(value="join")
 	public void join(CosmeticMember cosmeticMember) throws Exception {
 		cosmeticService.insertMember(cosmeticMember);
 	}
 	
+	// ID 중복체크
 	@RequestMapping(value="idCheck")
 	public AjaxResult idCheck(CosmeticMember cosmeticMember) throws Exception {
 		int num    = cosmeticService.searchID(cosmeticMember.getId());
@@ -775,5 +825,34 @@ public class CosmeticController {
 		
 		resultMap.put("info", info);
 		return resultMap;
+	}
+	// 병원 등록
+	@RequestMapping(value="hospitalAdd",method=RequestMethod.POST)
+	public AjaxResult hospitalAdd(CosmeticHospital cosmeticHospital) throws Exception {
+		cosmeticService.insertHospital(cosmeticHospital);
+		
+		return new AjaxResult("success", null);
+	}
+	
+	// 이벤트 등록
+	@RequestMapping(value="eventAdd", method=RequestMethod.GET)
+	public AjaxResult eventAdd(HttpServletRequest req) throws Exception {
+		CosmeticEvent event = new CosmeticEvent();
+		
+//		System.out.println(req.getParameter("hospitalNo"));
+//		System.out.println(req.getParameter("hospitalName"));
+//		System.out.println(req.getParameter("title"));
+//		System.out.println(req.getParameter("photoURL"));
+//		System.out.println(req.getParameter("pageURL"));
+		
+		event.setHospitalNo(Integer.parseInt(req.getParameter("hospitalNo")));
+		event.setHospitalName(req.getParameter("hospitalName"));
+		event.setTitle(req.getParameter("title"));
+		event.setPhotoURL(req.getParameter("photoURL"));
+		event.setPageURL(req.getParameter("pageURL"));
+		
+		cosmeticService.insertEvent(event);
+		
+		return new AjaxResult("success", null);
 	}
 }

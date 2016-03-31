@@ -17,9 +17,8 @@ div#columns figure {
 	display: inline-block;
 }
 
-div#columns figure>a>img {
+#thumbnail {
 	width: 250px;
-	height: auto;
 	margin-bottom: 10px;
 }
  
@@ -101,7 +100,15 @@ a:hover {
 	text-decoration: none !important;
 	cursor: pointer;
 }
- 
+
+.blockquote-new {
+	padding-right: 15px;
+	padding-left: 0px;
+	border-right: 5px solid #cf2d39;
+	border-left: 0px;
+	text-align: right; 
+	font-size: 1em;
+}
 /* 팝업 관련 디자인*/
 .overlay {
   position: fixed;
@@ -214,11 +221,4 @@ a:hover {
 	-webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    7px 7px 5px 0px rgba(50, 50, 50, 0.75);
 	box-shadow:         7px 7px 5px 0px rgba(50, 50, 50, 0.75);
-}
-
-@media screen and (max-width: 700px){
-  .popup{
-    width: 70%;
-  }
-}
-
+} 

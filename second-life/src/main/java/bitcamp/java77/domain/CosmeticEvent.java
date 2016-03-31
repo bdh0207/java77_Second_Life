@@ -8,13 +8,27 @@ public class CosmeticEvent implements Serializable {
 	protected int eventNo;
 	protected int hospitalNo;
 	protected String title;
-	protected String content;
+	protected String content;	// 하지말자
 	protected int viewCnt;
 	protected Date regDate;
-	protected List<CosmeticEventPhoto> eventPhoto;
-	protected List<CosmeticMember> member;
-	protected String hospitalName;
+	protected List<CosmeticMember> member; 
+	protected List<CosmeticEventPhoto> eventPhoto;	// 하지말자
+	protected String hospitalName;	// 추가
+	protected String photoURL;		// 추가
+	protected String pageURL;		// 추가
 	
+	public final String getPhotoURL() {
+		return photoURL;
+	}
+	public final void setPhotoURL(String photoURL) {
+		this.photoURL = photoURL;
+	}
+	public final String getPageURL() {
+		return pageURL;
+	}
+	public final void setPageURL(String pageURL) {
+		this.pageURL = pageURL;
+	}
 	public final String getHospitalName() {
 		return hospitalName;
 	}

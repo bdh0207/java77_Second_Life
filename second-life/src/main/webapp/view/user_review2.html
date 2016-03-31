@@ -77,7 +77,10 @@ $(document).ready(function() {
  		// 로그인 헤더 처리
 		if(reviewDetail.member != null){
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-			$('.changeValue2').html('Hello '+ reviewDetail.member.id).attr('onclick','location.href="mylist.html"');
+			$('.changeValue2').hide();
+			$('#mypage').show();
+			$('#mypage > a').html('HELLO ' + reviewDetail.member.id);
+			$('#mypage > a').append('<span class="caret"></span>');
 			$('#commentId').text(reviewDetail.member.id);
 		}
  		

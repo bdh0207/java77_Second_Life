@@ -6,6 +6,7 @@ import java.util.List;
 import bitcamp.java77.domain.CosmeticEvent;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
+import bitcamp.java77.domain.CosmeticQnA;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
@@ -45,6 +46,12 @@ public interface CosmeticService {
 	public int selectEventViewCnt(int eventNo) throws Exception;
 	public void insertWishEvent(CosmeticWishEvent wishEvent) throws Exception;
 	public int selectWishEvent(CosmeticWishEvent wishEvent) throws Exception;
+	public CosmeticHospital selectHospitalInfoDetail(int hospitalNo) throws Exception;
+	public List<CosmeticHospital> selectHospitalInfoByName(String name) throws Exception;
+	public void insertHospital(CosmeticHospital cosmeticHospital) throws Exception;
+	public void insertEvent(CosmeticEvent cosmeticEvent) throws Exception;
 	public List<CosmeticReview> selectMainReviewList(CosmeticSearch search) throws Exception;
 	public List<CosmeticSugeryInfo> selectSurgeryInfoByMemberNo(int memberNo) throws Exception;
+	public List<CosmeticQnA> qnaList(int mNo) throws Exception;
+	public void insertQnA(CosmeticQnA cosmeticQnA) throws Exception;
 }

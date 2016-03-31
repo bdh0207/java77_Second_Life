@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>QnAForm</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
+    <link rel="stylesheet" type="text/css" href="../css/QnA.css">
+	<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="../js/common.js" type="text/javascript"></script>
+</head>
+<body>
+<!-- 해더 -->
+<div id="top"></div>
+
+<!-- 내용 -->
+<div class="bodyContent" style="margin-top: 70px;">
+<h2 style="color: #cf2d39;">QnA</h2>
+	<table style="width: 100%;">
+		<tr>
+			<th>글목적</th>
+			<td>
+			<select id="apart">
+				<option value="홈페이지 사용 문의">홈페이지 사용 문의</option>
+				<option value="계정 사용 문의">계정 사용 문의</option>
+				<option value="성형외과 문의">성형외과 문의</option>
+				<option value="상담 신청 문의">상담 신청 문의</option>
+				<option value="게시글 문의">게시글 문의</option>
+				<option value="기타 문의">기타 문의</option>
+				<!-- <option>개인 정보 노출</option>
+				<option>비방/비하</option>
+				<option>명예훼손</option>
+				<option>사생활 침해</option>
+				<option>부적절한 홍보</option>
+				<option>음란물</option>
+				<option>청소년에게 부적합한 내용</option> -->
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<th>제목</th>
+			<td><input id="title" type="text"></td>
+		</tr>
+		<tr>
+			<th>내용</th>
+			<td>
+			<textarea id="content" style="border: 1px solid #aaaaaa;" class="form-control text" rows="5"></textarea>
+			</td>
+		</tr>
+	</table>
+	<div align="right">
+	<button id="cancle" type="button" class="btn btn-default button" title="">Cancle</button>
+	<button id="submit" type="button" class="btn btn-danger button" title="">Submit</button>
+	</div>
+</div>
+	
+<script>
+//해더
+$(document).ready(function() {
+    $('#top').load('top.html');
+});
+
+var submit = $("#submit").on("click", function () {
+	var apart = $("#apart").val();
+	var title = $("#title").val();
+	var content = $("#content").val();
+	console.dir(apart + "/" + title + "/" + content);
+	
+	$.ajax({
+		url : contextRoot + "/cosmetic/ajax/registQnA.do",
+		type : "POST",
+		data : {title: title, content: content, qPart: apart},
+		dataType : "json",
+	})
+	.done(function (resultObj) {
+		var result = resultObj.ajaxResult;
+		if(result.status == "success"){
+			alert("글 등록됨");
+			document.location.href = contextRoot + "/view/QnAList.html"
+		}
+	})
+	
+	
+})
+</script>
+</body>
+</html>

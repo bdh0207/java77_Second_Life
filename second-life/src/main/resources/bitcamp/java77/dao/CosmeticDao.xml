@@ -7,11 +7,8 @@
 
 	<!-- INSERT 영역 -->
 	<insert id="insertMember" parameterType="CosmeticMember">
-		insert into member(ID, PWD, NAME, EMAIL, GENDER, BIRTH, POSNO, ADDR_DEF, TEL, REC_EMAIL)
-		values(#{id}, #{pwd}, #{name}, #{email}, #{gender}, #{birth}, #{posNo}, #{addrDef}, #{tel}, #{recEmail})
-		<selectKey keyProperty="memberNo" order="AFTER" resultType="int">
-			select max(mno) from member
-		</selectKey>
+		insert into member(ID, PWD, NAME, EMAIL, GENDER, BIRTH, TEL, reg_date)
+		values(#{id}, #{pwd}, #{name}, #{email}, #{gender}, #{birth}, #{tel}, now())
 	</insert>
 	
  	<insert id="insertReview" useGeneratedKeys="true" parameterType="CosmeticReview" keyProperty="reviewNo">
@@ -66,14 +63,45 @@
  						  where eno = #{eventNo} 
  						  	and mno = #{memberNo})
  	</insert>
+ 	
+ 	<insert id="insertHospital" parameterType="CosmeticHospital">
+ 		insert into hospital(name, spart, cont, addr, tel, link, email, reg_date)
+ 		values(#{name}, #{surgeryPart}, #{content}, #{addr}, #{tel}, #{link}, #{email}, now())
+ 	</insert>
+ 	
+ 	<insert id="insertEvent" parameterType="CosmeticEvent">
+ 		insert into event(hno, title, hname, p_url, h_url, vcnt, reg_date)
+ 		values(#{hospitalNo}, #{title}, #{hospitalName}, #{photoURL}, #{pageURL}, 0, now())
+ 	</insert>
  	  
- 	  
+ 	<insert id="insertQnA" parameterType="cosmeticQnA">
+ 		insert into q_a(MNO, TITLE, CONT, QPART, REG_DATE)
+		values(#{mNo}, #{title}, #{content}, #{qPart},now());
+ 	</insert>
+ 	
  	<!-- SELECT 영역 -->
  	<select id="searchID" parameterType="string" resultType="int">
 		select count(*)
 		  from member
 		 where id = #{id}
 	</select>
+	
+ 	<!-- QnA resultMap -->
+ 	<resultMap id="QnAMap" type="CosmeticQnA">
+ 		<result property="qNo" column="QNO" />
+ 		<result property="mNo" column="MNO" />
+ 		<result property="title" column="TITLE" />
+ 		<result property="content" column="CONT"/>
+ 		<result property="qPart" column="QPART" />
+ 		<result property="regDate" column="REG_DATE" />
+ 	</resultMap>
+ 	
+ 	<!-- QnA select -->
+ 	<select id="selectQnA" parameterType="int" resultMap="QnAMap">
+ 		select QNO, MNO, TITLE, CONT, QPART, REG_DATE
+ 		from q_n
+ 		where MNO = #{mNo}
+ 	</select>
  	
  	<!-- 병원 정보 resultMap -->
  	<resultMap id="hospitalInfoListMap" type="CosmeticHospital">
@@ -85,11 +113,26 @@
  		<result property="tel" column="TEL" />
  		<result property="link" column="LINK" />
  		<result property="regDate" column="REG_DATE" />
+ 		<result property="email" column="email" />
  	</resultMap>
+ 	
  	<!-- 병원 정보 select -->
  	<select id="selectHospital" resultMap="hospitalInfoListMap">
- 		select HNO, NAME, SPART, CONT, ADDR, TEL, LINK, REG_DATE
+ 		select HNO, NAME, SPART, CONT, ADDR, TEL, LINK, REG_DATE, email
  		  from HOSPITAL
+ 		 order by name
+ 	</select>
+ 	
+ 	<select id="selectHospitalInfoDetail" parameterType="int" resultType="CosmeticHospital">
+ 		select HNO, NAME, SPART as surgeryPart, CONT as content, ADDR, TEL, LINK, email, REG_DATE
+ 		  from HOSPITAL
+ 		  where HNO = #{hospitalNo}
+ 	</select>
+ 	
+ 	<select id="selectHospitalInfoByName" parameterType="string" resultMap="hospitalInfoListMap">
+ 		select HNO, NAME, SPART, CONT, ADDR, TEL, LINK, email, REG_DATE
+ 		  from HOSPITAL
+ 		  where name like CONCAT('%',#{name},'%')
  	</select>
  	
  	<select id="selectReviewWish" parameterType="int" resultMap="reviewWishMap">
@@ -169,29 +212,12 @@
  		<result property="filePath" column="filePath" />
  	</resultMap>
  	
- 	<select id="selectEventList" parameterType="CosmeticSearch" resultMap="eventresultMap">
- 		select a.eno as eventNo, a.hno as hospitalNo, a.title, a.cont as content, a.vcnt as viewCnt, a.reg_date as regDate, b.fil_path as filePath, h.name as hospitalName
-		  from event a inner join event_phot b on a.eno = b.eno
-		  			   inner join hospital h on a.hno = h.hno
-		 order by a.reg_date desc
-		 limit #{start},6
+ 	<select id="selectEventList" parameterType="CosmeticSearch" resultType="CosmeticEvent">
+ 		select eno as eventNo, hno as hospitalNo, title, vcnt as viewCnt, reg_date as regDate, p_url as photoURL, hname as hospitalName, h_url as pageURL
+		  from event 
+		 order by reg_date desc
+		 limit #{start}, 6
  	</select>
- 	
- 	<resultMap id="eventresultMap" type="CosmeticEvent">
- 		<result property="eventNo" column="eventNo" />
- 		<result property="hospitalNo" column="hospitalNo" />
- 		<result property="title" column="title" />
- 		<result property="content" column="content"/>
- 		<result property="viewCnt" column="viewCnt" />
- 		<result property="regDate" column="regDate" />
- 		<result property="hospitalName" column="hospitalName" />
- 		<collection property="eventPhoto" column="filePath"  resultMap="eventPhotoMap" ofType="cosmeticEventPhoto" javaType="ArrayList"></collection>
- 	</resultMap>
- 	
- 	<resultMap id="eventPhotoMap" type="cosmeticEventPhoto">
- 		<result property="filePath" column="filePath" />
- 	</resultMap>
- 	
  	
  	<select id="selectReviewListDetail" parameterType="int" resultType="CosmeticReview">
  		select RNO as reviewNo, MNO as memberNo, HNO as hospitalNo,title as title,CONT as content, VCNT as viewCnt, (select count(*) from review_recom where rno = #{revieweNo}) as recomCnt , SPART as sugeryPart, STAT as status,hos_name as hospitalName,doc_name as doctorName,sway as sugeryWay, sprice as sugeryPrice, sdate as sugeryDate, REG_DATE as regDate 
@@ -246,7 +272,7 @@
  	</select>
  	
  	<select id="selectMember" parameterType="cosmeticMember" resultType="CosmeticMember">
- 		select mno as memberNo,id,pwd,name,email,gender,birth,posno,addr_def as addrDef, addr_det as addrDet, tel, cPart, rec_email as recEmail, cont as content, reg_date as regDate
+ 		select mno as memberNo,id,pwd,name,email,gender,birth,tel,grade, reg_date as regDate
  		from member
 		where id = #{id}
 		and pwd = #{pwd}

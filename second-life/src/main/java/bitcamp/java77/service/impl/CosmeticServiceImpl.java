@@ -11,6 +11,7 @@ import bitcamp.java77.dao.CosmeticDao;
 import bitcamp.java77.domain.CosmeticEvent;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
+import bitcamp.java77.domain.CosmeticQnA;
 import bitcamp.java77.domain.CosmeticReview;
 import bitcamp.java77.domain.CosmeticReviewComment;
 import bitcamp.java77.domain.CosmeticReviewPhoto;
@@ -85,6 +86,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 	}
 
 	@Override
+	@Transactional
 	public List<CosmeticReview> selectMainReviewList(CosmeticSearch search) throws Exception {
 		return cosmeticDao.selectReviewList(search);
 	}
@@ -177,8 +179,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 	@Override
 	@Transactional
 	public List<CosmeticHospital> hospitalInfo() throws Exception {
-		return null;
-		//cosmeticDao.selectHospital();
+		return cosmeticDao.selectHospital();
 	}
 
 	@Override
@@ -251,6 +252,8 @@ public class CosmeticServiceImpl implements CosmeticService {
 		cosmeticDao.deleteWish(wish);
 	}
 	
+	@Override
+	@Transactional
 	public List<CosmeticEvent> selectEventList(CosmeticSearch search) throws Exception {
 		return cosmeticDao.selectEventList(search);
 	}
@@ -285,5 +288,42 @@ public class CosmeticServiceImpl implements CosmeticService {
 		return cosmeticDao.selectSurgeryInfoByMemberNo(memberNo);
 	}
 	
+	
+	@Override
+	@Transactional
+	public CosmeticHospital selectHospitalInfoDetail(int hospitalNo) throws Exception {
+		return cosmeticDao.selectHospitalInfoDetail(hospitalNo); 
+	}
+
+	@Override
+	@Transactional
+	public List<CosmeticHospital> selectHospitalInfoByName(String name) throws Exception {
+		return cosmeticDao.selectHospitalInfoByName(name);
+	}
+
+	@Override
+	@Transactional
+	public void insertHospital(CosmeticHospital cosmeticHospital) throws Exception {
+		cosmeticDao.insertHospital(cosmeticHospital);
+	}
+
+	@Override
+	@Transactional
+	public void insertEvent(CosmeticEvent cosmeticEvent) throws Exception {
+		cosmeticDao.insertEvent(cosmeticEvent);
+		
+	}
+
+	@Override
+	@Transactional
+	public List<CosmeticQnA> qnaList(int mNo) throws Exception {
+		return cosmeticDao.selectQnA(mNo);
+	}
+
+	@Override
+	@Transactional
+	public void insertQnA(CosmeticQnA cosmeticQnA) throws Exception {
+		cosmeticDao.insertQnA(cosmeticQnA);
+	}
 	
 }

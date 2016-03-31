@@ -1,1 +1,72 @@
 @CHARSET "UTF-8";
+
+.bodyContent{
+	width: 1000px;
+	margin: auto;
+}
+
+.margin{
+	margin-top: 5px;
+}
+
+.tablePadding{
+	padding: 5px;
+}
+
+.qnaPart{
+	background-color: #db636c;
+	padding: 3px;
+	font-size: 8pt;
+	color: white;
+	border-radius: 4px;
+	margin-right: 0px;
+}
+
+.button{
+	padding: 7px;
+	border-color: #e7e7e7;
+}
+
+.thList{
+	font-size: 10.5pt;
+	color: #595959;
+	background-color: #e7e7e7;
+}
+
+.tdList{
+	text-align: center;
+}
+
+.text{
+	font-size: 9pt;
+}
+
+/* #white{
+	padding-left: 12px;
+	padding-right: 12px;
+} */
+
+#white:hover, #list:hover, #submit:hover{
+	background-color: white;
+	border-color: #cf2d39;
+	color: #cf2d39; 
+}
+
+#cancle:hover{
+	background-color: white;
+	border-color: #333333;
+	color: #333333; 
+}
+
+a {color: #222222;}
+
+a:hover { color: #cf2d39;}
+
+/* border: 1px solid #cccccc; */
+table {margin-top: 20px; margin-bottom: 15px;}
+select {height: 30px;}
+option {padding: 5px;}
+input {width: 500px; height: 30px; padding: 3px;}
+th {width: 20%; padding: 5px; text-align: center; border-bottom: 1px solid #e5e5e5;  border-top: 1px solid #e5e5e5;}
+td {padding: 5px; border-bottom: 1px solid #e5e5e5; border-top: 1px solid #e5e5e5;}
+textarea {border: 1px solid #aaaaaa;}

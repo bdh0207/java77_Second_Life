@@ -48,7 +48,6 @@
 <script src="../js/bootstrap.min.js"></script>
 <script src="../js/masonry-docs.min.js"></script>
 <script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> <!-- marsonry -->
-<script src="../js/bootstrap.min.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/bootstrap-dialog.js"></script>
 
@@ -124,9 +123,11 @@
 			var ajaxResult = resultObj.ajaxResult;
 			var member = ajaxResult.data;
 			if(member != null){
-				console.log(member.id);
 				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-				$('.changeValue2').html('Hello '+member.id).attr('onclick','location.href="mylist.html"');
+				$('.changeValue2').hide();
+				$('#mypage').show();
+				$('#mypage > a').html('HELLO ' + member.id);
+				$('#mypage > a').append('<span class="caret"></span>');
 			}
 		}).error(function(error) {
 			window.location.href='login.html';

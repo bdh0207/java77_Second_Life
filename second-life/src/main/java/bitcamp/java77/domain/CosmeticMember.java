@@ -9,15 +9,10 @@ public class CosmeticMember implements Serializable {
 	protected String pwd;
 	protected String name;
 	protected String email;
-	protected String gender;
-	protected int birth;
-	protected String posNo;		// 우편번호
-	protected String addrDef; 	// 기본주소
-	protected String addrDet; 	// 상세주소
-	protected String tel;		// 전화
-	protected String cPart;		// 관심부위
-	protected String recEmail;
-	protected String cont;
+	protected String gender;	
+	protected String birth;		// int -> String
+	protected String tel;
+	protected char grade;		// 유저 구분 컬럼추가
 	protected Date regDate;
 	
 	public int getMemberNo() {
@@ -28,6 +23,12 @@ public class CosmeticMember implements Serializable {
 	}
 	public String getId() {
 		return id;
+	}
+	public char getGrade() {
+		return grade;
+	}
+	public void setGrade(char grade) {
+		this.grade = grade;
 	}
 	public void setId(String id) {
 		this.id = id;
@@ -56,54 +57,20 @@ public class CosmeticMember implements Serializable {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public int getBirth() {
+	public final String getBirth() {
 		return birth;
 	}
-	public void setBirth(int birth) {
+	public final void setBirth(String birth) {
 		this.birth = birth;
 	}
-	public String getPosNo() {
-		return posNo;
-	}
-	public void setPosNo(String posNo) {
-		this.posNo = posNo;
-	}
-	public String getAddrDef() {
-		return addrDef;
-	}
-	public void setAddrDef(String addrDef) {
-		this.addrDef = addrDef;
-	}
-	public String getAddrDet() {
-		return addrDet;
-	}
-	public void setAddrDet(String addrDet) {
-		this.addrDet = addrDet;
-	}
+	
 	public String getTel() {
 		return tel;
 	}
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-	public String getcPart() {
-		return cPart;
-	}
-	public void setcPart(String cPart) {
-		this.cPart = cPart;
-	}
-	public String getRecEmail() {
-		return recEmail;
-	}
-	public void setRecEmail(String recEmail) {
-		this.recEmail = recEmail;
-	}
-	public String getCont() {
-		return cont;
-	}
-	public void setCont(String cont) {
-		this.cont = cont;
-	}
+	
 	public Date getRegDate() {
 		return regDate;
 	}

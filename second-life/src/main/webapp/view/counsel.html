@@ -15,18 +15,6 @@
 	$(document).ready(function() {
 		// top 적용
 		$('#top').load('top.html');
-		
-		$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
-			var ajaxResult = resultObj.ajaxResult;
-			var member = ajaxResult.data;
-			if(member != null){
-				console.log(member.id);
-				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-				$('.changeValue2').html('Hello '+member.id).removeAttr('onclick');
-			}
-		}).error(function(error) {
-			window.location.href='login.html';
-		});
 	});
 </script>
 </head>

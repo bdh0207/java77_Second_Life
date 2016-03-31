@@ -1,5 +1,15 @@
 @CHARSET "UTF-8";
 
+.btn-yellow {
+	background-color: #FFB61E;
+	color: #000000;
+}
+
+.btn-white {
+	background-color: #ffffff;
+	color: #cf2d39;
+	border: 1px solid #cccccc;
+}
 /* counsel.html ======================================== */
 #thumbnail-new {
 	padding: 0px;

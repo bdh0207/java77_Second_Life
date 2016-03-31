@@ -1,105 +1,76 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);</style>
-<style type="text/css">
-* {
-	margin: 0px;
-	padding: 0px;
-}
+<script type="text/javascript">/*
+	$(document).ready(function() {
+		$("a").click(function() {
+			$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+				var pageURL = $(this).attr("href");
+				
+	 			if(resultObj.member != null){
+	 				location.href = pageURL;
+	 			} else { 
+	 				location.href = "mainandreview.html";
+	 			}
+	 		}).error(function(error) {
+	 			BootstrapDialog.show({
+	 			    title: 'Error',
+	 			    message: '로그인 후 이용가능합니다.',
+	 			    buttons: [{
+	 			        id: 'btn-ok',   
+	 			        icon: 'glyphicon glyphicon-check',       
+	 			        label: 'OK',
+	 			        cssClass: 'btn-danger', 
+	 			        autospin: false,
+	 			        action: function(dialogRef){    
+	 			            dialogRef.close();
+	 			            window.location.href = "login.html";
+	 			        }
+	 			    }]
+	 			});
+	 		});
+		});
+	});*/
+</script>
+<nav class="navbar" style="background-color: #cf2d39;">
+   <div class="container-fluid">
+      <div class="navbar-header">
+         <a class="navbar-brand" href="mainandreview.html" style="color: #ffffff;">SECOND LIFE</a>
+      </div>
 
-#top {
-	width: 100%;
-	height: 60px;
-	line-height: 60px;
-	padding-left: 20px;
-	padding-right: 20px;
-	background-color: #cf2d39;
-	color: #ffffff; 
-	font-family: 'Nanum Gothic', serif; 
-	font-weight: bold;
-	-webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box; 
-}
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+         <ul class="nav navbar-nav">
+            <li><a href="user_review_list.html" style="color: #ffffff;">USER REVIEW</a></li>
+            <li><a href="mainandhospital.html " style="color: #ffffff;">HOSPITAL EVENT</a></li>
+            <li><a href="search_hospital.html" style="color: #ffffff;">SEARCH HOSPITAL</a></li>
+            <li class="dropdown">
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true" style="color: #ffffff;">CUSTOMER SERVICE 
+                  <span class="caret"></span>
+               </a>
+               <ul class="dropdown-menu" role="menu" style="background-color: #cf2d39;">
+                  <li><a href="FAQ.html" style="color: #ffffff;">FAQ</a></li>
+                  <li><a href="QnAList.html" style="color: #ffffff;">QnA</a></li>
+               </ul>
+            </li>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown" id="mypage" style="display: none;">
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true" style="color: #ffffff;">MY PAGE 
+                  <span class="caret"></span>
+               </a>
+               <ul class="dropdown-menu" role="menu" style="background-color: #cf2d39;">
+                  <li><a href="#" style="color: #ffffff;">정보수정</a></li>
+                  <li><a href="mylist.html" style="color: #ffffff;">찜한 리뷰/이벤트</a></li>
+                  <li><a href="information.html" style="color: #ffffff;">정보모음</a></li>
+                  <li><a href="eventForm.html" style="color: #ffffff;">이벤트 등록</a></li>
+                  <!-- 상담내역 조회 만들꺼임 -->
+               </ul>
+            </li>
+            <li><a href="login.html" class="changeValue1" style="color: #ffffff;">LOGIN</a></li>
+            <li><a href="joinForm.html" class="changeValue2" style="color: #ffffff;">REGISTER</a></li>
+         </ul>
+      </div>
+   </div>
+</nav>
 
-#logo {  
-	float: left; 
-	font-size: 2em;
-	cursor: pointer;
-}
-
-#menu1 {   
-	float: left;
-	margin-left: 100px;
-}
-
-span { 
-	margin-left: 10px; 
-	margin-right: 10px;
-	cursor: pointer;
-}
-
-#menu2 { 
-	margin: 0 10px;
-	float: right; 
-	cursor: pointer;
-}
-
-.text-center {
-	text-align: center;
-	vertical-align: middle;
-}
-
-.title > hr {
-	border: 1px solid #434343;
-}
-.title-container {
-	width: 30%;
-	margin: 50px auto;
-	
-} 
-
-.table-div { 
-	display: table; 
-	table-layout: fixed;  
-}
- 
-.table-div > .title {
-	width: 100px;
-	height: 30px;
-	line-height: 30px;
-	display: table-cell;
-	vertical-align: middle;
-	font-family: 'Jeju Gothic', serif;
-	font-weight: bold;
-} 
-
-.font {
-	font-family: 'Nanum Gothic', serif;
-}
-
-</style>
-</head>
-
-<body>
-	<div id="top">
-		<div id="logo" onclick="location.href='mainandreview.html'">SECOND LIFE</div>
-		<div id="menu1">
-			<span id="reviewLink">USER REVIEW</span>
-			<span id="eventLink">HOSPITAL EVENT</span>
-			<span id="searchHospitalLink">SEARCH HOSPITAL</span>
-			<span id="counselLink">COUNSEL</span>
-			<span id="informationLink">information</span>
-		</div>
-		<div id="menu2" class="changeValue1" onclick="location.href='login.html'">LOGIN</div>
-		<div id="menu2" class="changeValue2" onclick="location.href='joinForm.html'">REGISTER</div>
-<!-- 		<div id="menu2" onclick="location.href='mypage.html'">MY PAGE</div> -->
-	</div>
-	
-	<script type="text/javascript">
+<script type="text/javascript">
 		$('#reviewLink').click(function() {
 			$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
 				var ajaxResult = resultObj.ajaxResult;
@@ -216,5 +187,4 @@ span {
 			//location.href= 'counsel.html';
 		});
 	</script>
-</body>
-</html>
+
