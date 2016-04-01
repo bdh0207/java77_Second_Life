@@ -129,14 +129,14 @@ public class CosmeticController {
 		System.out.println("회원번호" + member.getMemberNo());
 		
 		// QnA 목록
-		List<CosmeticQnA> QnAList = cosmeticService.qnaList(mNo);
+		List<CosmeticQnA> QnAList = cosmeticService.selectQnA(mNo);
 		return new AjaxResult("success", QnAList);
 	}
 	
 	// 상담신청서 발송
-	@RequestMapping(value="sendMail")
-	public void sendMail(CosmeticCounsel cosmeticConsel, HttpServletRequest req) throws Exception, MessagingException {
-		System.out.println(req.getParameter("filePath"));
+//	@RequestMapping(value="sendMail")
+//	public void sendMail(CosmeticCounsel cosmeticConsel, HttpServletRequest req) throws Exception, MessagingException {
+//		System.out.println(req.getParameter("filePath"));
 		// 메일 관련 정보
 //        String host 	= "smtp.gmail.com";
 //        String username = "77secondlife@gmail.com";
@@ -198,7 +198,7 @@ public class CosmeticController {
 //        transport.connect(host, username, password);
 //        transport.sendMessage(msg, msg.getAllRecipients());
 //        transport.close();  
-	}
+//	}
 	
 	// 회원가입
 	@RequestMapping(value="join")

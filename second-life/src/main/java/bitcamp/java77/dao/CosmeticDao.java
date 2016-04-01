@@ -74,4 +74,8 @@ public interface CosmeticDao {
 	void insertCounsel(CosmeticCounsel cosmeticCounsel);
 	void insertCounselPhoto(CosmeticCounselPhoto cosmeticCounselPhoto);
 	List<CosmeticCounselPhoto> selectCounselPhoto(int counselNo);
+	void deleteSugeryInfo(int sugeryNo);
+	CosmeticQnA selectQnAByNo(int qno);
+	void deleteQnA(int qno);
+	void updateQnA(CosmeticQnA cosmeticQnA);
 }

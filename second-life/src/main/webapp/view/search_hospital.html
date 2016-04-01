@@ -405,121 +405,51 @@
 		// 주소로 좌표를 검색합니다
 		geocoder.addr2coord(hospitalArr[idx].addr, function(status, result) {
 	
-		    // 정상적으로 검색이 완료됐으면
-		     if (status === daum.maps.services.Status.OK) {
-	
-		        var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
-	
-		        // 결과값으로 받은 위치를 마커로 표시합니다
-		        click_marker = new daum.maps.Marker({
-		            map: map,
-		            position: coords
-		        });
-		        
-			    // 커스텀 오버레이에 표시할 컨텐츠 입니다
-			    // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
-			    // 별도의 이벤트 메소드를 제공하지 않습니다 
-			    var content = '<div class="wrap">' + 
-			                '    <div class="info">' + 
-			                '        <div class="title lead titleFont">' + 
-			               					hospitalArr[idx].name + 
-			                '            <div class="close" onclick="closeClickOverlay()" title="닫기"></div>' + 
-			                '        </div>' + 
-			                '        <div class="body">' + 
-			                '            <div class="desc">' + 
-			                '                <div class="ellipsis">' + hospitalArr[idx].addr + '</div>' + 
-			                '                <div class="jibun ellipsis">' + hospitalArr[idx].surgeryPart + '</div>' + 
-			                '                <div style="float: left;"><a href="' + hospitalArr[idx].link +'" target="_blank" class="link">홈페이지</a></div>' + '　' +
-			                '				 <span class="addBtnBox" style="font-size: 8pt; margin-left: 0px;" onclick="addList('+ idx +')">상담신청</span>' +
-			                '            </div>' + 
-			                '        </div>' + 
-			                '    </div>' +    
-			                '</div>';
-				     // 마커 위에 커스텀오버레이를 표시합니다
-		     // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
-		     click_overlay = new daum.maps.CustomOverlay({
-		         content: content,
-		         map: map,
-		         position: click_marker.getPosition()
-		     });
-		    }
-		});    
-	}; 
-	
-	var closeClickOverlay = function() {
-		click_overlay.setMap(null);
-		click_marker.setMap(null);
-	};
-	
-	// 상담신청서 발송
-	function sendMail() {
-      	var sPart = $("input[name=sPart]").val();
-      	
-		$('input:checkbox').each(function() {
-			if(this.checked){//checked 처리된 항목의 값
-		    	if(sPart == "") {
-		    		sPart = this.value;
-		    	} else {
-		    		sPart = sPart+", "+this.value;
-		    	}
-			}
-		});
-		
-		var formData = new FormData();
-		
-		// 키 값 다르게 줘야한다. 만약 그러지 않으면 첫번째 파일밖에 안읽어옴...
-		formData.append('files1',$('input[type="file"]')[0].files[0]);
-		formData.append('files2',$('input[type="file"]')[1].files[0]);
-		formData.append('hospitalNo', $("input[name=hospitalNo]").val());
-		formData.append('name', $("input[name=name]").val());
-		formData.append('age', $("input[name=age]").val());
-		formData.append('surgeryPart', sPart);
-		formData.append('tel', $("input[name=tel]").val());
-		formData.append('content', $("#textArea").val());
-		formData.append('email', $("input[name=email]").val());
-		formData.append('files1',$('input[type="file"]')[0].files[0]);
-		formData.append('files2',$('input[type="file"]')[1].files[0]);
-		
-		$.ajax({
-			url: contextRoot + '/cosmetic/ajax/counselAdd.do',
-			type: 'POST',
-			dataType : 'json',
-			processData: false,
-			contentType: false,
-			data: formData
-		}).done(function(resultObj) {
-			var photoList = resultObj.photoList;
-			
-			for(var list of resultObj.ajaxResult.data) {
-// 				console.log(list.filePath)
-				$("#output").attr("src", list.filePath);
-			}
-			
-			console.log("insert 성공!!!")
-		});
-		
-		$.ajax({
-			type: "POST",
-			url: contextRoot + "/cosmetic/ajax/sendMail.do", 
-			data: {  
-				"name" : $("input[name=name]").val(),
-				"age" : $("input[name=age]").val(),
-				"tel" : $("input[name=tel]").val(),
-				"surgeryPart" : sPart,
-				"content" : $("#textArea").val(),
-				"email" : $("input[name=email]").val(),
-				"filePath" : $("#output").attr("src")
-			},
-			dataType: "json",
-			success: function() {
-				alert("상담 신청서가 발송 되었습니다");
-				window.location.reload();
-			},
-			error: function() {
-				alert("발송안됨--;;");
-			}
-		});
-	}
+	    // 정상적으로 검색이 완료됐으면
+	     if (status === daum.maps.services.Status.OK) {
+
+	        var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
+
+	        // 결과값으로 받은 위치를 마커로 표시합니다
+	        click_marker = new daum.maps.Marker({
+	            map: map,
+	            position: coords
+	        });
+	        
+		    // 커스텀 오버레이에 표시할 컨텐츠 입니다
+		    // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+		    // 별도의 이벤트 메소드를 제공하지 않습니다 
+		    var content = '<div class="wrap">' + 
+		                '    <div class="info">' + 
+		                '        <div class="title lead titleFont">' + 
+		               					hospitalArr[idx].name + 
+		                '            <div class="close" onclick="closeClickOverlay()" title="닫기"></div>' + 
+		                '        </div>' + 
+		                '        <div class="body">' + 
+		                '            <div class="desc">' + 
+		                '                <div class="ellipsis">' + hospitalArr[idx].addr + '</div>' + 
+		                '                <div class="jibun ellipsis">' + hospitalArr[idx].surgeryPart + '</div>' + 
+		                '                <div style="float: left;"><a href="' + hospitalArr[idx].link +'" target="_blank" class="link">홈페이지</a></div>' + '　' +
+		                '				 <span class="addBtnBox" style="font-size: 8pt; margin-left: 0px;" onclick="addList('+ idx +')">상담신청</span>' +
+		                '            </div>' + 
+		                '        </div>' + 
+		                '    </div>' +    
+		                '</div>';
+			     // 마커 위에 커스텀오버레이를 표시합니다
+	     // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+	     click_overlay = new daum.maps.CustomOverlay({
+	         content: content,
+	         map: map,
+	         position: click_marker.getPosition()
+	     });
+	    }
+	});
+}; 
+
+var closeClickOverlay = function() {
+	click_overlay.setMap(null);
+	click_marker.setMap(null);
+};
 </script>
 </body>
 </html>

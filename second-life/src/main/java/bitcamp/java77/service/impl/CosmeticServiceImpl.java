@@ -44,6 +44,12 @@ public class CosmeticServiceImpl implements CosmeticService {
 	}
 
 	@Override
+	public void deleteSugeryInfo(int sugeryNo) throws Exception {
+		cosmeticDao.deleteSugeryInfo(sugeryNo);
+		
+	}
+
+	@Override
 	@Transactional
 	public CosmeticReview selectReviewListDetail(int reviewNo) throws Exception {
 		cosmeticDao.updateReviewViewCnt(reviewNo);
@@ -116,6 +122,8 @@ public class CosmeticServiceImpl implements CosmeticService {
 	@Transactional
 	public void deleteReview(CosmeticReview cosmeticReview) throws Exception {
 		CosmeticWish cosmeticWish = new CosmeticWish();
+		cosmeticDao.deleteReviewCommentByReviewNo(cosmeticReview.getReviewNo());
+		cosmeticDao.deleteReviewPhoto(cosmeticReview.getReviewNo());
 		cosmeticDao.deleteReview(cosmeticReview);
 		//cosmeticWish.setMemberNo(cosmeticReview.getMemberNo());
 		// 위시 있는지 여부부터 체크를 해야됨...
@@ -251,7 +259,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 	@Transactional
 	public void deleteWish(CosmeticWish wish) throws Exception {
 		// 테이블 관계 때문에 위시번호에 관련된 수술정보 삭제
-		cosmeticDao.deleteSugeryInfo(wish);
+		//cosmeticDao.deleteSugeryInfo(wish);
 		cosmeticDao.deleteWish(wish);
 	}
 	
@@ -319,7 +327,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 
 	@Override
 	@Transactional
-	public List<CosmeticQnA> qnaList(int mNo) throws Exception {
+	public List<CosmeticQnA> selectQnA(int mNo) throws Exception {
 		return cosmeticDao.selectQnA(mNo);
 	}
 
@@ -334,16 +342,34 @@ public class CosmeticServiceImpl implements CosmeticService {
 	public void insertCounsel(CosmeticCounsel cosmeticCounsel) throws Exception {
 		cosmeticDao.insertCounsel(cosmeticCounsel);
 	}
+	
+	@Override
+	@Transactional
+	public CosmeticQnA detailQnA(int qno) throws Exception {
+		return cosmeticDao.selectQnAByNo(qno);
+	}
 
 	@Override
 	@Transactional
 	public void insertCounselPhoto(CosmeticCounselPhoto cosmeticCounselPhoto) throws Exception {
 		cosmeticDao.insertCounselPhoto(cosmeticCounselPhoto);
 	}
+	
+	@Override
+	@Transactional
+	public void deleteQnA(int qno) throws Exception {
+		cosmeticDao.deleteQnA(qno);
+	}
 
 	@Override
 	@Transactional
 	public List<CosmeticCounselPhoto> selectCounselPhoto(int counselNo) throws Exception {
 		return cosmeticDao.selectCounselPhoto(counselNo);
+	}
+
+	@Override
+	@Transactional
+	public void updateQnA(CosmeticQnA cosmeticQnA) throws Exception {
+		cosmeticDao.updateQnA(cosmeticQnA);
 	}
 }

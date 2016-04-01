@@ -55,9 +55,13 @@ public interface CosmeticService {
 	public void insertEvent(CosmeticEvent cosmeticEvent) throws Exception;
 	public List<CosmeticReview> selectMainReviewList(CosmeticSearch search) throws Exception;
 	public List<CosmeticSugeryInfo> selectSurgeryInfoByMemberNo(int memberNo) throws Exception;
-	public List<CosmeticQnA> qnaList(int mNo) throws Exception;
 	public void insertQnA(CosmeticQnA cosmeticQnA) throws Exception;
 	public void insertCounsel(CosmeticCounsel cosmeticCounsel) throws Exception;
 	public void insertCounselPhoto(CosmeticCounselPhoto cosmeticCounselPhoto) throws Exception;
 	public List<CosmeticCounselPhoto> selectCounselPhoto(int counselNo) throws Exception;
+	public void deleteSugeryInfo(int sugeryNo) throws Exception;
+	public List<CosmeticQnA> selectQnA(int mNo) throws Exception;
+	public CosmeticQnA detailQnA(int qno) throws Exception;
+	public void deleteQnA(int qno) throws Exception;
+	public void updateQnA(CosmeticQnA cosmeticQnA) throws Exception;
 }

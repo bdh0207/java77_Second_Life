@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>QnAForm</title>
+<title>QnAUpdate</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
     <link rel="stylesheet" type="text/css" href="../css/QnA.css">
 	<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
@@ -20,6 +20,7 @@
 			<th>글목적</th>
 			<td>
 			<select id="apart">
+				<option class="apart" value=""></option>
 				<option value="홈페이지 사용 문의">홈페이지 사용 문의</option>
 				<option value="계정 사용 문의">계정 사용 문의</option>
 				<option value="성형외과 문의">성형외과 문의</option>
@@ -57,41 +58,39 @@
 // 해더
 $(document).ready(function() {
     $('#top').load('top.html');
-    
-    $.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
-        var ajaxResult = resultObj.ajaxResult;
-        var member = ajaxResult.data;
-        if(member != null){
-           console.log(member.id);
-           $('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-           $('.changeValue2').hide();
-           $('#mypage').show();
-           $('#mypage > a').html('HELLO ' + member.id);
-           $('#mypage > a').append('<span class="caret"></span>');
-        }
-     }).error(function(error) {
-        window.location.href='login.html';
-     });
-    
-    /* $.getJSON(contextRoot + "/cosmetic/ajax/qna.do", function(resultObj) {
-    	var ajaxResult = resultObj.ajaxResult;
-    	var data = ajaxResult.data;
-    	var member = data.member;
-		if(member != null){
-			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-			$('.changeValue2').hide();
-			$('#mypage').show();
-			$('#mypage > a').html('HELLO ' + member.id);
-			$('#mypage > a').append('<span class="caret"></span>');
-		}
-	}); */
-    
 });
 
+var qno = location.href.split("=")[1];
+console.dir(qno);
 
-// 글 등록하기
-var submit = $("#submit").on("click", function (resultObj) {	
-	// null 방지
+// 글 불러오기
+$.getJSON(contextRoot + "/cosmetic/ajax/detailQnA.do", {qno:qno}, function (resultObj) {
+	console.dir(resultObj);
+	var member = resultObj.member;
+	var detailQnA = resultObj.detailQnA;
+	
+	if(member != null){
+		$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+		$('.changeValue2').hide();
+		$('#mypage').show();
+		$('#mypage > a').html('HELLO ' + member.id);
+		$('#mypage > a').append('<span class="caret"></span>');
+	};
+	
+	$(".apart").val(detailQnA.qPart);
+	$(".apart").html(detailQnA.qPart);
+	$("#title").val(detailQnA.title);
+	$("#content").val(detailQnA.content);
+	console.dir($(".apart").val());
+})
+
+// 글 수정하기
+var update = $("#submit").on("click", function () {
+	var title = $("#title").val();
+	var content = $("#content").val();
+	var qpart = $("#apart").val();
+	// console.dir("넘겨줄 내용" + title +"/" + content + "/" + qpart);
+	
 	if($("#title").val().trim() == ""){
 		alert("제목을 입력하세요!");
 		$("#title").focus();
@@ -99,30 +98,20 @@ var submit = $("#submit").on("click", function (resultObj) {
 	}
 	if($("#content").val().trim() == ""){
 		alert("내용을 입력하세요!");
-		$("#content").focus();
+		$("#title").focus();
 		return false;
 	}
 	
-	var apart = $("#apart").val();
-	var title = $("#title").val();
-	var content = $("#content").val();
-	console.dir(apart + "/" + title + "/" + content);
-	
-	$.ajax({
-		url : contextRoot + "/cosmetic/ajax/registQnA.do",
-		type : "POST",
-		data : {title: title, content: content, qPart: apart},
-		dataType : "json",
-	})
-	.done(function (resultObj) {
-			alert("등록되었습니다!");
-			document.location.href = contextRoot + "/view/QnAList.html";
-	});
-});
+	$.post(contextRoot + "/cosmetic/ajax/updateQnA.do", 
+		   {title:title, content:content, qPart:qpart, qNo:qno}, function () {
+		alert("수정되었습니다!");
+		document.location.href = contextRoot + "/view/QnADetail.html?qno="+qno;
+	}, "json");
+})
 
 // cancle
 var cancle = $("#cancle").on("click", function () {
-	document.location.href = contextRoot + "/view/QnAList.html";
+	document.location.href = contextRoot + "/view/QnADetail.html?qno="+qno;
 });
 
 </script>

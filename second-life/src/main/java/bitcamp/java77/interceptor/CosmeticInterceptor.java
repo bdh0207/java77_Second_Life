@@ -11,9 +11,8 @@ public class CosmeticInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		
 		String requestPath = request.getRequestURI().toString();
-		System.out.println("요청URI : " + requestPath);
-		if(requestPath.equals("/second-life/cosmetic/ajax/mainReview.do")|| 
-				requestPath.equals("/second-life/cosmetic/ajax/mainHospital.do")||
+		System.out.println("요청URI : " + requestPath); //requestPath.equals("/second-life/cosmetic/ajax/mainReview.do")||
+		if(requestPath.equals("/second-life/cosmetic/ajax/mainHospital.do")||
 						requestPath.equals("/second-life/cosmetic/ajax/login.do")||
 						requestPath.equals("/second-life/cosmetic/ajax/idCheck.do")||
 						requestPath.equals("/second-life/cosmetic/ajax/join.do")||

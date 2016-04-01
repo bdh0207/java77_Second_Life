@@ -48,6 +48,7 @@
 <script src="../js/bootstrap.min.js"></script>
 <script src="../js/masonry-docs.min.js"></script>
 <script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> <!-- marsonry -->
+<script src="../js/bootstrap.min.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/bootstrap-dialog.js"></script>
 
@@ -91,7 +92,7 @@
 					div +=	'			<p lang="content-mylist">'+wish.memberId+'</p>                                   						';
 					div +=	'			<p class="text-center icon-mylist">                                         							';
 				    div +=      '     	   		<img src="../images/eye.png" width="15px" height="15px" />'+wish.viewCnt;
-				    div +=      '          	<img src="../images/heart.png" width="15px" height="15px" /> 22534      ';
+				    div +=      '          	<img src="../images/heart.png" width="15px" height="15px" />' +wish.recomCnt ;
 				    div +=      '          </p>                                                                       ';
 					div +=	'			<p class="text-center">                                                     ';
 					div +=	'				<a id="infoBtn" onclick="getInfo(' + wish.wishNo +','+wish.reviewNo+'); return false;" class="btn btn-warning">정보받기</a>                        ';

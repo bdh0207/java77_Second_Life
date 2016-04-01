@@ -18,6 +18,7 @@
  			var uid = $('#inputId').val();
  			
  			$.getJSON('http://localhost:3001/idCheck?uid='+uid+'&callback=?',function(resultObj){
+
  				if(resultObj.data == 0){
 					$('#idCheckText').css('color','green').text('사용 가능한 ID 입니다.');
 				} else{

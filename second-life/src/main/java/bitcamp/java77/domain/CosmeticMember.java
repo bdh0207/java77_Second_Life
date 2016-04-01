@@ -13,6 +13,7 @@ public class CosmeticMember implements Serializable {
 	protected String birth;		// int -> String
 	protected String tel;
 	protected char grade;		// 유저 구분 컬럼추가
+
 	protected Date regDate;
 	
 	public int getMemberNo() {
