@@ -136,7 +136,7 @@
  	</select>
  	
  	<select id="selectReviewWish" parameterType="int" resultMap="reviewWishMap">
- 		select a.wno as wishNo, a.rno as reviewNo, b.title as title, b.cont as content, b.vcnt as viewCnt, c.fil_path as filePath , b.mno as memberNo, d.id as memberId
+ 		select a.wno as wishNo, a.rno as reviewNo, b.title as title, b.cont as content, b.vcnt as viewCnt, c.fil_path as filePath , b.mno as memberNo, d.id as memberId, (select count(*) from review_recom where rno = a.rno) as recomCnt 
 		from wish a
 		inner join review b
 		on a.rno = b.rno
@@ -156,6 +156,7 @@
  		<result property="memberNo" column="memberNo"/>
  		<result property="memberId" column="memberId"/>
  		<result property="viewCnt" column="viewCnt" />
+ 		<result property="recomCnt" column="recomCnt" />
  		<collection property="reviewPhoto" column="filePath" resultMap="reviewPhotoMap" ofType="CosmeticReviewPhoto" javaType="ArrayList"></collection>
  	</resultMap>
  	
@@ -392,11 +393,6 @@
  		and mno = #{memberNo}
  	</delete>
  	
- 	<delete id="deleteSugeryInfo" parameterType="CosmeticWish">
- 		delete from surgery_info
- 		where wno = #{wishNo}
- 	</delete>
- 	
  	<delete id="deleteSugeryInfoByNo" parameterType="int">
  		delete from surgery_info
  		where wno = #{wishNo}
@@ -411,6 +407,11 @@
  	<delete id="deleteWishByNo" parameterType="int">
  		delete from wish
  		where rno = #{reviewNo}
+ 	</delete>
+ 	
+ 	<delete id="deleteSugeryInfo" parameterType="int">
+ 		delete from surgery_info
+ 		where sno = #{sugeryNo}
  	</delete>
  	
  	<!-- UPDATE 영역 -->

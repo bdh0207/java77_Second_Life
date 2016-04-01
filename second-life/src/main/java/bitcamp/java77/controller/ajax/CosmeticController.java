@@ -855,4 +855,15 @@ public class CosmeticController {
 		
 		return new AjaxResult("success", null);
 	}
+	
+	// 수술정보 삭제
+	@RequestMapping(value="deleteSugeryInfo", method=RequestMethod.GET)
+	public AjaxResult deleteSugeryInfo(int sugeryNo,HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+
+		cosmeticService.deleteSugeryInfo(sugeryNo);
+		
+		return new AjaxResult("success",null);
+	}
 }

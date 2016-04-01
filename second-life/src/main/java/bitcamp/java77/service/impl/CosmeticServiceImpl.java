@@ -41,6 +41,12 @@ public class CosmeticServiceImpl implements CosmeticService {
 	}
 
 	@Override
+	public void deleteSugeryInfo(int sugeryNo) throws Exception {
+		cosmeticDao.deleteSugeryInfo(sugeryNo);
+		
+	}
+
+	@Override
 	@Transactional
 	public CosmeticReview selectReviewListDetail(int reviewNo) throws Exception {
 		cosmeticDao.updateReviewViewCnt(reviewNo);
@@ -248,7 +254,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 	@Transactional
 	public void deleteWish(CosmeticWish wish) throws Exception {
 		// 테이블 관계 때문에 위시번호에 관련된 수술정보 삭제
-		cosmeticDao.deleteSugeryInfo(wish);
+		//cosmeticDao.deleteSugeryInfo(wish);
 		cosmeticDao.deleteWish(wish);
 	}
 	

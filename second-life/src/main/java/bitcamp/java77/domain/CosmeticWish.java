@@ -13,8 +13,15 @@ public class CosmeticWish implements Serializable {
 	protected String content;
 	protected int viewCnt;
 	protected Date regDate;
+	protected int recomCnt;
 	protected List<CosmeticReviewPhoto> reviewPhoto;
 	
+	public int getRecomCnt() {
+		return recomCnt;
+	}
+	public void setRecomCnt(int recomCnt) {
+		this.recomCnt = recomCnt;
+	}
 	public String getMemberId() {
 		return memberId;
 	}

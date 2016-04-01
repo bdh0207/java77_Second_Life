@@ -7,14 +7,17 @@
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" type="text/css" href="../css/reviewFormCss.css">
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
 
 <script src="../lib/jquery/jquery.js"></script>
 <script src="../lib/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
 <script src="../lib/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
 <script src="../lib/blueimp-file-upload/js/jquery.fileupload.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment-with-locales.min.js"></script>
+<script src="../lib/bootstrap/js/bootstrap.min.js"></script> <!-- Bootstrap.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.0.0/js/bootstrap-datetimepicker.min.js"></script>
 <script src="../js/common.js"></script>
+<script src="../js/bootstrap-dialog.js"></script>
 <title>Review</title>
 <style type="text/css">
 	.checkData{
@@ -59,7 +62,10 @@ $(document).ready(function() {
 		if(member != null){
 			console.log(member.id);
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-			$('.changeValue2').html('Hello '+member.id).removeAttr('onclick');
+			$('.changeValue2').hide();
+			$('#mypage').show();
+			$('#mypage > a').html('HELLO ' + member.id);
+			$('#mypage > a').append('<span class="caret"></span>');
 		}
 	}).error(function(error) {
 		window.location.href='login.html';
@@ -71,8 +77,8 @@ $(document).ready(function() {
 		 var review = reviewDetail.review;
 		// 로그인 헤더 처리
 		if(reviewDetail.member != null){
-			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-			$('.changeValue2').html('Hello '+ reviewDetail.member.id).removeAttr('onclick');
+// 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+// 			$('.changeValue2').html('Hello '+ reviewDetail.member.id).removeAttr('onclick');
 		}
 		
 		if(ajaxResult.status == 'success'){
@@ -119,12 +125,32 @@ $(document).ready(function() {
 				}
 			}
 		});
-	    
-	    
-	    
-	    
+	   
 	    // 다중 파일 업로드를 위하여 FormData 사용
 		var formData = new FormData();
+	    
+		if($('#title').val() == '' || $('#title').val() == null){
+	    	BootstrapDialog.alert('제목을 입력해주세요.');
+	    	$('#title').focus();
+			return ;
+	    }
+	    else if($('#content').val() == ''|| $('#content').val() == null){
+	    	BootstrapDialog.alert('내용을 입력해주세요.');
+	    	$('#content').focus();
+			return;	    	
+	    }
+	    else if(sPart == ''|| sPart == null){
+	    	BootstrapDialog.alert('수술부위를 체크해주세요.');
+			return;	    	
+	    }
+	    else if($('input[type="file"]')[0].files[0] == '' || $('input[type="file"]')[0].files[0] == null){
+	    	BootstrapDialog.alert('파일을 업로드 해주세요.');
+			return;
+		}
+	    else if($('input[type="file"]')[1].files[0] == ''||$('input[type="file"]')[1].files[0] == null){
+	    	BootstrapDialog.alert('파일을 업로드 해주세요.');
+			return;	    	
+	    }
 		
 		// 키 값 다르게 줘야한다. 만약 그러지 않으면 첫번째 파일밖에 안읽어옴...
 		formData.append('files1',$('input[type="file"]')[0].files[0]);

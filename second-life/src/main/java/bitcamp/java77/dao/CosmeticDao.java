@@ -69,4 +69,5 @@ public interface CosmeticDao {
 	void deleteWishByNo(int reviewNo);
 	List<CosmeticQnA> selectQnA(int mNo);
 	void insertQnA(CosmeticQnA cosmeticQnA);
+	void deleteSugeryInfo(int sugeryNo);
 }

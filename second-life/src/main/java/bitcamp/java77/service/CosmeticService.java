@@ -54,4 +54,5 @@ public interface CosmeticService {
 	public List<CosmeticSugeryInfo> selectSurgeryInfoByMemberNo(int memberNo) throws Exception;
 	public List<CosmeticQnA> qnaList(int mNo) throws Exception;
 	public void insertQnA(CosmeticQnA cosmeticQnA) throws Exception;
+	public void deleteSugeryInfo(int sugeryNo) throws Exception;
 }
