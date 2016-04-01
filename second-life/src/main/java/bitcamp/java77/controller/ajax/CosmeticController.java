@@ -101,7 +101,19 @@ public class CosmeticController {
 		CosmeticReview review = cosmeticService.selectSurgeryInfo(reviewNo);
 		return new AjaxResult("success", review);
 	}
-	
+	/*
+	// QnA 로그인 세션
+	@RequestMapping(value="qna")
+	public AjaxResult qna(HttpServletRequest req) throws Exception {
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		HashMap<String, Object> resultMap = new HashMap<>();
+		resultMap.put("member", member);
+		
+		return new AjaxResult("member", resultMap);
+	}
+	*/
 	// QnA 수정
 	@RequestMapping(value="updateQnA", method=RequestMethod.POST)
 	public AjaxResult updateQnA(CosmeticQnA qna, HttpServletRequest req) throws Exception{

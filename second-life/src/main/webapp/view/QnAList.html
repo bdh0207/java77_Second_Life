@@ -38,14 +38,14 @@ $(document).ready(function() {
 	// List 데이터 불러오기
 	$.getJSON(contextRoot + "/cosmetic/ajax/listQnA.do", function (resultObj) {
 		var member = resultObj.member;
-		
+
 		if(member != null){
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
 			$('.changeValue2').hide();
 			$('#mypage').show();
 			$('#mypage > a').html('HELLO ' + member.id);
 			$('#mypage > a').append('<span class="caret"></span>');
-		} 
+		}
 	
 		for(var list of resultObj.qnaList) {
 			// 날짜 변환

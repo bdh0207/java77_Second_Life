@@ -15,7 +15,8 @@
 <!-- 내용 -->
 <div class="bodyContent" style="margin-top: 70px;">
 <h2 style="color: #cf2d39;">QnA</h2>
-	<div align="right" style="margin-bottom: 5px;"><span class="qnaPart"></span></div>
+	<span class="no" style="font-size: 8pt;"></span>
+	<div align="right" style=" float: right; margin-bottom: 5px;"><span class="qnaPart"></span></div>
 	<table style="width: 100%; margin-top: 3px;">
 		<tr>
 			<td class="tablePadding" colspan="2">
@@ -74,6 +75,7 @@ $.getJSON(contextRoot + "/cosmetic/ajax/detailQnA.do?qno="+qno, function(resultO
 	var minutes = formattedDate.getMinutes();
 	var regDate = years + '.' + months +'.'+ days + ' ' + hours + ':' + minutes;
 	
+	$(".no").html(detailQnA.qNo + "번 게시물");
 	$(".qnaPart").html(detailQnA.qPart);
 	$(".title").html(detailQnA.title);
 	$(".name").html(member.name + " ");

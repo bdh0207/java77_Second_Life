@@ -57,10 +57,40 @@
 // 해더
 $(document).ready(function() {
     $('#top').load('top.html');
+    
+    $.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+        var ajaxResult = resultObj.ajaxResult;
+        var member = ajaxResult.data;
+        if(member != null){
+           console.log(member.id);
+           $('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+           $('.changeValue2').hide();
+           $('#mypage').show();
+           $('#mypage > a').html('HELLO ' + member.id);
+           $('#mypage > a').append('<span class="caret"></span>');
+        }
+     }).error(function(error) {
+        window.location.href='login.html';
+     });
+    
+    /* $.getJSON(contextRoot + "/cosmetic/ajax/qna.do", function(resultObj) {
+    	var ajaxResult = resultObj.ajaxResult;
+    	var data = ajaxResult.data;
+    	var member = data.member;
+		if(member != null){
+			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+			$('.changeValue2').hide();
+			$('#mypage').show();
+			$('#mypage > a').html('HELLO ' + member.id);
+			$('#mypage > a').append('<span class="caret"></span>');
+		}
+	}); */
+    
 });
 
+
 // 글 등록하기
-var submit = $("#submit").on("click", function () {
+var submit = $("#submit").on("click", function (resultObj) {	
 	// null 방지
 	if($("#title").val().trim() == ""){
 		alert("제목을 입력하세요!");
@@ -85,11 +115,8 @@ var submit = $("#submit").on("click", function () {
 		dataType : "json",
 	})
 	.done(function (resultObj) {
-		var result = resultObj.ajaxResult;
-		if(result.status == "success"){
-			alert("글 등록됨");
-			/* document.location.href = contextRoot + "/view/QnAList.html" */
-		}
+			alert("등록되었습니다!");
+			document.location.href = contextRoot + "/view/QnAList.html";
 	});
 });
 
