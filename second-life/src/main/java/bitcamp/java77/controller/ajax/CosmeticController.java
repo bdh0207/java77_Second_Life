@@ -129,8 +129,8 @@ public class CosmeticController {
 		System.out.println("회원번호" + member.getMemberNo());
 		
 		// QnA 목록
-		List<CosmeticQnA> QnAList = cosmeticService.selectQnA(mNo);
-		return new AjaxResult("success", QnAList);
+		List<CosmeticQnA> qnaList = cosmeticService.selectQnA(mNo);
+		return new AjaxResult("success", qnaList);
 	}
 	
 	// 상담신청서 발송

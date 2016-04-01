@@ -166,6 +166,21 @@
 	$(document).ready(function() {
 	    $('#top').load('top.html');
 	    
+	    $.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+			var ajaxResult = resultObj.ajaxResult;
+			var member = ajaxResult.data;
+			if(member != null){
+				console.log(member.id);
+				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+				$('.changeValue2').hide();
+				$('#mypage').show();
+				$('#mypage > a').html('HELLO ' + member.id);
+				$('#mypage > a').append('<span class="caret"></span>');
+			}
+		}).error(function(error) {
+			window.location.href='login.html';
+		});
+	    
 	    $.getJSON(contextRoot + "/cosmetic/ajax/selectMemInfo.do", function(resultObj) {
 			var member = resultObj.ajaxResult.data;
 			var d	   = new Date();
