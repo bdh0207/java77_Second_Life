@@ -79,6 +79,20 @@
 		values(#{mNo}, #{title}, #{content}, #{qPart},now());
  	</insert>
  	
+ 	<insert id="insertCounsel" parameterType="CosmeticCounsel" keyProperty="counselNo">
+ 		insert into counsel(hno, mno, name, age, spart, tel, cont, gno, reg_date)
+		values(#{hospitalNo}, #{memberNo}, #{name}, #{age}, #{surgeryPart}, #{tel}, #{content}, 0, now());
+ 		<selectKey keyProperty="counselNo" order="AFTER" resultType="int">
+ 			select max(cno) from counsel
+ 		</selectKey>
+ 	</insert>
+ 	
+ 	<insert id="insertCounselPhoto" parameterType="CosmeticCounselPhoto">
+ 		insert into counsel_phot(cno, fil_path)
+		values(#{counselNo}, #{filePath});
+ 	</insert>
+ 	
+ 	
  	<!-- SELECT 영역 -->
  	<select id="searchID" parameterType="string" resultType="int">
 		select count(*)
@@ -363,6 +377,13 @@
  		where rno = #{reviewNo}
  		and mno = #{memberNo}
  	</select>
+ 	
+ 	<select id="selectCounselPhoto" parameterType="int" resultType="CosmeticCounselPhoto">
+ 		select cpno as conselPhotoNo, fil_path as filePath
+ 		from counsel_phot
+ 		where cno = #{counselNo}
+ 	</select>
+ 	
  	
  	<!-- DELETE 영역 -->
  	<delete id="deleteReviewPhoto" parameterType="int">

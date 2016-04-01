@@ -2,6 +2,8 @@ package bitcamp.java77.dao;
 
 import java.util.List;
 
+import bitcamp.java77.domain.CosmeticCounsel;
+import bitcamp.java77.domain.CosmeticCounselPhoto;
 import bitcamp.java77.domain.CosmeticEvent;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
@@ -69,4 +71,7 @@ public interface CosmeticDao {
 	void deleteWishByNo(int reviewNo);
 	List<CosmeticQnA> selectQnA(int mNo);
 	void insertQnA(CosmeticQnA cosmeticQnA);
+	void insertCounsel(CosmeticCounsel cosmeticCounsel);
+	void insertCounselPhoto(CosmeticCounselPhoto cosmeticCounselPhoto);
+	List<CosmeticCounselPhoto> selectCounselPhoto(int counselNo);
 }

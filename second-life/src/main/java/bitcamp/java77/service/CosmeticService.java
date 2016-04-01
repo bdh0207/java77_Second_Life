@@ -3,6 +3,9 @@ package bitcamp.java77.service;
 import java.util.HashMap;
 import java.util.List;
 
+import bitcamp.java77.domain.AjaxResult;
+import bitcamp.java77.domain.CosmeticCounsel;
+import bitcamp.java77.domain.CosmeticCounselPhoto;
 import bitcamp.java77.domain.CosmeticEvent;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
@@ -54,4 +57,7 @@ public interface CosmeticService {
 	public List<CosmeticSugeryInfo> selectSurgeryInfoByMemberNo(int memberNo) throws Exception;
 	public List<CosmeticQnA> qnaList(int mNo) throws Exception;
 	public void insertQnA(CosmeticQnA cosmeticQnA) throws Exception;
+	public void insertCounsel(CosmeticCounsel cosmeticCounsel) throws Exception;
+	public void insertCounselPhoto(CosmeticCounselPhoto cosmeticCounselPhoto) throws Exception;
+	public List<CosmeticCounselPhoto> selectCounselPhoto(int counselNo) throws Exception;
 }

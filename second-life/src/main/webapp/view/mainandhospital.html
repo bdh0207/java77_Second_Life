@@ -52,7 +52,7 @@
 					$('#mypage').show();
 					$('#mypage > a').html('HELLO ' + member.id);
 					$('#mypage > a').append('<span class="caret"></span>');
-				}
+				} 
 				
 				var imgObj = new Image();
 				var num    = 0;
@@ -72,7 +72,7 @@
 					
 					var div  = '<div class="item">';
 						div += '<figure>';
-						div += '		<div id="thumbDiv' + num + '" style="width: 250px;"><a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" id="thumbnail" onclick="viewCntAdd(' + list.eventNo + ',this)" /></a></div> ';
+						div += '		<div id="thumbDiv" style="width: 250px;"><a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" id="thumbnail" onclick="viewCntAdd(' + list.eventNo + ',this)" /></a></div> ';
 						div += '		<figcaption>                                                                              ';
 						div += '			<div class="hReview">                                                                 ';
 						div += '				<a onclick="getHospitalNo('+list.hospitalNo+')" data-toggle="modal" data-target="#myModal" href="#myModal">                    ';
@@ -116,7 +116,7 @@
 							
 							var div  = '<div class="item">';
 								div += '<figure>';
-								div += '		<a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" class="viewCntAdd"/></a> ';
+								div += '		<div id="thumbDiv" style="width: 250px;"><a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" id="thumbnail" onclick="viewCntAdd(' + list.eventNo + ',this)" /></a></div> ';
 								div += '		<figcaption>                                                                              ';
 								div += '			<div class="hReview">                                                                 ';
 								div += '				<a data-toggle="modal" data-target="#myModal" href="#myModal">                    ';
