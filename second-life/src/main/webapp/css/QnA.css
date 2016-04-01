@@ -46,13 +46,13 @@
 	padding-right: 12px;
 } */
 
-#white:hover, #list:hover, #submit:hover{
+#write:hover, #list:hover, #submit:hover{
 	background-color: white;
 	border-color: #cf2d39;
 	color: #cf2d39; 
 }
 
-#cancle:hover{
+#cancle:hover, #delete:hover, #modify:hover{
 	background-color: white;
 	border-color: #333333;
 	color: #333333; 

@@ -248,6 +248,7 @@ $('.flexslider').flexslider({
  });
  
 //조회수 증가
+<<<<<<< HEAD
 function viewCntAdd(eventNo, targer) {
 	$.getJSON(contextRoot + '/cosmetic/ajax/viewCntAdd.do', { eventNo : eventNo }, function(resultObj) {
 		var viewCnt = resultObj.ajaxResult.data;
@@ -256,6 +257,12 @@ function viewCntAdd(eventNo, targer) {
 		alert(imgObj.src);
 		$("#viewCnt"+eventNo).html(viewCnt);
 		alert(imgObj.naturalHeight);
+=======
+function viewCntAdd(eventNo) {
+	$.getJSON(contextRoot + '/cosmetic/ajax/viewCntAdd.do', { eventNo : eventNo }, function(resultObj) {
+		var viewCnt = resultObj.ajaxResult.data;
+		$("#viewCnt"+eventNo).html(viewCnt);
+>>>>>>> Chorong-Development
 	});
 }
 

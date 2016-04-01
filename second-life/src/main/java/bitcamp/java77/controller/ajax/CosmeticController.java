@@ -61,7 +61,6 @@ import bitcamp.java77.util.MultipartHelper;
 @RequestMapping("/cosmetic/ajax/*")
 public class CosmeticController {
 	
-	
 	@Autowired
 	CosmeticService cosmeticService;
 	@Autowired
@@ -94,7 +93,6 @@ public class CosmeticController {
 		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
 
 		member = cosmeticService.selectMember(member);
-		
 		return new AjaxResult("success", member);
 	}
 	
@@ -103,7 +101,50 @@ public class CosmeticController {
 		CosmeticReview review = cosmeticService.selectSurgeryInfo(reviewNo);
 		return new AjaxResult("success", review);
 	}
-
+	/*
+	// QnA 로그인 세션
+	@RequestMapping(value="qna")
+	public AjaxResult qna(HttpServletRequest req) throws Exception {
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		HashMap<String, Object> resultMap = new HashMap<>();
+		resultMap.put("member", member);
+		
+		return new AjaxResult("member", resultMap);
+	}
+	*/
+	// QnA 수정
+	@RequestMapping(value="updateQnA", method=RequestMethod.POST)
+	public AjaxResult updateQnA(CosmeticQnA qna, HttpServletRequest req) throws Exception{
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		// 수정하기
+		cosmeticService.updateQnA(qna);
+		return new AjaxResult("success", member);
+	}
+	
+	// QnA 상세보기
+	@RequestMapping(value="detailQnA", method=RequestMethod.GET)
+	public Object detailQnA(int qno, HttpServletRequest req) throws Exception{
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		// 상세보기 불러오기
+		CosmeticQnA detailQnA = cosmeticService.detailQnA(qno);
+		HashMap<String, Object> resultMap = new HashMap<>();
+		System.out.println(detailQnA);
+		
+		resultMap.put("detailQnA", detailQnA);
+		resultMap.put("member", member);
+		
+		return resultMap;
+	}
+	
+	// QnA 글등록
 	@RequestMapping(value="registQnA", method=RequestMethod.POST)
 	public AjaxResult QnARegist(CosmeticQnA qna, HttpServletRequest req) throws Exception {
 		// 로그인 세션
@@ -111,25 +152,34 @@ public class CosmeticController {
 		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
 		int mNo = member.getMemberNo();
 		qna.setmNo(mNo);
-		System.out.println("회원번호" + member.getMemberNo());
-		System.out.println("데이터 : " + qna.getmNo() + "/" + qna.getqPart() + "/" + qna.getTitle() + "/" + qna.getContent());
+		// System.out.println("회원번호" + member.getMemberNo());
+		// System.out.println("데이터 : " + qna.getmNo() + "/" + qna.getqPart() + "/" + qna.getTitle() + "/" + qna.getContent());
 		
-		// QnA 글등록
 		cosmeticService.insertQnA(qna);
 		return new AjaxResult("success", null);
 	}
 	
+	// QnA 목록
 	@RequestMapping(value="listQnA", method=RequestMethod.GET)
-	public AjaxResult QnAList(HttpServletRequest req) throws Exception {
+	public Object listQnA(HttpServletRequest req) throws Exception {
 		// 로그인 세션
 		HttpSession session = req.getSession();
-		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
-		int mNo = member.getMemberNo();
-		System.out.println("회원번호" + member.getMemberNo());
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+ 
+		List<CosmeticQnA> qnaList = cosmeticService.selectQnA(member.getMemberNo());
+		HashMap<String, Object> resultMap = new HashMap<>();
 		
-		// QnA 목록
-		List<CosmeticQnA> QnAList = cosmeticService.qnaList(mNo);
-		return new AjaxResult("success", QnAList);
+		resultMap.put("qnaList", qnaList);
+		resultMap.put("member", member);
+		
+		return resultMap;
+	}
+	
+	// QnA 삭제
+	@RequestMapping(value="deleteQnA", method=RequestMethod.GET)
+	public AjaxResult deleteQnA(int qno, HttpServletRequest req) throws Exception{
+		cosmeticService.deleteQnA(qno);
+		return new AjaxResult("success", null);
 	}
 	
 //	@RequestMapping(value="selectMemInfo", method=RequestMethod.GET)
@@ -798,6 +848,31 @@ public class CosmeticController {
 		return new AjaxResult("success",null);
 	}
 	
+	@RequestMapping(value="searchSurgeryInfo",method=RequestMethod.GET)
+	public Object searchSurgeryInfo(HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		int memberNo = member.getMemberNo();
+		HashMap<String, Object> resultMap = new HashMap<>();
+		List<CosmeticSugeryInfo> info =cosmeticService.selectSurgeryInfoByMemberNo(memberNo);
+		
+		resultMap.put("info", info);
+		return resultMap;
+	}
+	
+	
+	// 수술정보 삭제
+	@RequestMapping(value="deleteSugeryInfo", method=RequestMethod.GET)
+	public AjaxResult deleteSugeryInfo(int sugeryNo,HttpServletRequest req) throws Exception{
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+
+		cosmeticService.deleteSugeryInfo(sugeryNo);
+		
+		return new AjaxResult("success",null);
+	}
+	
 	// 정렬 키워드
 	@RequestMapping(value="setWordType",method=RequestMethod.GET)
 	public AjaxResult setWordType(String wordType) throws Exception{
@@ -814,24 +889,10 @@ public class CosmeticController {
 		return new AjaxResult("success", viewCnt);
 	}
 	
-	@RequestMapping(value="searchSurgeryInfo",method=RequestMethod.GET)
-	public Object searchSurgeryInfo(HttpServletRequest req) throws Exception{
-		HttpSession session = req.getSession();
-		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
-		
-		int memberNo = member.getMemberNo();
-		HashMap<String, Object> resultMap = new HashMap<>();
-		List<CosmeticSugeryInfo> info =cosmeticService.selectSurgeryInfoByMemberNo(memberNo);
-		
-		resultMap.put("info", info);
-		return resultMap;
-	}
 	// 병원 등록
 	@RequestMapping(value="hospitalAdd",method=RequestMethod.POST)
-	public AjaxResult hospitalAdd(CosmeticHospital cosmeticHospital) throws Exception {
+	public void hospitalAdd(CosmeticHospital cosmeticHospital) throws Exception {
 		cosmeticService.insertHospital(cosmeticHospital);
-		
-		return new AjaxResult("success", null);
 	}
 	
 	// 이벤트 등록
@@ -854,16 +915,5 @@ public class CosmeticController {
 		cosmeticService.insertEvent(event);
 		
 		return new AjaxResult("success", null);
-	}
-	
-	// 수술정보 삭제
-	@RequestMapping(value="deleteSugeryInfo", method=RequestMethod.GET)
-	public AjaxResult deleteSugeryInfo(int sugeryNo,HttpServletRequest req) throws Exception{
-		HttpSession session = req.getSession();
-		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
-
-		cosmeticService.deleteSugeryInfo(sugeryNo);
-		
-		return new AjaxResult("success",null);
 	}
 }

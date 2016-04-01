@@ -70,4 +70,7 @@ public interface CosmeticDao {
 	List<CosmeticQnA> selectQnA(int mNo);
 	void insertQnA(CosmeticQnA cosmeticQnA);
 	void deleteSugeryInfo(int sugeryNo);
+	CosmeticQnA selectQnAByNo(int qno);
+	void deleteQnA(int qno);
+	void updateQnA(CosmeticQnA cosmeticQnA);
 }

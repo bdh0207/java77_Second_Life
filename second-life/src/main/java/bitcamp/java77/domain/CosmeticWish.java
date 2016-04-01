@@ -22,6 +22,7 @@ public class CosmeticWish implements Serializable {
 	public void setRecomCnt(int recomCnt) {
 		this.recomCnt = recomCnt;
 	}
+
 	public String getMemberId() {
 		return memberId;
 	}

@@ -15,7 +15,6 @@
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap-dialog.js"></script>
 <!-- <script type="text/javascript" src="../js/bootstrap.min.js"></script> -->
-
 <script src="http://googledrive.com/host/0B-QKv6rUoIcGREtrRTljTlQ3OTg"></script>
 <script src="http://googledrive.com/host/0B-QKv6rUoIcGeHd6VV9JczlHUjg"></script>
 
@@ -33,7 +32,7 @@ $(document).ready(function() {
 			$('.changeValue2').hide();
 			$('#mypage').show();
 			$('#mypage > a').html('HELLO ' + member.id);
-			$('#mypage > a').append('<span class="caret"></span>');
+			$('#mypage > a').append('<span class="caret"></span>');\
 		} 
 	}).error(function(error) {
 		window.location.href='login.html';
@@ -93,6 +92,7 @@ $(document).ready(function() {
 	
 	// 병원등록
 	$("#registerHospital").click(function() {
+<<<<<<< HEAD
 		$("input[name=addr]").val($("input[name=postcode]").val()+" "+$("input[name=addr1]").val()+" "+$("input[name=addr2]").val());
 		
 		 $("#hospitalForm").ajaxSubmit({
@@ -121,6 +121,20 @@ $(document).ready(function() {
 		}, "json");
 	});
 	
+=======
+		 $("#hospitalForm").ajaxSubmit({
+				type : "POST",
+				url : contextRoot + "/cosmetic/ajax/hospitalAdd.do",
+				dataType : "json",
+				success : function(resultObj) {
+					alert('병원이 등록되었습니다');
+					location.href = 'eventForm.html';
+				}
+	     });	
+	});
+	
+	
+>>>>>>> Chorong-Development
 	$("#choice").click(function() {
 		$("#hospitalName").val($(this).html());
 	});
@@ -156,6 +170,7 @@ $(document).ready(function() {
 					photoURL : $("input[name=photoURL]").val(),
 					pageURL : $("input[name=pageURL]").val()
 				}, function(resultObj) {
+<<<<<<< HEAD
 					if(resultObj.ajaxResult.status == 'success') {
 						BootstrapDialog.show({
 						    title: 'Success',
@@ -173,6 +188,10 @@ $(document).ready(function() {
 						    }]
 						});
 					}
+=======
+					alert("이벤트가 등록되었습니다.");
+					location.href = 'mainandhospital.html';
+>>>>>>> Chorong-Development
 			});
 
 		}
@@ -350,7 +369,10 @@ td 	 	 { vertical-align: middle !important; line-height: 1 !important; }
 										</div>
 									</div>
 								</div>
+<<<<<<< HEAD
 								<input type="hidden" name="addr">
+=======
+>>>>>>> Chorong-Development
 								<div class="form-group">
 									<div class="col-lg-5 col-lg-offset-2">
 										<input type="text" class="form-control" name="addr1" id="sample4_roadAddress" placeholder="기본주소">
@@ -365,6 +387,10 @@ td 	 	 { vertical-align: middle !important; line-height: 1 !important; }
 										<input type="text" class="form-control" name="tel">
 									</div>
 								</div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> Chorong-Development
 								<div class="form-group">
 									<label for="inputPassword" class="col-lg-2 control-label">* E-mail</label>
 									<div class="col-lg-10">
