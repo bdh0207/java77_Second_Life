@@ -126,7 +126,6 @@
  	<!-- 병원 정보 select -->
  	<select id="selectHospital" resultMap="hospitalInfoListMap">
  		select HNO, NAME, SPART, CONT, ADDR, TEL, LINK, REG_DATE, email
-<<<<<<< HEAD
  		  from HOSPITAL
  		 order by name
  	</select>
@@ -145,7 +144,6 @@
  	
  	<select id="selectReviewWish" parameterType="int" resultMap="reviewWishMap">
  		select a.wno as wishNo, a.rno as reviewNo, b.title as title, b.cont as content, b.vcnt as viewCnt, c.fil_path as filePath , b.mno as memberNo, d.id as memberId, (select count(*) from review_recom where rno = a.rno) as recomCnt 
-=======
  		  from HOSPITAL
  		 order by name
  	</select>
@@ -164,7 +162,6 @@
  	
  	<select id="selectReviewWish" parameterType="int" resultMap="reviewWishMap">
  		select a.wno as wishNo, a.rno as reviewNo, b.title as title, b.cont as content, b.vcnt as viewCnt, c.fil_path as filePath , b.mno as memberNo, d.id as memberId
->>>>>>> Chorong-Development
 		from wish a
 		inner join review b
 		on a.rno = b.rno
@@ -184,10 +181,7 @@
  		<result property="memberNo" column="memberNo"/>
  		<result property="memberId" column="memberId"/>
  		<result property="viewCnt" column="viewCnt" />
-<<<<<<< HEAD
  		<result property="recomCnt" column="recomCnt" />
-=======
->>>>>>> Chorong-Development
  		<collection property="reviewPhoto" column="filePath" resultMap="reviewPhotoMap" ofType="CosmeticReviewPhoto" javaType="ArrayList"></collection>
  	</resultMap>
  	
@@ -247,10 +241,7 @@
  	<select id="selectEventList" parameterType="CosmeticSearch" resultType="CosmeticEvent">
  		select eno as eventNo, hno as hospitalNo, title, vcnt as viewCnt, reg_date as regDate, p_url as photoURL, hname as hospitalName, h_url as pageURL
 		  from event 
-<<<<<<< HEAD
 		 order by reg_date desc
-=======
->>>>>>> Chorong-Development
 		 limit #{start}, 6
  	</select>
  	
@@ -261,7 +252,6 @@
  	
  	<!-- 페이징하기 위한 searchVO로 조회 -->
  	<select id="selectReviewComment" parameterType="CosmeticSearch" resultMap="reviewCommentMap">
-<<<<<<< HEAD
  		select a.CMNO as commentNo, b.id as id, a.RNO as reviewNo,a.MNO as memberNo, a.CONT as content,a.REG_DATE as regDate
 		from comment a
 		inner join member b
@@ -273,8 +263,6 @@
  	
  	<!-- 리뷰번호로 댓글조회 -->
  	<select id="selectReviewCommentByReviewNo" parameterType="CosmeticSearch" resultMap="reviewCommentMap">
-=======
->>>>>>> Chorong-Development
  		select a.CMNO as commentNo, b.id as id, a.RNO as reviewNo,a.MNO as memberNo, a.CONT as content,a.REG_DATE as regDate
 		from comment a
 		inner join member b
@@ -282,20 +270,6 @@
 		where rno = #{reviewNo}
 		order by a.reg_date desc
 		limit #{start},5
-<<<<<<< HEAD
-=======
- 	</select>
- 	
- 	<!-- 리뷰번호로 댓글조회 -->
- 	<select id="selectReviewCommentByReviewNo" parameterType="CosmeticSearch" resultMap="reviewCommentMap">
- 		select a.CMNO as commentNo, b.id as id, a.RNO as reviewNo,a.MNO as memberNo, a.CONT as content,a.REG_DATE as regDate
-		from comment a
-		inner join member b
-		on a.mno = b.mno
-		where rno = #{reviewNo}
-		order by a.reg_date desc
-		limit #{start},5
->>>>>>> Chorong-Development
  	</select>
  	
  	<resultMap id="reviewCommentMap" type="CosmeticReviewComment">
@@ -324,11 +298,7 @@
  	</select>
  	
  	<select id="selectMember" parameterType="cosmeticMember" resultType="CosmeticMember">
-<<<<<<< HEAD
  		select mno as memberNo,id,pwd,name,email,gender,birth,tel,grade, reg_date as regDate
-=======
- 		select mno as memberNo,id,pwd,name,email,gender,birth,posno,addr_def as addrDef, addr_det as addrDet, tel, cPart, rec_email as recEmail, cont as content, reg_date as regDate
->>>>>>> Chorong-Development
  		from member
 		where id = #{id}
 		and pwd = #{pwd}
@@ -386,17 +356,14 @@
  		  from review
  		 where rno = #{reviewNo} 
  	</select>
- 	
-<<<<<<< HEAD
+
  	<select id="selectSurgeryInfoByMemberNo" parameterType="int" resultType="CosmeticSugeryInfo">
  		select b.sno as sugeryNo, b.wno as wishNo, b.hos_name as hospitalName, b.doc_name as doctorName, b.sway as sugeryWay, b.sprice as sugeryPrice, b.spart as sugeryPart, b.sdate as sugeryDate from wish a
 		inner join surgery_info b
 		on a.wno = b.wno
 		where a.mno = #{memberNo}
  	</select>
- 	
-=======
->>>>>>> Chorong-Development
+
  	<select id="selectEventViewCnt" parameterType="int" resultType="int">
  		select vcnt as viewCnt
  		  from event
@@ -409,7 +376,6 @@
  		 where eno = #{eventNo}
  		   and mno = #{memberNo} 
  	</select>
-<<<<<<< HEAD
  	<!-- 찜번호 채번을 위한 쿼리 -->
  	<select id="selectWishGetNo" parameterType="int" resultType="String">
  		select wno
@@ -423,9 +389,6 @@
  		where rno = #{reviewNo}
  		and mno = #{memberNo}
  	</select>
-=======
- 	
->>>>>>> Chorong-Development
  	
  	<!-- DELETE 영역 -->
  	<delete id="deleteQnA" parameterType="int">
@@ -444,14 +407,11 @@
  		and mno = #{memberNo}
  	</delete>
  	
-<<<<<<< HEAD
  	<delete id="deleteReviewRecom" parameterType="CosmeticReview">
  		delete from review_recom
  		where rno = #{reviewNo}
  	</delete>
  	
-=======
->>>>>>> Chorong-Development
  	<delete id="deleteReviewCommentByReviewNo" parameterType="int">
  		delete from comment
  		where rno = #{reviewNo}
@@ -463,11 +423,7 @@
  		and mno = #{memberNo}
  	</delete>
  	
-<<<<<<< HEAD
  	<delete id="deleteSugeryInfoByNo" parameterType="int">
-=======
- 	<delete id="deleteSugeryInfo" parameterType="CosmeticWish">
->>>>>>> Chorong-Development
  		delete from surgery_info
  		where wno = #{wishNo}
  	</delete>
@@ -477,7 +433,6 @@
  		where wno = #{wishNo}
  		and mno = #{memberNo}
  	</delete>
-<<<<<<< HEAD
  	
  	<delete id="deleteWishByNo" parameterType="int">
  		delete from wish
@@ -488,9 +443,7 @@
  		delete from surgery_info
  		where sno = #{sugeryNo}
  	</delete>
-=======
->>>>>>> Chorong-Development
- 	
+
  	<!-- UPDATE 영역 -->
  	<update id="updateQnA" parameterType="cosmeticQnA">
  		update q_a
