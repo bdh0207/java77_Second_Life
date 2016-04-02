@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import bitcamp.java77.dao.CosmeticDao;
+import bitcamp.java77.domain.AjaxResult;
+import bitcamp.java77.domain.CosmeticCounsel;
+import bitcamp.java77.domain.CosmeticCounselPhoto;
 import bitcamp.java77.domain.CosmeticEvent;
 import bitcamp.java77.domain.CosmeticHospital;
 import bitcamp.java77.domain.CosmeticMember;
@@ -336,10 +339,22 @@ public class CosmeticServiceImpl implements CosmeticService {
 
 	@Override
 	@Transactional
+	public void insertCounsel(CosmeticCounsel cosmeticCounsel) throws Exception {
+		cosmeticDao.insertCounsel(cosmeticCounsel);
+	}
+	
+	@Override
+	@Transactional
 	public CosmeticQnA detailQnA(int qno) throws Exception {
 		return cosmeticDao.selectQnAByNo(qno);
 	}
 
+	@Override
+	@Transactional
+	public void insertCounselPhoto(CosmeticCounselPhoto cosmeticCounselPhoto) throws Exception {
+		cosmeticDao.insertCounselPhoto(cosmeticCounselPhoto);
+	}
+	
 	@Override
 	@Transactional
 	public void deleteQnA(int qno) throws Exception {
@@ -348,9 +363,13 @@ public class CosmeticServiceImpl implements CosmeticService {
 
 	@Override
 	@Transactional
-	public void updateQnA(CosmeticQnA cosmeticQnA) throws Exception {
-		cosmeticDao.updateQnA(cosmeticQnA);
-		
+	public List<CosmeticCounselPhoto> selectCounselPhoto(int counselNo) throws Exception {
+		return cosmeticDao.selectCounselPhoto(counselNo);
 	}
 
+	@Override
+	@Transactional
+	public void updateQnA(CosmeticQnA cosmeticQnA) throws Exception {
+		cosmeticDao.updateQnA(cosmeticQnA);
+	}
 }
