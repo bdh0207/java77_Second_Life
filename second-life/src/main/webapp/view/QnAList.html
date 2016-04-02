@@ -5,7 +5,9 @@
 <title>QnAList</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
     <link rel="stylesheet" type="text/css" href="../css/QnA.css">
+    
 	<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
     <script src="../js/common.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
@@ -35,17 +37,25 @@
 $(document).ready(function() {
     $('#top').load('top.html');
 
+    // id check
+    $.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+        var ajaxResult = resultObj.ajaxResult;
+        var member = ajaxResult.data;
+        if(member != null){
+           console.log(member.id);
+           $('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+           $('.changeValue2').hide();
+           $('#mypage').show();
+           $('#mypage > a').html('HELLO ' + member.id);
+           $('#mypage > a').append('<span class="caret"></span>');
+        }
+     }).error(function(error) {
+        window.location.href='login.html';
+     });
+    
 	// List 데이터 불러오기
 	$.getJSON(contextRoot + "/cosmetic/ajax/listQnA.do", function (resultObj) {
 		var member = resultObj.member;
-
-		if(member != null){
-			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-			$('.changeValue2').hide();
-			$('#mypage').show();
-			$('#mypage > a').html('HELLO ' + member.id);
-			$('#mypage > a').append('<span class="caret"></span>');
-		}
 	
 		for(var list of resultObj.qnaList) {
 			// 날짜 변환
