@@ -153,3 +153,8 @@ label { margin-left: 5px; }
 	border-width: 0px;
 	
 }
+.partData{
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}

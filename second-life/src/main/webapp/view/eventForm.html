@@ -92,7 +92,7 @@ $(document).ready(function() {
 	
 	// 병원등록
 	$("#registerHospital").click(function() {
-		$("input[name=addr]").val($("input[name=postcode]").val()+" "+$("input[name=addr1]").val()+" "+$("input[name=addr2]").val());
+		$("input[name=addr]").val($("input[name=addr1]").val()+" "+$("input[name=addr2]").val());
 		
 		 $("#hospitalForm").ajaxSubmit({
 			type : "POST",

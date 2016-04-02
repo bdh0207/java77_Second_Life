@@ -255,7 +255,6 @@ var hospitalArr = [];
 	// DB에서 주소값 불러내기
 	var hospitalInfo = function hospitalInfo() {
 		$.getJSON(contextRoot + "/cosmetic/ajax/hospitalInfo.do", function(resultObj) {
-			console.log("만세!!!!");
 			var ajaxReuslt = resultObj.ajaxResult;
 			var data = ajaxReuslt.data;
 			console.log(data);
@@ -321,7 +320,7 @@ var hospitalArr = [];
 		    	'        <div class="body">' + 
 		    	'            <div class="desc">' + 
 		    	'                <div class="ellipsis">'+data.addr+'</div>' + 
-		    	'                <div class="jibun ellipsis">' + data.surgeryPart +
+		    	'                <div class="jibun ellipsis">' + data.surgeryPart + '</div>' +
 		    	'                <div style="float: left;"><a href="'+ data.link +'" target="_blank" class="link">홈페이지</a></div>' +
 		    	'                <div style="margin-left: 60px;" class="addBtnBox" onclick="addList('+idx+')">상담신청</div>' + 
 		    	'            </div>' + 
@@ -350,9 +349,8 @@ var hospitalArr = [];
 								  '<div class="X">Close</div>' +
 								  '<div class="listText ">' + '<div class="bFont" style="font-size: 11pt;">' + hospitalArr[idx].name + '<hr class="listHr"/></div>' +
 								  '<span class="bFont">' + '주소' + '</span>' + '<br />'　+  hospitalArr[idx].addr + '<br /><br />' +
-								  '<span class="bFont">' + '수술부위' + '</span>' + '<br />' + hospitalArr[idx].surgeryPart + '<br /><br />' +
+								  '<span class="bFont">' + '수술부위' + '</span>' + '<br /><div class="partData">' + hospitalArr[idx].surgeryPart + '</div><br /><br />' +
 								  '<span class="bFont">' + '전화번호' + '</span>' + '<br />' + hospitalArr[idx].tel + '<br /><br />' +
-								  '<span class="bFont">추천수 넣을까??</span>' +
 								  '</div>'+
 								  '<input type="hidden" name="email" value="'+hospitalArr[idx].email+'">' + 
 								  '<input type="hidden" name="hospitalNo" value="'+hospitalArr[idx].hospitalNo+'">' + 
