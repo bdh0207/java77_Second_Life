@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
-<link rel="stylesheet" type="text/css" href="../css/reviewFormCss.css">
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
+<link rel="stylesheet" type="text/css" href="../css/reviewFormCss.css">
+<link rel="stylesheet" type="text/css" href="../css/common.css">
 
 <script src="../lib/jquery/jquery.js"></script>
 <script src="../lib/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
@@ -18,7 +20,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.0.0/js/bootstrap-datetimepicker.min.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/bootstrap-dialog.js"></script>
-<title>Review</title>
 <script>
 	$(document).ready(function() {
 		$('#top').load('top.html').trigger('pagecreate');
@@ -43,365 +44,272 @@
 		   frm.date.disabled = true;
 		}
 	}
-	
-function ckSubmit() {
-		
-		console.log(contextRoot);
-		/*
-		var checkBoxValues = [];
-		
-		$('#sugeryPart:checked').each(function(i) {
-			checkBoxValues.push($(this).val());
-		});
-		
-		var allData = {};
-		
-		if($('input:checkbox[id="status"]').is(':checked') == true){
-			allData = {
-					title : $('#title').val(),
-					content : $('#content').val(),
-					fileName : $('#fileName').val()
-					
-			};
-		}else{
-			allData = {
-					memberNo : 1,
-					title : $('#title').val(),
-					content : $('#content').val(),
-					fileName : $('#fileName')[0].files[0],
-					sugeryPart : "눈,코",
-					status : "1"
-					
-			};
-			
-		}
-		console.log(allData);
-		
-		return false;
-		*/
-	}
-	
-	
-</script>
-<style type="text/css">
-	.checkData{
-		width: 70px !important;
-		padding-left: 0px !important;
-		padding-right: 0px !important;
-		font-size: 9pt;
-	}
-	.checkBox{
-		padding-left: 15px; 
-	}
-	@media screen and (max-width: 1024px) {
-		.floatForm {
-			float: left;
-			width: 380px;
-			height: 700px;
-			margin-left: auto;
-			margin-left: 30px;
-			margin-top: 20px;
-		}
-	}
-	
-	hr {
-		border-width: 0.05px;
-		border-style: solid;
-	}
-	.ffile{
-		display: none !important; 
-	}
-	
-	.input[name=price] { 
-		-webkit-ime-mode:disabled !important; 
-		-moz-ime-mode:disabled !important; 
-		-ms-ime-mode:disabled !important; 
-		ime-mode:disabled !important; 
-	}
-</style>
-<script>
-$(document).ready(function() {
-	$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
-		var ajaxResult = resultObj.ajaxResult;
-		var member = ajaxResult.data;
-		if(member != null){
-			console.log(member.id);
-			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
-			$('.changeValue2').hide();
-			$('#mypage').show();
-			$('#mypage > a').html('HELLO ' + member.id);
-			$('#mypage > a').append('<span class="caret"></span>');
-		}
-	}).error(function(error) {
-		window.location.href='login.html';
-	});
-	
-	$('#writeBtn').click(function() {
-		var ckIdx = 1;
-		var sPart ='';
-		var status='';
-		var length = $('input:checkbox[name="sPartCk"]:checked').length;
-		
-	    $('input:checkbox[name="sPartCk"]').each(function() {
-			if(this.checked){
-				if(ckIdx == 1){
-					sPart += this.value;
-					ckIdx++;
-				}
-				else{
-					sPart += ','+this.value;
-					ckIdx++;
-				}
-			}
-		});
-	    
-	    
-	    
-	    
-	    // 다중 파일 업로드를 위하여 FormData 사용
-		var formData = new FormData();
-		
-		if($('#title').val() == '' || $('#title').val() == null){
-	    	BootstrapDialog.alert('제목을 입력해주세요.');
-	    	$('#title').focus();
-			return ;
-	    }
-	    else if($('#content').val() == ''|| $('#content').val() == null){
-	    	BootstrapDialog.alert('내용을 입력해주세요.');
-	    	$('#content').focus();
-			return;	    	
-	    }
-	    else if(sPart == ''|| sPart == null){
-	    	BootstrapDialog.alert('수술부위를 체크해주세요.');
-			return;	    	
-	    }
-	    else if($('input[type="file"]')[0].files[0] == '' || $('input[type="file"]')[0].files[0] == null){
-	    	BootstrapDialog.alert('파일을 업로드 해주세요.');
-			return;
-		}
-	    else if($('input[type="file"]')[1].files[0] == ''||$('input[type="file"]')[1].files[0] == null){
-	    	BootstrapDialog.alert('파일을 업로드 해주세요.');
-			return;	    	
-	    }
-		
-		// 키 값 다르게 줘야한다. 만약 그러지 않으면 첫번째 파일밖에 안읽어옴...
-		formData.append('files1',$('input[type="file"]')[0].files[0]);
-		formData.append('files2',$('input[type="file"]')[1].files[0]);
-		formData.append('title',$('#title').val());
-		formData.append('content',$('#content').val());
-		formData.append('sugeryPart',sPart);
-		
-		// 수술정보 공유가 체크되어있다면...
-		if($('input:checkbox[id="ckStatus"]').is(':checked')){
-	    	status = '1';
-	    	formData.append('hospitalName',$('input[name="hsName"]').val());
-	    	formData.append('doctorName',$('input[name="doctor"]').val());
-	    	formData.append('sugeryWay',$('input[name="way"]').val());
-	    	formData.append('sugeryPrice',$('input[name="price"]').val());
-	    	formData.append('sugeryDate',$('input[name="date"]').val());
-	    }
-	    else{
-	    	status = '0';
-	    }
-		
-		formData.append('status', status);
-		
-		$.ajax({
-			url: contextRoot + '/cosmetic/ajax/reviewAdd.do',
-			type: 'POST',
-			dataType : 'json',
-			processData: false,
-			contentType: false,
-			data: formData
-		}).done(function(resultObj,status,jqXHR) {
-			console.log(resultObj.ajaxResult);
-			location.href = 'user_review_list.html';
-		});
-		
-	});
-});
 
+	$(document).ready(function() {
+		$.getJSON(contextRoot + '/cosmetic/ajax/loginCheck.do', function(resultObj) {
+			var ajaxResult = resultObj.ajaxResult;
+			var member 	   = ajaxResult.data;
+			
+			if(member != null){
+				console.log(member.id);
+				$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
+				$('.changeValue2').hide();
+				$('#mypage').show();
+				$('#mypage > a').html('HELLO ' + member.id);
+				$('#mypage > a').append('<span class="caret"></span>');
+			}
+		}).error(function(error) {
+			window.location.href='login.html';
+		});
+		
+		$('#writeBtn').click(function() {
+			var ckIdx  = 1;
+			var sPart  ='';
+			var status ='';
+			var length = $('input:checkbox[name="sPartCk"]:checked').length;
+			
+		    $('input:checkbox[name="sPartCk"]').each(function() {
+				if(this.checked){
+					if(ckIdx == 1){
+						sPart += this.value;
+						ckIdx++;
+					}
+					else{
+						sPart += ','+this.value;
+						ckIdx++;
+					}
+				}
+			});
+		     
+		    // 다중 파일 업로드를 위하여 FormData 사용
+			var formData = new FormData();
+			
+			if($('#title').val() == '' || $('#title').val() == null){
+		    	BootstrapDialog.alert('제목을 입력해주세요.');
+		    	$('#title').focus();
+				return ;
+		    }
+		    else if($('#content').val() == ''|| $('#content').val() == null){
+		    	BootstrapDialog.alert('내용을 입력해주세요.');
+		    	$('#content').focus();
+				return;	    	
+		    }
+		    else if(sPart == ''|| sPart == null){
+		    	BootstrapDialog.alert('수술부위를 체크해주세요.');
+				return;	    	
+		    }
+		    else if($('input[type="file"]')[0].files[0] == '' || $('input[type="file"]')[0].files[0] == null){
+		    	BootstrapDialog.alert('파일을 업로드 해주세요.');
+				return;
+			}
+		    else if($('input[type="file"]')[1].files[0] == ''||$('input[type="file"]')[1].files[0] == null){
+		    	BootstrapDialog.alert('파일을 업로드 해주세요.');
+				return;	    	
+		    }
+			
+			// 키 값 다르게 줘야한다. 만약 그러지 않으면 첫번째 파일밖에 안읽어옴...
+			formData.append('files1',$('input[type="file"]')[0].files[0]);
+			formData.append('files2',$('input[type="file"]')[1].files[0]);
+			formData.append('title',$('#title').val());
+			formData.append('content',$('#content').val());
+			formData.append('sugeryPart',sPart);
+			
+			// 수술정보 공유가 체크되어있다면...
+			if($('input:checkbox[id="ckStatus"]').is(':checked')){
+		    	status = '1';
+		    	formData.append('hospitalName',$('input[name="hsName"]').val());
+		    	formData.append('doctorName',$('input[name="doctor"]').val());
+		    	formData.append('sugeryWay',$('input[name="way"]').val());
+		    	formData.append('sugeryPrice',$('input[name="price"]').val());
+		    	formData.append('sugeryDate',$('input[name="date"]').val());
+		    }
+		    else{
+		    	status = '0';
+		    }
+			
+			formData.append('status', status);
+			
+			$.ajax({
+				url: contextRoot + '/cosmetic/ajax/reviewAdd.do',
+				type: 'POST',
+				dataType : 'json',
+				processData: false,
+				contentType: false,
+				data: formData
+			}).done(function(resultObj,status,jqXHR) {
+				console.log(resultObj.ajaxResult);
+				location.href = 'user_review_list.html';
+			});
+		});
+	});
 </script>
 </head>
 <body>
 	<!-- top -->
 	<div data-role="page" id="top"></div>
 	
-<div class="body-content">
-	<div class="body-detail">
-<form id="mForm" class="form-horizontal" enctype="multipart/form-data">
-	<fieldset>
-	    <legend><h3 style="color: #cf2d39;">Review</h3></legend>
-	    <div class="float">
-	    	<img src="..\images\reviewForm.png" width="450px">
-	    </div>
-	    <div class="floatForm">
-	    <div class="form-group">
-	      <label for="inputEmail" class="col-lg-2 control-label">제　　목</label>
-	      <div class="col-lg-10">
-	        <input type="text" class="form-control fontStyle" id="title" placeholder="Title">
-	      </div>
-	    </div>
-	    <div class="form-group">
-	      <label for="textArea" class="col-lg-2 control-label">후　　기</label>
-	      <div class="col-lg-10">
-	        <textarea class="form-control fontStyle" rows="8" id="content" placeholder="Review"></textarea>
-	        <span class="help-block" style="font-size: 6pt; color: gray;">*자신의 변화에 대한 상세한 후기를 적어주세요.</span>
-	      </div>
-	    </div>
-	    <div class="form-group">
-	      <label for="inputEmail" class="col-lg-2 control-label">사　　진</label>
-	      
-	     <div class="row">
-	     
-		  <div class="col-md-4">
-		  <div class="panel panel-default">
-			  <div class="panel-body">
-			    <img style="max-width:110px; max-height: 100px; width: auto; height: auto;" id="file-img1" name="path" src="http://www.randomlengthsnews.com/wp-content/themes/gonzo/images/no-image-blog-one.png"/>
-			    <input type="file" name="attachFile1" id="ffile1" class="ffile" multiple />
-			  </div>
-			  <div class="panel-footer">BEFORE</div>
+	<div class="container">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 style="color: #cf2d39;">Review</h1>
+				</div>
 			</div>
 		</div>
-		
-		  <div class="col-md-4">
-		  <div class="panel panel-default">
-			  <div class="panel-body">
-			    <img style="max-width:110px; max-height: 100px; width: auto; height: auto;" id="file-img2" name="path" src="http://www.randomlengthsnews.com/wp-content/themes/gonzo/images/no-image-blog-one.png"/>
-			    <input type="file" name="attachFile2" id="ffile2" class="ffile" multiple>
-			  </div>
-			  <div class="panel-footer">AFTER</div>
-			</div>
-		  </div>
-		
-		</div>
-	      	
-			
-		<!--
-	      <div class="col-lg-10">
-	      <div class="panel panel-default">
-			  <div class="panel-body">
-			    Panel content
-			  </div>
-			  <div class="panel-footer">Panel footer</div>
-			</div>
-	      <input type="text" class="file_input_textbox" readonly="readonly"/>
-	      <div class="file_input_div">
-	      <input type="file" id="ffile" name="files" class="fontStyle" multiple>
-	      </div>
-	      </div>
-	      -->
-	    </div>
-	    <div class="form-group">
-	      <label for="inputPassword" class="col-lg-2 control-label">수술 부위</label>
-	      <div class="col-lg-10">
-	      <div class="row checkBox">
-	      	  <div class="col-md-1 checkData">
-	      	  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="눈" />눈
-	      	  </div>
-			  <div class="col-md-1 checkData">
-			  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="코">코
-			  </div>
-			  <div class="col-md-1 checkData">
-				<input class="sugeryPart" name="sPartCk" type="checkbox" value="턱"/>턱	
-			  </div>
-			  <div class="col-md-1 checkData">
-				<input class="sugeryPart" name="sPartCk" type="checkbox" value="광대"/>광대
-			  </div>
-			  <div class="col-md-1 checkData">
-				<input class="sugeryPart" name="sPartCk" type="checkbox" value="윤곽"/>윤곽
-			  </div>
-			  <div class="col-md-1 checkData">
-			  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="양악"/>양악
-			  </div>
-			  <div class="col-md-1 checkData">
-			  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="가슴"/>가슴
-			  </div>
-			  <div class="col-md-1 checkData">
-			  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="지방흡입"/>지방흡입
-			  </div>
-			  <div class="col-md-1 checkData">
-			  	<input class="sugeryPart" name="sPartCk" type="checkbox" value="쁘띠성형"/>쁘띠성형
-			  </div>
-	      </div>
-			  <span class="help-block textMargin" style="font-size: 8pt; color: #cf2d39;"> *수술받은 부위를 체크해주세요.　(중복가능)</span>
-	      </div>
-	    </div>
-	    
-<!-- 	    <div class="form-group"> -->
-<!-- 	      <label for="inputEmail" class="col-lg-2 control-label">공유 여부</label> -->
-<!-- 	      <div class="col-lg-10" > -->
-<!-- 	        <div class="checkbox"> -->
-<!-- 	            <div  style="margin-left: 20px;"> -->
-<!-- 	            <input id="ckStatus" type="checkbox" checked="checked" name="share"  -->
-<!-- 	            	    onclick="checkDisable(this.form)"> -->
-<!-- 	            </div> -->
-<!-- 				<span style="margin-left: 20px; font-size: 9pt;">당신의 성형 정보를 공유 하시겠습니까?</span> -->
-<!-- 	          <span class="help-block textMargin" style="font-size: 6pt; color: #cf2d39;"> *공유하지 않는다면, 다른 이용자들의 정보 요청 쪽지 세례를 받으실 수 있습니다.</span> -->
-<!-- 	        </div> -->
-<!-- 	      </div> -->
-<!-- 	    </div> -->
-	    
-	    <div class="form-group">
-	      <label for="inputPassword" class="col-lg-2 control-label">공유 여부</label>
-	      <div class="col-lg-10">
-	        <div class="checkbox">
-	          <label>
-	            <input id="ckStatus" type="checkbox" checked="checked" name="share" onclick="checkDisable(this.form)">
-				<span style="font-size: 9pt;">당신의 성형 정보를 공유 하시겠습니까?</span>
-	          </label>
-	          <span class="help-block textMargin" style="font-size: 6pt; color: #cf2d39;"> *공유하지 않는다면, 다른 이용자들의 정보 요청 쪽지 세례를 받으실 수 있습니다.</span>
-	        </div>
-	      </div>
-	    </div>
-	    
-	    
-	    <div class="form-group">
-	      <label for="inputEmail" class="col-lg-2 control-label">수술 방법</label>
-	      <div class="col-lg-10">
-	        <input name="way" type="text" class="form-control boxSize" id="inputEmail"  style="font-size: 8pt;"  placeholder="체크한 수술의 수술 방법을 입력해주세요.　ex) 눈:매몰법, 코:매부리코">
-	      </div>
-	    </div>
-	    <div class="form-group">
-	      <label for="inputEmail" class="col-lg-2 control-label">병원 이름</label>
-	      <div class="col-lg-10">
-	        <input name="hsName" type="text" class="form-control boxSize" id="inputEmail" style="font-size: 8pt;" placeholder="수술 받은 병원의 이름을 입력해주세요.">
-	      </div>
-	    </div>
-	    <div class="form-group">
-	      <label for="inputEmail" class="col-lg-2 control-label">담당 의사</label>
-	      <div class="col-lg-10">
-	        <input name="doctor" type="text" class="form-control boxSize" id="inputEmail"  style="font-size: 8pt;"  placeholder="수술 받은 의사의 이름을 입력해주세요.">
-	      </div>
-	    </div>
-	    <div class="form-group">
-	      <label for="inputEmail" class="col-lg-2 control-label">수술 비용</label>
-	      <div class="col-lg-10">
-	        <input name="price" type="text" class="form-control fontStyle boxSize" id="inputEmail" placeholder="단위 : 만원" value="" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" />
-	      </div>
-	    </div>
-	    
-	    <div class="form-group">
-	      <label for="inputEmail" class="col-lg-2 control-label">수술 시기</label>
-	      <div class="col-lg-10">
 
-	        <input name="date" type="date" class="form-control fontStyle boxSize" id="inputEmail" placeholder="수술 받은 날짜를 입력해주세요.">
-	      </div>
-	    </div>
-	    </div>
-	</div>
-		<hr>
-	    <div class="form-group">
-	    	<div class="modal-footer paddingZero" >
-				<button type="button" id="cancelBtn" class="btn btn-default" data-dismiss="modal"
-				style="background-color: white; color: #cf2d39;">Cancel</button>
-				<button type="button" class="btn btn-primary" id="writeBtn"
-				style="background-color: white; color: #cf2d39;">Write</button>
+		<div class="row">
+			<div class="col-lg-6">
+				<img src="..\images\reviewForm.png" id="left">
+			</div>
+			<div class="col-lg-6">
+				<form id="mForm" class="form-horizontal" enctype="multipart/form-data">
+					<fieldset>
+						<div class="form-group">
+							<label for="inputEmail" class="col-lg-2 control-label">제목</label>
+							<div class="col-lg-10">
+								<input type="text" class="form-control" id="title" placeholder="Title">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="textArea" class="col-lg-2 control-label">후기</label>
+							<div class="col-lg-10">
+								<textarea class="form-control " rows="8" id="content" placeholder="Review"></textarea>
+								<span class="help-block">*자신의 변화에 대한 상세한 후기를 적어주세요.</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEmail" class="col-lg-2 control-label">사진</label>
+							<div class="col-lg-5">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<img id="file-img1" name="path" src="http://www.randomlengthsnews.com/wp-content/themes/gonzo/images/no-image-blog-one.png" />
+										<input type="file" name="attachFile1" id="ffile1" class="ffile" multiple />
+									</div>
+									<div class="panel-footer text-center">BEFORE</div>
+								</div>
+							</div>
+							<div class="col-lg-5">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<img id="file-img2" name="path" src="http://www.randomlengthsnews.com/wp-content/themes/gonzo/images/no-image-blog-one.png" />
+										<input type="file" name="attachFile2" id="ffile2" class="ffile" multiple>
+									</div>
+									<div class="panel-footer text-center">AFTER</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div>
+								<label for="inputPassword" class="col-lg-2 control-label">수술부위</label>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox"
+										value="눈" />눈
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox"
+										value="코">코
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox"
+										value="이마" />이마
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox"
+										value="광대" />광대
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox"
+										value="턱" />턱
+								</div>
+							</div>
+							<div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox"
+										value="안면윤곽" />안면윤곽
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox" value="양악" />양악
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox" value="돌려깎기" />돌려깎기
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox" value="가슴" />가슴
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox" value="복부" />복부
+								</div>
+							</div>
+							<div>
+								<div class="col-lg-offset-2 col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox" value="엉덩이" />엉덩이
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox" value="종아리" />종아리
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox" value="지방흡입" />지방흡입
+								</div>
+								<div class="col-lg-2 checkData">
+									<input class="sugeryPart" name="sPartCk" type="checkbox" value="쁘띠성형" />쁘띠성형
+								</div>
+							</div>
+							<div class="col-lg-offset-2 col-lg-10 part-block">*수술받은 부위를 체크해주세요(중복가능)</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword" class="col-lg-2 control-label">공유여부</label>
+							<div class="col-lg-10 font-basic">
+								<input id="ckStatus" type="checkbox" name="share" onclick="checkDisable(this.form)" checked>당신의 성형 정보를 공유 하시겠습니까? 
+								<span class="part-block">*공유하지 않는다면, 다른 이용자들의 정보 요청 쪽지 세례를 받으실 수 있습니다.</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEmail" class="col-lg-2 control-label height30">수술 방법</label>
+							<div class="col-lg-10">
+								<input name="way" type="text" class="form-control" 
+									placeholder="체크한 수술의 수술 방법을 입력해주세요. ex) 눈:매몰법, 코:매부리코">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEmail" class="col-lg-2 control-label height30">병원이름</label>
+							<div class="col-lg-10">
+								<input name="hsName" type="text" class="form-control" 
+									placeholder="수술 받은 병원의 이름을 입력해주세요.">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEmail" class="col-lg-2 control-label height30">담당의사</label>
+							<div class="col-lg-10">
+								<input name="doctor" type="text" class="form-control"
+									placeholder="수술 받은 의사의 이름을 입력해주세요.">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEmail" class="col-lg-2 control-label height30">수술비용</label>
+							<div class="col-lg-10">
+								<input name="price" type="text" class="form-control " value=""
+									onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEmail" class="col-lg-2 control-label height30">수술시기</label>
+							<div class="col-lg-10">
+								<input name="date" type="date" class="form-control " placeholder="수술 받은 날짜를 입력해주세요.">
+							</div>
+						</div>
+					</fieldset>
+				</form>
 			</div>
 		</div>
-	</fieldset>
-</form>
-</div>
+		<hr class="hr-new">
+	    <div class="row">
+	    	<div class="col-lg-12" >
+				<button type="button" class="btn btn-danger" id="writeBtn">Write</button>
+				<button type="button" id="cancelBtn" class="btn btn-default" onclick="window.location.reload();">Cancel</button>
+			</div>
+		</div>
+	</div>
+		
 <script type="text/javascript">
 /*
 var filelist = [];
@@ -452,11 +360,6 @@ $('.ffile').fileupload({
 	}
 });
 */
-
-
-$('#cancelBtn').click(function() {
-	location.href = 'user_review_list.html';
-});
 
 // 파일 미리보기 부분
 $('#file-img1').click(function() {

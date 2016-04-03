@@ -202,8 +202,9 @@ public class CosmeticController {
 	
 	// 회원가입
 	@RequestMapping(value="join")
-	public void join(CosmeticMember cosmeticMember) throws Exception {
+	public AjaxResult join(CosmeticMember cosmeticMember) throws Exception {
 		cosmeticService.insertMember(cosmeticMember);
+		return new AjaxResult("success", null);
 	}
 	
 	// ID 중복체크

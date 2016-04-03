@@ -3,11 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
+<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
+<link rel="stylesheet" type="text/css" href="../css/red.css">
 <link rel="stylesheet" type="text/css" href="../css/common.css">
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script type="text/javascript" src='../js/jquery.form.js' ></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap-dialog.js"></script>
+<script type="text/javascript" src="../js/icheck.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script>
 	$(document).ready(function() {
@@ -25,15 +31,25 @@
 					$('#idCheckText').css('color','red').text('이미 사용중인 ID 입니다.');
 				}
  				
+ 				if(uid == "") {
+ 	 				$('#idCheckText').empty();
+ 	 			}
+ 				
  				$('#idCheckText').css('height','39px');
  				$('#idCheckText').css('line-height','39px');
  			});
+		});
+ 		
+ 		$('input').iCheck({
+	        checkboxClass: 'icheckbox_square-red',
+	        radioClass: 'iradio_square-red',
+	        increaseArea: '20%' // optional
 		});
 	});
 </script>
 <style type="text/css">
 	body 	 { margin: 0px; }
-	.dash 	 { text-align: center; height: 37px; line-height: 37px; width: 10px; padding: 0px; }
+	.dash 	 { text-align: center; height: 37px; line-height: 37px; width: 30px; padding: 0px; }
 	.btn-new { background-color: #ffffff; color: #cf2d39; border: 1px solid #cccccc; float: right; }
 	.legend  { padding-bottom: 10px; font-size: 35px; }
 	span, legend { color: #cf2d39; }
@@ -90,36 +106,31 @@
 							<span>*</span>Gender
 						</label>
 						<div class="col-lg-2">
-							<input type="radio" id="optionsRadios1" value="male" name="gender" checked>　Male
+							<input type="radio" value="male" name="gender" checked><label>　Male</label>
 						</div>
 						<div class="col-lg-2">
-							<input type="radio" id="optionsRadios1" value="female" name="gender">　Female
+							<input type="radio" value="female" name="gender"><label>　Female</label>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="select" class="col-lg-2 control-label">
-							<span>*</span>Date Of Birth</label>
+							<span>*</span>Date Of Birth
+						</label>
 						<div class="col-lg-10">
 							<input type="date" class="form-control" name="birth" required>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="inputEmail" class="col-lg-2 control-label">Phone</label>
-						<div class="col-lg-2">
-							<select class="form-control" name="tel1" id="tel1">
-								<option value="010">010</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
+						<label for="select" class="col-lg-2 control-label">Phone</label>
+						<div class="col-lg-3">
+							<input type="text" class="form-control" name="tel1"> 
 						</div>
 						<div class="col-lg-1 dash">─</div>
-						<div class="col-lg-2">
+						<div class="col-lg-3">
 							<input type="text" class="form-control" name="tel2"> 
 						</div>
 						<div class="col-lg-1 dash">─</div>
-						<div class="col-lg-2">
+						<div class="col-lg-3">
 							<input type="text" class="form-control" name="tel3"> 
 						</div>
 						<div>
@@ -146,7 +157,7 @@
 	<script type="text/javascript">
 	// 회원가입
 	$("#joinBtn").click(function() {
-		$("input[name=tel]").val($("#tel1 option:selected").val()+"-"+$("input[name=tel2]").val()+"-"+$("input[name=tel3]").val());
+		$("input[name=tel]").val($("input[name=tel1]").val()+"-"+$("input[name=tel2]").val()+"-"+$("input[name=tel3]").val());
 		
 		if($("input[name=id]").val() == "") {
 			alert("ID를 입력해 주세요.");
@@ -175,8 +186,36 @@
 				url : contextRoot + "/cosmetic/ajax/join.do",
 				dataType : "json",
 				success : function(resultObj) {
-					alert('회원가입이 완료되었습니다. 로그인 해주세요.');
-					location.href = 'mainandreview.html';
+					if(resultObj.ajaxResult.status == 'success'){
+						BootstrapDialog.show({
+						    title: 'Success',
+						    message: '회원가입이 완료되었습니다. 로그인 해주세요.' ,
+						    buttons: [{
+						        id: 'btn-ok',
+						        label: 'OK',
+						        cssClass: 'btn-danger', 
+						        autospin: false,
+						        action: function(dialogRef){    
+						            dialogRef.close();
+						            location.href = 'login.html';
+						        }
+						    }]
+						});
+					} else{
+						BootstrapDialog.show({
+						    title: 'Error',
+						    message: '회원가입에 실패하였습니다.' ,
+						    buttons: [{
+						        id: 'btn-ok',  
+						        label: 'OK',
+						        cssClass: 'btn-danger', 
+						        autospin: false,
+						        action: function(dialogRef){    
+						            dialogRef.close();
+						        }
+						    }]
+						});
+					}
 				}
 	        });	
 		}

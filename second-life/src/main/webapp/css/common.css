@@ -1,95 +1,69 @@
 @CHARSET "UTF-8";
+@import url(http://fonts.googleapis.com/css?family=Noto+Sans);
 
-.btn-yellow {
-	background-color: #FFB61E;
-	color: #000000;
-}
-
-.btn-white {
-	background-color: #ffffff;
-	color: #cf2d39;
-	border: 1px solid #cccccc;
-}
-/* counsel.html ======================================== */
-#thumbnail-new {
-	padding: 0px;
-	border-radius: 0px;
-	line-height: 1;
-}
-#thumbnail-new > img {
-	height: 191px;
-}
- 
-.close-new {
-	position: absolute;
-	float: right;
-	top: 5px;
-	right: 25px;
-	color: #ffffff;
-	font-weight: bold;
-	cursor: pointer;
+/*** top.html ******************************/
+.nav > li > a:hover, .nav .open > a, .nav .open > a:hover, .nav .open > a:focus,
+.navbar .dropdown-menu > li > a:HOVER {
+	background-color: #a5242d;
 }
 
-.panel-footer-grade{
-	background: url("../icon/icon_star2.gif") 0px 0px;
-	width: 90px;
-	height: 18px;
-}
-.panel-footer-grade p{
-	width: 70%;
-	background: url("../icon/icon_star.gif") 0px 0px;
-	height: 18px;
+.navbar-header > a, .nav > li > a, .dropdown-menu > li > a,
+h1, label, span, .font-basic, .btn {
+	font-family: 'Noto Sans', sans-serif;
 }
 
-.bg-black {
-	background: #000000;
-	border-color: #000000;
+
+/*** 공통 ******************************/
+.text-center {
+	text-align: center;
 }
 
-.file-div {
-	width: 100%;
-	margin-bottom: 15px;
-}
-.file-img {
-	width: 100%;
-	height: 170px;
-}
-.file-hidden {
-	z-index: 1; 
-	position: absolute; 
-	opacity: 0;
-	cursor: pointer;
+.btn-danger:hover {
+	background-color: white;
+	border-color: #cf2d39;
+	color: #cf2d39; 
 }
 
-.sample {
-	display: none;
+.btn-default:hover {
+	background-color: white;
+	border-color: #333333;
+	color: #333333; 
 }
 
-#choice-val {
-	display: block;
+.hr-new {
+	margin: 21px 0px;
+	border: 0px;
+	border-top: 0.05px solid #dddddd;
 }
 
-.hResult {
-	width: 400px;
-	height: 200px;
-	border: 1px solid #000000;
-	float: right;
-	margin-right: 15px;
-	display: none;
-	position: absolute;
-} 
-
-
-/* search_hopital.html ======================================== */
-.search-result {
-	border: 1px solid #aab2bd;
-	margin-right: -10px;
-	height: 400px;
+label, input {
+	font-size: 10px;
 }
 
-.font-new {
-	font-family: 'Nanum Gothic', serif;
+.page-header-new {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #dddddd;
+	font-weight: 400;
+	color: #595959;
 }
+
+.smIcon {
+	width: 15px;
+	height: 15px;
+	margin: 0px 4px;
+}
+
+.ellipsis {
+	white-space: nowrap !important;
+	text-overflow: ellipsis !important;
+	overflow: hidden !important;
+}
+
 .font-bold {
+	font-family: 'Noto Sans', sans-serif;
 	font-weight: bold;
+}
+
+a {
+	text-decoration: none;
 }
