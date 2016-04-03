@@ -17,13 +17,12 @@ h1, label, span, .font-basic, .btn {
 .text-center {
 	text-align: center;
 }
-
+ 
 .btn-danger:hover {
 	background-color: white;
 	border-color: #cf2d39;
 	color: #cf2d39; 
 }
-
 .btn-default:hover {
 	background-color: white;
 	border-color: #333333;
@@ -45,6 +44,7 @@ label, input {
 	border-bottom: 1px solid #dddddd;
 	font-weight: 400;
 	color: #595959;
+	margin-bottom: 20px;
 }
 
 .smIcon {
@@ -64,6 +64,9 @@ label, input {
 	font-weight: bold;
 }
 
-a {
-	text-decoration: none;
+a { 
+	text-decoration: none; 
+	color: #000;
 }
+
+body { margin: 0px }

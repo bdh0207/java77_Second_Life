@@ -4,38 +4,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
-<style>@import url(https://fonts.googleapis.com/css?family=Dosis:400,800);</style>
 <title>꽃보다 아름다운</title>  
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
-<link rel="stylesheet" href="../css/flexslider.css" type="text/css">
-<link rel="stylesheet" href="../lib/bootflat/css/site.min.css">
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
-<style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
-<!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">   -->
-<style>
-a, h3, td { font-family: 'Jeju Gothic', serif; }
-.body-content{
-	width: 80%;
-	margin-left: 150px;
-	margin-right: 150px;
-}
-.left { 
-	width: 49%;  
-	margin-top: 10px; 
-	position: relative;
-	float: left;
-}
-.right { 
-	width: 49%;  
-	margin-top: 10px; 
-	position: relative;
-	float: right;
-}
-#title{
-	margin-left: 150px;
-} 
-</style>
+<link rel="stylesheet" type="text/css" href="../css/flexslider.css" >
+<link rel="stylesheet" type="text/css" href="../css/common.css">
 <script src="../lib/jquery/jquery.js"></script>
 <script src="../js/jquery.flexslider.js"></script>
 <script src="../js/common.js"></script>
@@ -78,6 +51,7 @@ $(document).ready(function() {
  	 $.getJSON(contextRoot + '/cosmetic/ajax/reviewListDetail.do?reviewNo='+reviewNo,function(resultObj){
  		 var ajaxResult = resultObj.ajaxResult;
  		 var reviewDetail = ajaxResult.data;
+ 		 
  		// 로그인 헤더 처리
 		if(reviewDetail.member != null){
 			$('.changeValue1').html('LOGOUT').attr('onclick','return logout();');
@@ -95,6 +69,7 @@ $(document).ready(function() {
  	 		 $('#viewCnt').text(reviewDetail.review.viewCnt);
  	 		 $('#recomCnt').text(reviewDetail.review.recomCnt);
  			 $('#commentCnt').text(reviewDetail.commentCnt);
+ 			 $('#memberId').text(reviewDetail.member.id);
  	 		 
  	 		 for(var photoList of reviewDetail.photo){
  	 			 var li =   '<li data-thumb="'+photoList.filePath+'">	 ';
@@ -530,149 +505,102 @@ function commentDel(commentNo, reviewNo) {
 	});
  }
 </script>
+<style type="text/css">
+	.divideLine {
+		border-bottom: 1px dashed #ddd;
+		padding-bottom: 15px;
+		margin-right: 0px;
+		margin-top: 15px;
+	}
+	
+	.paddingL { padding-left: 0px; }
+	
+	.paddingR { padding-right: 0px; }
+</style>
 </head>
 
 <body>
 	<!-- top -->
 	<div data-role="page" id="top"></div>
+	
 	<!-- 유저리뷰 표시줄 -->
-    <p class="lead" style="margin-top: 30px; margin-left: 160px; color: #cf2d39; font-size: 20pt;">User Review</p>
-    <div style="width: 1065px; margin-left: 160px; margin-top: 0px;"><hr /></div>
-    <div id="title"><h1 id="data-title"></h1></div>
+    <div data-role="page" id="top"></div>
 
-	<div class="body-content">
+	<div class="container">
 		<div class="row">
-			<a href="#" class="btn btn-danger" id="viewInfo" data-toggle="modal" data-target="#myModal" style="float: right;">정보보기</a> 
+			<div class="col-lg-12">
+				<h3 class="page-header-new">USER REVIEW</h3>
+			</div>
 		</div>
-		
 		<div class="row">
-			<!-- 본문_좌 -->
-			<div class="left">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">PHOTO</h3>
+			<div class="col-lg-6">
+				<div class="flexslider">
+					<ul class="slides"></ul>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="row divideLine" style="margin-top: 0px;">
+					<a href="#" class="btn btn-danger" id="viewInfo" data-toggle="modal" data-target="#myModal" style="position: absolute; right: 15px;">View Info</a>
+					<div class="col-lg-12 paddingL"> 
+						<h4 class="font-bold" id="data-title" style="margin: 0px;"></h4>
 					</div>
-					<div class="panel-body">
-						<div class="flexslider">
-							<ul class="slides">
-								<!--                     <li data-thumb="../images/성형전.PNG"> -->
-								<!--                       <img src="../images/성형전.PNG" /> -->
-								<!--                     </li> -->
-								<!--                     <li data-thumb="../images/after2.jpg"> -->
-								<!--                       <img src="../images/after2.jpg" /> -->
-								<!--                     </li> -->
-								<!--                     <li data-thumb="../images/after3.jpg"> -->
-								<!--                       <img src="../images/after3.jpg" /> -->
-								<!--                     </li> -->
-								<!--                     <li data-thumb="../images/일반인후기3.jpg"> -->
-								<!--                       <img src="../images/일반인후기3.jpg" /> -->
-								<!--                     </li> -->
-							</ul>
+					<div class="col-lg-12 paddingL"> 
+						<h5 class="font-basic" id="memberId"></h5>
+					</div>
+					<div class="col-lg-12 paddingL paddingR" style="text-align: right;"> 
+						좋아요<span id="recomCnt">330</span> | 댓글<span id="commentCnt">2343</span> | 조회 <span id="viewCnt">34231</span>
+					</div>
+				</div>
+				<div class="row divideLine " style="height: 130px;">
+					<div id="data-content" class="col-lg-12 paddingL"></div>
+				</div>
+				<div class="row" style="margin-right: 0px; margin-top: 15px;">
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>No.</th>
+								<th>글쓴이</th>
+								<th>내용</th>
+								<th>등록일</th>
+								<th>삭제</th>
+							</tr>
+						</thead>
+						<tbody id="comment-area"></tbody>
+					</table>
+					<div style="padding: 0px; margin: 0px; line-height: none; text-align: center;">
+						<ul class="pagination pagination-sm"></ul>
+					</div>
+					<div>
+						<div class="col-lg-2 paddingL" id="commentId"></div>
+						<div class="col-lg-8">
+							<textarea class="form-control" rows="1" id="textArea"></textarea>
+						</div>
+						<div class="col-lg-2">
+							<button type="button" id="submitBtn" class="btn btn-danger">Submit</button>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<!-- 본문_우 -->
-			<div class="right">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">CONTENT</h3>
-					</div>
-					<div id="data-content" class="panel-body"></div>
-				</div>
-				<div style="float: right; line-height: 0;">
-					좋아요<span id="recomCnt">330</span> | 댓글<span id="commentCnt">2343</span> | 조회 <span id="viewCnt">34231</span>
-				</div>
-				<br />
-				<br />
-
-				<!-- 댓글 -->
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">COMMENT</h3>
-					</div>
-					<div class="panel-body">
-						<table class="table table-striped table-hover">
-							<thead>
-								<tr>
-									<th>No.</th>
-									<th>글쓴이</th>
-									<th>내용</th>
-									<th>등록일</th>
-									<th>삭제</th>
-								</tr>
-							</thead>
-							<tbody id="comment-area">
-								<!--                     <tr> -->
-								<!--                       <td>1</td> -->
-								<!--                       <td>김초롱</td> -->
-								<!--                       <td>와전다 진시 다른 사람</td> -->
-								<!--                       <td>2016-02-19 14:95</td> -->
-								<!--                       <td class="favorite"><a href="#" class="btn btn-danger btn-xs">좋아요</a><a href="#" class="btn btn-danger btn-xs">신고</a></td> -->
-								<!--                     </tr>  -->
-							</tbody>
-						</table>
-					</div>
-					<div
-						style="padding: 0px; margin: 0px; line-height: none; text-align: center;">
-						<ul class="pagination pagination-sm">
-							<!--                       <li><a href="#" id="p_1" style="cursor: pointer;">1</a></li> -->
-							<!--                       <li><a href="#" id="p_2" style="cursor: pointer;">2</a></li> -->
-							<!--                       <li><a href="#" id="p_3" style="cursor: pointer;">3</a></li> -->
-							<!--                       <li><a href="#" id="p_4" style="cursor: pointer;">4</a></li> -->
-							<!--                       <li><a href="#" id="p_5" style="cursor: pointer;">5</a></li> -->
-						</ul>
-					</div>
-					<div class="row">
-						<div class="col-xs-12 col-sm-6 col-md-8"
-							style="margin-left: 20px; width: 90%">
-							<form class="form-horizontal">
-								<fieldset>
-									<legend>Comment Regist</legend>
-									<div class="form-group">
-										<label id="commentId" for="textArea"
-											class="col-lg-2 control-label"></label>
-										<div class="col-lg-10">
-											<textarea class="form-control" rows="3" id="textArea"></textarea>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<div class=".col-md-3 .col-md-offset-3"
-											style="float: right; margin-right: 13px;">
-											<button type="button" id="submitBtn" class="btn btn-info">Submit</button>
-										</div>
-									</div>
-
-								</fieldset>
-							</form>
-						</div>
-					</div>
-				</div>
-
-				<div style="float: left;">
-					<button id="recomBtn" type="button" class="btn btn-default"
-						aria-label="Left Align">
-						<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-						좋아요
+		</div>
+		<div class="row" style="border-top: 1px solid #ddd; margin: 15px 0px; padding: 15px 0px;">
+			<div class="col-lg-6 col-lg-offset-6 paddingL" style="margin-bottom: 20px;">
+				<div style="position: absolute;"> 
+					<button id="recomBtn" type="button" class="btn btn-default" aria-label="Left Align">
+						<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>좋아요
 					</button>
-					<button id="wishBtn" type="button" class="btn btn-default"
-						aria-label="Left Align">
-						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-						찜
+					<button id="wishBtn" type="button" class="btn btn-default" aria-label="Left Align">
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>찜
 					</button>
 				</div>
-
-				<div style="float: right;">
-					<a href="#" id="updateBtn" class="btn btn-warning">UPDATE</a> 
+				<div style="position: absolute; right: 0px;"> 
+					<a href="user_review_list.html" class="btn btn-default">LIST</a>
+					<a href="#" id="updateBtn" class="btn btn-default">UPDATE</a> 
 					<a href="#" id="deleteBtn" class="btn btn-danger">DELETE</a> 
-					<a href="user_review_list.html" class="btn btn-primary">LIST</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
