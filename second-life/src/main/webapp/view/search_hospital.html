@@ -14,7 +14,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=32d3bb0127a08daaa98517ba3ffc0655&libraries=services"></script>
+<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=0eeb60ab1928c0907d817bb76db816de&libraries=services"></script>
 <script type="text/javascript" src="../js/icheck.js"></script>
 
 </head>
@@ -162,7 +162,11 @@
 		</div>
 	</div>
 
-	<script>
+<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=0eeb60ab1928c0907d817bb76db816de&libraries=services"></script>
+<script>
+
+var hospitalArr = [];
+
 	$(document).ready(function() {
 	    $('#top').load('top.html');
 	    
@@ -251,7 +255,6 @@
 	// DB에서 주소값 불러내기
 	var hospitalInfo = function hospitalInfo() {
 		$.getJSON(contextRoot + "/cosmetic/ajax/hospitalInfo.do", function(resultObj) {
-			console.log("만세!!!!");
 			var ajaxReuslt = resultObj.ajaxResult;
 			var data = ajaxReuslt.data;
 			console.log(data);
@@ -317,7 +320,7 @@
 		    	'        <div class="body">' + 
 		    	'            <div class="desc">' + 
 		    	'                <div class="ellipsis">'+data.addr+'</div>' + 
-		    	'                <div class="jibun ellipsis">' + data.surgeryPart +
+		    	'                <div class="jibun ellipsis">' + data.surgeryPart + '</div>' +
 		    	'                <div style="float: left;"><a href="'+ data.link +'" target="_blank" class="link">홈페이지</a></div>' +
 		    	'                <div style="margin-left: 60px;" class="addBtnBox" onclick="addList('+idx+')">상담신청</div>' + 
 		    	'            </div>' + 
@@ -346,9 +349,8 @@
 								  '<div class="X">Close</div>' +
 								  '<div class="listText ">' + '<div class="bFont" style="font-size: 11pt;">' + hospitalArr[idx].name + '<hr class="listHr"/></div>' +
 								  '<span class="bFont">' + '주소' + '</span>' + '<br />'　+  hospitalArr[idx].addr + '<br /><br />' +
-								  '<span class="bFont">' + '수술부위' + '</span>' + '<br />' + hospitalArr[idx].surgeryPart + '<br /><br />' +
+								  '<span class="bFont">' + '수술부위' + '</span>' + '<br /><div class="partData">' + hospitalArr[idx].surgeryPart + '</div><br /><br />' +
 								  '<span class="bFont">' + '전화번호' + '</span>' + '<br />' + hospitalArr[idx].tel + '<br /><br />' +
-								  '<span class="bFont">추천수 넣을까??</span>' +
 								  '</div>'+
 								  '<input type="hidden" name="email" value="'+hospitalArr[idx].email+'">' + 
 								  '<input type="hidden" name="hospitalNo" value="'+hospitalArr[idx].hospitalNo+'">' + 

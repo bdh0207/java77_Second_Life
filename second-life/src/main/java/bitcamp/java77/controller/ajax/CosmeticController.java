@@ -121,16 +121,58 @@ public class CosmeticController {
 	}
 	
 	@RequestMapping(value="listQnA", method=RequestMethod.GET)
-	public AjaxResult QnAList(HttpServletRequest req) throws Exception {
+	public Object QnAList(HttpServletRequest req) throws Exception {
 		// 로그인 세션
 		HttpSession session = req.getSession();
 		CosmeticMember member =  (CosmeticMember)session.getAttribute("loginuser");
 		int mNo = member.getMemberNo();
-		System.out.println("회원번호" + member.getMemberNo());
+		// System.out.println("회원번호" + member.getMemberNo());
+		List<CosmeticQnA> qnaList = cosmeticService.selectQnA(mNo);
+		
+		// 결과값 리턴맵
+		HashMap<String, Object> resultMap = new HashMap<>();
+		resultMap.put("member", member);
+		resultMap.put("qnaList", qnaList);
 		
 		// QnA 목록
-		List<CosmeticQnA> qnaList = cosmeticService.selectQnA(mNo);
-		return new AjaxResult("success", qnaList);
+		return resultMap;
+	}
+	
+	// QnA 수정
+	@RequestMapping(value="updateQnA", method=RequestMethod.POST)
+	public AjaxResult updateQnA(CosmeticQnA qna, HttpServletRequest req) throws Exception{
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		// 수정하기
+		cosmeticService.updateQnA(qna);
+		return new AjaxResult("success", null);	
+	}
+		
+	// QnA 상세보기
+	@RequestMapping(value="detailQnA", method=RequestMethod.GET)
+	public Object detailQnA(int qno, HttpServletRequest req) throws Exception{
+		// 로그인 세션
+		HttpSession session = req.getSession();
+		CosmeticMember member = (CosmeticMember)session.getAttribute("loginuser");
+		
+		// 상세보기 불러오기
+		CosmeticQnA detailQnA = cosmeticService.detailQnA(qno);
+		HashMap<String, Object> resultMap = new HashMap<>();
+		System.out.println(detailQnA);
+		
+		resultMap.put("detailQnA", detailQnA);
+		resultMap.put("member", member);
+		
+		return resultMap;
+	}
+	
+	// QnA 삭제
+	@RequestMapping(value="deleteQnA", method=RequestMethod.GET)
+	public AjaxResult deleteQnA(int qno, HttpServletRequest req) throws Exception{
+		cosmeticService.deleteQnA(qno);
+		return new AjaxResult("success", null);
 	}
 	
 	// 상담신청서 발송
