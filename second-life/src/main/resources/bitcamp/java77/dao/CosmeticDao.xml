@@ -115,6 +115,7 @@
  		select QNO, MNO, TITLE, CONT, QPART, REG_DATE
  		from q_a
  		where MNO = #{mNo}
+ 		order by REG_DATE desc
  	</select>
  	
  	<!-- QnA detail select -->

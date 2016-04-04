@@ -9,108 +9,140 @@
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap-dialog.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script>
 	$(document).ready(function() {
 		// top 적용
 		//$('#top').load('top.html');
 	});
 </script>
-
 <style type="text/css">
-	body 	{ margin: 0px; }
-	img 	{ margin-top: 90px; }
-	#square { background-color: #f3c9cc; width: 500px; margin: 0 auto; padding: 35px 70px; }
-	hr 		{ border: 0.05px solid #595959; margin-top: 30px; margin-bottom: 15px; }
-	.joinAlink { color: #595959; font-size: 8pt; padding-left: 0px; }
-	#loginBtn  { background-color: white; color: #cf2d39; border-color: #aab2bd; float: right; }
+.loginForm {
+	float: left;
+	width: 300px;
+	height: 400px;
+	background-color: white;
+	margin-left: 1px;
+	Padding: 30px;
+	border-radius: 5px 0px 0px 5px;
+}
+
+.textBox {
+	border-radius: 5px;
+	margin-top: 20px;
+}
+
+#loginBtn {
+	margin-top: 30px;
+	border: 1px solid #6f6f6f;
+	background-color: white;
+	color: #6f6f6f;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.title {
+	color: white;
+	font-size: 54pt;
+	font-weight: 900;
+	margin-top: 60px;
+}
+
+.joinAlink {
+	margin-top: 10px;
+	font-size: 8pt;
+	color: #6f6f6f;
+}
+
+#loginBtn:hover{ background-color: #cf2d39; color: white; border: 1px solid white; }
+.joinAlink:hover{color: #cf2d39;}
+
+body {
+  background: #BA2B35;  
+}
+
+p{text-align: center;}
 </style>
 </head>
-
 <body>
-	<!-- top -->
-	<!--  <div id="top"></div>-->
-	
+<!-- top -->
+<!--  <div id="top"></div>-->
 	<div class="container">
-		<div class="row" align="center">
-			<img src="..\images\로그인로고.png">
-		</div>
-		<div class="row" id="square">
-			<div class="form-group">
-				<label class="control-label" for="inputSmall">ID</label>
-				<input class="form-control input-sm" type="text" id="inputSmall">
+		<div style="margin: 0 auto; width: 610px; height: 550px;">
+			<div class="title">S E C O N D L I F E</div>
+			<div class="loginForm" style="float: left; padding: 0px;">
+				<img src="../images/indexPage.jpg" width="300px;" height="400px;" style="border-radius: 5px 0px 0px 5px;">
 			</div>
-			<div class="form-group">
-				<label class="control-label" for="inputSmall">PASSWORD</label>
-				<input class="form-control input-sm" type="password" id="inputSmall">
-			</div>
-			<hr>
-			<div class="form-group">
+			<div class="loginForm" style="border-radius: 0px 5px 5px 0px;">
+				<p class="lead" style="font-size: 25pt; font-weight: 400; color: #cf2d39;">SECOND LIFE</p>
+				<p class="lead">Login to your account</p>
+				<input type="text" class="form-control textBox" placeholder="Id">
+				<input type="password" class="form-control textBox" placeholder="Password">
+				<div align="center">
 				<button type="button" id="loginBtn" class="btn">Login</button>
-			    <a href="#" class="btn btn-link joinAlink">아이디|비번찾기</a>
-			    <a href="joinForm.html" id="joinFormMove" class="btn btn-link joinAlink">회원가입</a>
+				</div>
+				<div align="center">
+				<a href="#" class="btn btn-link joinAlink">아이디|비번찾기</a>
+				<a href="joinForm.html" id="joinFormMove" class="btn btn-link joinAlink">회원가입</a>
+				</div>
 			</div>
+			<div class="lead" align="right" style="color: white; font-size: 10pt; font-family: 맑은고딕;">당신이 원하는 모든 성형정보, 성형상담까지 한번에 - 성형외과 웹 서비스　</div>
 		</div>
 	</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	
-	<script type="text/javascript">
-		$('#loginBtn').click(function() {
-			var prevPage = document.referrer;
-			
-			if(prevPage == "") {
-				prevPage = "mainandreview.html";
-			} 
-			
-			$.post(contextRoot+'/cosmetic/ajax/login.do',
-				{
-					id : $('input[type="text"]').val(),
-					password : $('input[type="password"]').val()
-				},
-				function(resultObj){
-					var ajaxResult = resultObj.ajaxResult;
-					var status = ajaxResult.status;
-					console.log(status);
-					if(status == 'success'){
-						BootstrapDialog.show({
-						    title: 'Success',
-						    message: '환영합니다!　'+$('input[type="text"]').val()+'님' ,
-						    buttons: [{
-						        id: 'btn-ok',
-						        icon: 'glyphicon glyphicon-check',
-						        label: 'OK',
-						        cssClass: 'btn-danger', 
-						        autospin: false,
-						        action: function(dialogRef){    
-						            dialogRef.close();
-						            location.href = 'mainandreview.html';
-						        }
-						    }]
-						});
-					} else{
-						BootstrapDialog.show({
-						    title: 'Error',
-						    message: '로그인 정보를 다시 확인해 주세요' ,
-						    buttons: [{
-						        id: 'btn-ok',  
-						        icon: 'glyphicon glyphicon-check',
-						        label: 'OK',
-						        cssClass: 'btn-danger', 
-						        autospin: false,
-						        action: function(dialogRef){    
-						            dialogRef.close();
-						        }
-						    }]
-						});
-					}
-			},"json");
-		});
+
+<script type="text/javascript">
+	$('#loginBtn').click(function() {
+		var prevPage = document.referrer;
+		
+		if(prevPage == "") {
+			prevPage = "mainandreview.html";
+		} 
+		
+		$.post(contextRoot+'/cosmetic/ajax/login.do',
+			{
+				id : $('input[type="text"]').val(),
+				password : $('input[type="password"]').val()
+			},
+			function(resultObj){
+				var ajaxResult = resultObj.ajaxResult;
+				var status = ajaxResult.status;
+				console.log(status);
+				if(status == 'success'){
+					BootstrapDialog.show({
+					    title: 'Success',
+					    message: '환영합니다!　'+$('input[type="text"]').val()+'님' ,
+					    buttons: [{
+					        id: 'btn-ok',
+					        icon: 'glyphicon glyphicon-check',
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					            location.href = 'mainandreview.html';
+					        }
+					    }]
+					});
+				} else{
+					BootstrapDialog.show({
+					    title: 'Error',
+					    message: '로그인 정보를 다시 확인해 주세요' ,
+					    buttons: [{
+					        id: 'btn-ok',  
+					        icon: 'glyphicon glyphicon-check',
+					        label: 'OK',
+					        cssClass: 'btn-danger', 
+					        autospin: false,
+					        action: function(dialogRef){    
+					            dialogRef.close();
+					        }
+					    }]
+					});
+				}
+		},"json");
+	});
 	</script>
 </body>
 </html>
