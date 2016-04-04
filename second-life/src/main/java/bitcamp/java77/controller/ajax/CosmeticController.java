@@ -198,35 +198,47 @@ public class CosmeticController {
         msg.setSubject(subject);
         Multipart multipart = new MimeMultipart();
         MimeBodyPart body   = new MimeBodyPart();
-         
-        body.setContent(  "<table style='width: 700px; border: 1px solid #000000; border-collapse: collapse;'>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse; width: 100px;'>이름</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getName() +"</td>"
-		        		+ "		</tr>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>나이</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getAge() +"</td>"
-		        		+ "		</tr>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>연락처</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getTel() +"</td>"
-		        		+ "		</tr>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>시술법</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getSurgeryPart() +"</td>"
-		        		+ "		</tr>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>상담내용</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getContent() +"</td>"
-		        		+ "		</tr>"
-		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>첨부파일</th>"
-		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'><img src='http://localhost:8008/second-life/reviewPhoto/2016/04/04/file-1459700839981-2.jpeg'></td>"
-		        		+ "		</tr>"
-		        		+ "</table>"
-		        		+ "</body>"
-		        		+ "</html>", "text/html;charset=UTF-8");
+        String html = "<table style='width: auto; border: 1px solid #000000; border-collapse: collapse;'>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse; width: 100px;'>이름</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getName() +"</td>"
+    				+ "		</tr>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>나이</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getAge() +"</td>"
+    				+ "		</tr>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>연락처</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getTel() +"</td>"
+    				+ "		</tr>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>시술법</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getSurgeryPart() +"</td>"
+    				+ "		</tr>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>상담내용</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getContent() +"</td>"
+    				+ "		</tr>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>첨부파일</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>";
+				if(req.getParameter("filePath1") != null) {
+					html += "<img src='"+ req.getParameter("filePath1")+"' width=180px height=240px style='padding: 10px;'>";
+				}
+				if(req.getParameter("filePath2") != null) {
+					html += "<img src='"+ req.getParameter("filePath2")+"' width=180px height=240px style='padding: 10px;>";
+				}
+				if(req.getParameter("filePath3") != null) {
+					html += "<img src='"+ req.getParameter("filePath3")+"' width=180px height=240px style='padding: 10px;>";
+				}
+				if(req.getParameter("filePath4") != null) {
+					html += "<img src='"+ req.getParameter("filePath4")+"' width=180px height=240px style='padding: 10px;>";
+				}
+				if(req.getParameter("filePath5") != null) {
+					html += "<img src='"+ req.getParameter("filePath5")+"' width=180px height=240px style='padding: 10px;>";
+				}
+				html += "</td></tr>/table></body></html>";
+        body.setContent(html, "text/html;charset=UTF-8");
         
         multipart.addBodyPart(body);
         msg.setContent(multipart);
