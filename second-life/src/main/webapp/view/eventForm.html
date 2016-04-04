@@ -333,7 +333,7 @@ td 	 	 { vertical-align: middle !important; line-height: 1 !important; }
 					</div>
 				</div>
 				<div class="modal-footer"> 
-					<button class="btn btn-default" id="viewRegisterForm">병원등록</button>
+					<button class="btn btn-default" id="viewRegisterForm">Add Hospital</button>
 				</div>
 				<div class="modal-body">
 					<div class="row hospitalForm" style="display: none; padding: 15px;">
@@ -358,7 +358,7 @@ td 	 	 { vertical-align: middle !important; line-height: 1 !important; }
 										<div class="input-group">
 											<input type="text" class="form-control" name="addr1" id="sample4_roadAddress" placeholder="기본주소" onclick="sample4_execDaumPostcode()"> 
 											<span class="input-group-btn">
-												<button class="btn btn-white" type="button" onclick="sample4_execDaumPostcode()">Search</button>
+												<button class="btn btn-default" type="button" onclick="sample4_execDaumPostcode()">Search</button>
 											</span>
 										</div>
 									</div>
@@ -370,7 +370,7 @@ td 	 	 { vertical-align: middle !important; line-height: 1 !important; }
 								</div>
 								<input type="hidden" name="addr">
 								<div class="form-group">
-									<label for="inputEmail" class="col-lg-2 control-label">* 전화</label>
+									<label for="inputEmail" class="col-lg-2 control-label"><span class="must">*</span>　전화</label>
 									<div class="col-lg-10">
 										<input type="text" class="form-control" name="tel">
 									</div>
@@ -378,13 +378,13 @@ td 	 	 { vertical-align: middle !important; line-height: 1 !important; }
 
 
 								<div class="form-group">
-									<label for="inputPassword" class="col-lg-2 control-label">* E-mail</label>
+									<label for="inputPassword" class="col-lg-2 control-label"><span class="must">*</span>　E-mail</label>
 									<div class="col-lg-10">
 										<input type="email" class="form-control" name="email">
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="textArea" class="col-lg-2 control-label">* 소개글</label>
+									<label for="textArea" class="col-lg-2 control-label"><span class="must">*</span>　소개글</label>
 									<div class="col-lg-10">
 										<textarea class="form-control" rows="3" id="textArea" name="content"></textarea>
 										<span class="help-block"></span>
@@ -401,8 +401,8 @@ td 	 	 { vertical-align: middle !important; line-height: 1 !important; }
 					</div>
 				</div> 
 				<div class="modal-footer hospitalFormFooter" style="display: none;">
-					<button type="reset" class="btn btn-white">취소</button>
-					<button type="submit" class="btn btn-danger" id="registerHospital">등록</button>
+					<button type="reset" class="btn btn-default">Cancel</button>
+					<button type="submit" class="btn btn-danger" id="registerHospital">Add</button>
 				</div>
 			</div>
 		</div>
