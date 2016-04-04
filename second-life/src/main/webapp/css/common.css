@@ -36,7 +36,7 @@ h1, label, span, .font-basic, .btn {
 }
 
 label, input {
-	font-size: 10px;
+	font-size: 12px;
 }
 
 .page-header-new {
@@ -70,3 +70,7 @@ a {
 }
 
 body { margin: 0px }
+
+.must {
+	color: red;
+}

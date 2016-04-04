@@ -5,15 +5,18 @@
 <title>Search Hospital</title>
 
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="../css/bootstrap-dialog.css" />
 <link rel="stylesheet" type="text/css" href="../css/AdminLTE.min.css">
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" type="text/css" href="../css/searchHospital.css">
+<link rel="stylesheet" type="text/css" href="../css/common.css">
 <link rel="stylesheet" type="text/css" href="../css/red.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
    
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap-dialog.js"></script>
 <script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=0eeb60ab1928c0907d817bb76db816de&libraries=services"></script>
 <script type="text/javascript" src="../js/icheck.js"></script>
 
@@ -22,13 +25,11 @@
 	<div id="top"></div>
 
 	<div class="container">
-		<div class="page-header">
-			<div class="row">
-				<div class="col-lg-12">
-					<h2 style="color: #cf2d39;">Search Hospital</h2>
-				</div>
-			</div>
-		</div>
+		<div class="row">
+    		<div class="col-lg-12">	
+	    		<h3 class="page-header-new">SEARCH HOSPITAL</h3>
+    		</div>
+	    </div>
 		<div class="row"> 
 			<div class="col-lg-9"><!-- 지도 -->
 				<div id="map" style="border-radius:5px; width: 100%; height:415px;"></div>
@@ -42,15 +43,13 @@
 		</div>
 		
 		<!-- 상담신청서 작성 -->
-		<div class="page-header">
-			<div class="row">
-				<div class="col-lg-12">
-					<h2 class="subTitle">Counseling List</h2>
-				</div>
-			</div>
-		</div>
+		<div class="row" style="margin-top: 25px;">
+    		<div class="col-lg-12">	
+	    		<h3 class="page-header-new">COUNSEL</h3>
+    		</div>
+	    </div>
 		<div class="row"><!-- 병원선택 --> 
-			<div class="infobox-resize">
+			<div class="infobox-resize" style="margin-top: 0px;">
 				<span class="info-box-icon bg-red infoboxicon-resize"><i class="fa fa-hospital-o"></i></span>
 				<div class="info-box-content" id="listForm"></div>
 			</div>
@@ -188,7 +187,7 @@ var hospitalArr = [];
 	    $.getJSON(contextRoot + "/cosmetic/ajax/selectMemInfo.do", function(resultObj) {
 			var member = resultObj.ajaxResult.data;
 			var d	   = new Date();
-			var age    = d.getFullYear() - parseInt(member.birth/10000) + 1;
+			var age    = d.getFullYear() - parseInt(member.birth.substring(0, 4)) + 1;
 			
 			$("input[name=name]").val(member.name);
 			$("input[name=age]").val(age);
@@ -212,7 +211,7 @@ var hospitalArr = [];
 							 + '	</div>'
 							 + '	<div class="fileDiv"> '                                          
 						     + '		<input type="file" name="file'+choice+'" id="fileInput" onchange="openFile(this)" style="display: none;"> '
-						     + '		<a href="javascript:void(0)" class="btn btn-danger fileBtn" onclick="document.all.file'+choice+'.click();">파일선택</a> '
+						     + '		<a href="javascript:void(0)" class="btn btn-default fileBtn" onclick="document.all.file'+choice+'.click();">파일선택</a> '
 						     + '	</div> '    
 							 + '</div>';
 				
@@ -223,6 +222,8 @@ var hospitalArr = [];
 	    });		
     });
 
+	
+	
 	function openFile(input) {
 	    var reader = new FileReader();
 	  
@@ -467,6 +468,65 @@ var closeClickOverlay = function() {
 	click_overlay.setMap(null);
 	click_marker.setMap(null);
 };
+
+//상담신청서 메일발송
+function sendMail() {
+	var surgeryPart = "";
+	
+	$("input[type=checkbox]:checked").each(function() {
+		if(surgeryPart == "") {
+			surgeryPart += $(this).val();
+		} else {
+			surgeryPart += (", " + $(this).val());
+		}
+	});
+
+	$.ajax({
+		type: "POST",
+		url: contextRoot + "/cosmetic/ajax/sendMail.do", 
+		data: {  
+			"name" : $("input[name=name]").val(),
+			"age" : $("input[name=age]").val(),
+			"tel" : $("input[name=tel]").val(),
+			"surgeryPart" : surgeryPart,
+			"content" : $("#textArea").val(),
+			"email" : $("input[name=email]").val()
+		},
+		dataType: "json",
+		success: function(resultObj) {
+			if(resultObj.ajaxResult.status == 'success'){
+				BootstrapDialog.show({
+				    title: 'Success',
+				    message: '상담 신청서가 발송 되었습니다.' ,
+				    buttons: [{
+				        id: 'btn-ok',
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				            location.href = 'search_hospital.html';
+				        }
+				    }]
+				});
+			} else{
+				BootstrapDialog.show({
+				    title: 'Error',
+				    message: '상담 신청서를 발송하지 못했습니다.' ,
+				    buttons: [{
+				        id: 'btn-ok',  
+				        label: 'OK',
+				        cssClass: 'btn-danger', 
+				        autospin: false,
+				        action: function(dialogRef){    
+				            dialogRef.close();
+				        }
+				    }]
+				});
+			}
+		}
+	});
+}
 </script>
 </body>
 </html>
