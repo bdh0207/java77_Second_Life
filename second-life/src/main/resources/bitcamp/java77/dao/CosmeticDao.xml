@@ -248,8 +248,16 @@
  	</select>
  	
  	<select id="selectReviewListDetail" parameterType="int" resultType="CosmeticReview">
- 		select RNO as reviewNo, MNO as memberNo, HNO as hospitalNo,title as title,CONT as content, VCNT as viewCnt, (select count(*) from review_recom where rno = #{revieweNo}) as recomCnt , SPART as sugeryPart, STAT as status,hos_name as hospitalName,doc_name as doctorName,sway as sugeryWay, sprice as sugeryPrice, sdate as sugeryDate, REG_DATE as regDate 
- 		from review where rno = #{reviewNo}
+ 		select a.RNO as reviewNo, a.MNO as memberNo, b.id as memberId, a.HNO as hospitalNo,a.title as title,a.CONT as content, a.VCNT as viewCnt, (select count(*) from review_recom where a.rno = #{reviewNo}) as recomCnt , a.SPART as sugeryPart, a.STAT as status,a.hos_name as hospitalName,a.doc_name as doctorName,a.sway as sugeryWay, a.sprice as sugeryPrice, a.sdate as sugeryDate, a.REG_DATE as regDate 
+ 		from review a
+        inner join member b
+        on a.mno = b.mno
+ 		where rno = #{reviewNo}
+		<!-- 
+ 		select RNO as reviewNo, MNO as memberNo, HNO as hospitalNo,title as title,CONT as content, VCNT as viewCnt, (select count(*) from review_recom where a.rno = #{revieweNo}) as recomCnt , SPART as sugeryPart, STAT as status,hos_name as hospitalName,doc_name as doctorName,sway as sugeryWay, sprice as sugeryPrice, sdate as sugeryDate, REG_DATE as regDate 
+ 		from review a
+ 		where a.rno = #{reviewNo}
+ 		-->
  	</select>
  	
  	<!-- 페이징하기 위한 searchVO로 조회 -->

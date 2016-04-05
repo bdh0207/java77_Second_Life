@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>꽃보다 아름다운</title>  
+<title>꽃보다 아름다운</title>
+<link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />  
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
 <link rel="stylesheet" type="text/css" href="../css/flexslider.css" >
@@ -63,13 +64,13 @@ $(document).ready(function() {
 		}
  		
  		if(ajaxResult.status == 'success'){
- 			 
+ 			 console.log(reviewDetail);
  	 		 $('#data-title').text(reviewDetail.review.title);
  			 $('#data-content').text(reviewDetail.review.content);
  	 		 $('#viewCnt').text(reviewDetail.review.viewCnt);
  	 		 $('#recomCnt').text(reviewDetail.review.recomCnt);
  			 $('#commentCnt').text(reviewDetail.commentCnt);
- 			 $('#memberId').text(reviewDetail.member.id);
+ 			 $('#memberId').text(reviewDetail.review.memberId);
  	 		 
  	 		 for(var photoList of reviewDetail.photo){
  	 			 var li =   '<li data-thumb="'+photoList.filePath+'">	 ';
@@ -540,7 +541,7 @@ function commentDel(commentNo, reviewNo) {
 			</div>
 			<div class="col-lg-6">
 				<div class="row divideLine" style="margin-top: 0px;">
-					<a href="#" class="btn btn-danger" id="viewInfo" data-toggle="modal" data-target="#myModal" style="position: absolute; right: 15px;">View Info</a>
+					<a href="#" class="btn btn-danger" id="viewInfo" data-toggle="modal" data-target="#myModal" style="position: absolute; right: 15px; z-index: 1;">View Info</a>
 					<div class="col-lg-12 paddingL"> 
 						<h4 class="font-bold" id="data-title" style="margin: 0px;"></h4>
 					</div>
