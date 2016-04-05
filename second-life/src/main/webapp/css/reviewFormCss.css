@@ -33,12 +33,12 @@
 	ime-mode: disabled !important;
 }
  
-#cancelBtn, #writeBtn {
+#cancelBtn, #writeBtn,#updateBtn {
 	float: right;
 	margin-bottom: 21px;
 }
 
-#writeBtn {
+#writeBtn,#updateBtn {
 	margin-left: 10px;
 }
 

@@ -20,10 +20,10 @@
 		/* // top 적용
 		$('#top').load('top.html'); */
 		
- 		$('#inputId').keyup(function(){
+ 	$('#inputId').keyup(function(){
  			var uid = $('#inputId').val();
  			
- 			$.getJSON('http://localhost:3001/idCheck?uid='+uid+'&callback=?',function(resultObj){
+ 		$.getJSON('http://localhost:3001/idCheck?uid='+uid+'&callback=?',function(resultObj){
 
  				if(resultObj.data == 0){
 					$('#idCheckText').css('color','green').text('사용 가능한 ID 입니다.');
@@ -45,12 +45,10 @@
 	        radioClass: 'iradio_square-red',
 	        increaseArea: '20%' // optional
 		});
-	});
-
-	// 취소시 로그인 화면으로 이동
+		// 취소시 로그인 화면으로 이동
 		$("#cancel").on("click", function(){
 			location.href = 'login.html';
-		})
+		});
 	});
 </script>
 <style type="text/css">
@@ -194,7 +192,7 @@
 						<div class="col-lg-2" style="font-size: 10pt;">
 							<input type="radio" id="optionsRadios1" value="male" name="gender" checked> Male
 						</div>
-						<div class="col-lg-2" style="font-size: 10pt;">
+						<div class="col-lg-2" style="font-size: 10pt; width: 130px;" >
 							<input type="radio" id="optionsRadios1" value="female" name="gender"> Female
 						</div>
 					</div>
@@ -242,7 +240,7 @@
 	</div>
 	<script type="text/javascript">
 	// 회원가입
-	$("#joinBtn").click(function() {
+	$("#join").click(function() {
 		$("input[name=tel]").val($("input[name=tel1]").val()+"-"+$("input[name=tel2]").val()+"-"+$("input[name=tel3]").val());
 		
 		if($("input[name=id]").val() == "") {
