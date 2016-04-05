@@ -176,71 +176,83 @@ public class CosmeticController {
 	}
 	
 	// 상담신청서 발송
-//	@RequestMapping(value="sendMail")
-//	public void sendMail(CosmeticCounsel cosmeticConsel, HttpServletRequest req) throws Exception, MessagingException {
-//		System.out.println(req.getParameter("filePath"));
-		// 메일 관련 정보
-//        String host 	= "smtp.gmail.com";
-//        String username = "77secondlife@gmail.com";
-//        String password = "3whxptmxm";
-//         
-//        // 메일 내용
-//        String recipient = cosmeticConsel.getEmail();
-//        String subject   = "상담 신청 메일 발송";
-//         
-//        //properties 설정
-//        Properties props = new Properties();
-//        props.put("mail.smtps.auth", "true");
-//        
-//        // 메일 세션
-//        Session session = Session.getDefaultInstance(props);
-//        MimeMessage msg = new MimeMessage(session);
-// 
-//        // 메일 관련
-//        msg.setSubject(subject);
-//        Multipart multipart = new MimeMultipart();
-//        MimeBodyPart body   = new MimeBodyPart();
-//         
-//        body.setContent(  "<table style='width: 700px; border: 1px solid #000000; border-collapse: collapse;'>"
-//		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-//		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse; width: 100px;'>이름</th>"
-//		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getName() +"</td>"
-//		        		+ "		</tr>"
-//		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-//		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>나이</th>"
-//		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getAge() +"</td>"
-//		        		+ "		</tr>"
-//		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-//		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>연락처</th>"
-//		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getTel() +"</td>"
-//		        		+ "		</tr>"
-//		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-//		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>시술법</th>"
-//		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getSurgeryPart() +"</td>"
-//		        		+ "		</tr>"
-//		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-//		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>상담내용</th>"
-//		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getContent() +"</td>"
-//		        		+ "		</tr>"
-//		        		+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
-//		        		+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>첨부파일</th>"
-//		        		+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'><img src='"+ req.getParameter("filePath") +"'></td>"
-//		        		+ "		</tr>"
-//		        		+ "</table>"
-//		        		+ "</body>"
-//		        		+ "</html>", "text/html;charset=UTF-8");
-//        
-//        multipart.addBodyPart(body);
-//        msg.setContent(multipart);
-//        msg.setFrom(new InternetAddress(username));
-//        msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-// 
-//        // 발송 처리
-//        Transport transport = session.getTransport("smtps");
-//        transport.connect(host, username, password);
-//        transport.sendMessage(msg, msg.getAllRecipients());
-//        transport.close();  
-//	}
+	@RequestMapping(value="sendMail")
+	public AjaxResult sendMail(CosmeticCounsel cosmeticConsel, HttpServletRequest req) throws Exception, MessagingException {
+        String host 	= "smtp.gmail.com";
+        String username = "77secondlife@gmail.com";
+        String password = "3whxptmxm";
+         
+        // 메일 내용
+        String recipient = cosmeticConsel.getEmail();
+        String subject   = "SECOND LIFE 상담 신청 왔습니다^^";
+         
+        //properties 설정
+        Properties props = new Properties();
+        props.put("mail.smtps.auth", "true");
+        
+        // 메일 세션
+        Session session = Session.getDefaultInstance(props);
+        MimeMessage msg = new MimeMessage(session);
+ 
+        // 메일 관련
+        msg.setSubject(subject);
+        Multipart multipart = new MimeMultipart();
+        MimeBodyPart body   = new MimeBodyPart();
+        String html = "<table style='width: auto; border: 1px solid #000000; border-collapse: collapse;'>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse; width: 100px;'>이름</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getName() +"</td>"
+    				+ "		</tr>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>나이</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getAge() +"</td>"
+    				+ "		</tr>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>연락처</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getTel() +"</td>"
+    				+ "		</tr>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>시술법</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getSurgeryPart() +"</td>"
+    				+ "		</tr>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>상담내용</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse; padding-left: 10px;'>"+ cosmeticConsel.getContent() +"</td>"
+    				+ "		</tr>"
+    				+ "		<tr style='border: 1px solid #000000; border-collapse: collapse; height: 30px;'>"
+    				+ "			<th style='border: 1px solid #000000; border-collapse: collapse;'>첨부파일</th>"
+    				+ "			<td style='border: 1px solid #000000; border-collapse: collapse;'>";
+				if(req.getParameter("filePath1") != null) {
+					html += "<img src='"+ req.getParameter("filePath1")+"' width=180px height=240px style='padding: 10px;'>";
+				}
+				if(req.getParameter("filePath2") != null) {
+					html += "<img src='"+ req.getParameter("filePath2")+"' width=180px height=240px style='padding: 10px;'>";
+				}
+				if(req.getParameter("filePath3") != null) {
+					html += "<img src='"+ req.getParameter("filePath3")+"' width=180px height=240px style='padding: 10px;'>";
+				}
+				if(req.getParameter("filePath4") != null) {
+					html += "<img src='"+ req.getParameter("filePath4")+"' width=180px height=240px style='padding: 10px;'>";
+				}
+				if(req.getParameter("filePath5") != null) {
+					html += "<img src='"+ req.getParameter("filePath5")+"' width=180px height=240px style='padding: 10px;'>";
+				}
+				html += "</td></tr></table></body></html>";
+        body.setContent(html, "text/html;charset=UTF-8");
+        
+        multipart.addBodyPart(body);
+        msg.setContent(multipart);
+        msg.setFrom(new InternetAddress(username));
+        msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+ 
+        // 발송 처리
+        Transport transport = session.getTransport("smtps");
+        transport.connect(host, username, password);
+        transport.sendMessage(msg, msg.getAllRecipients());
+        transport.close();  
+        
+        return new AjaxResult("success", null);
+	}
 	
 	// 회원가입
 	@RequestMapping(value="join")
