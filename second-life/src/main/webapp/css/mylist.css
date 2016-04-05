@@ -1,5 +1,5 @@
 @CHARSET "UTF-8";
-
+ 
 .selectbar{ 
 	width: 50%;
 	height:30px;
@@ -24,23 +24,11 @@
 #info {
 	background-color: #e27f86; 
 	color: #ffffff;
-	padding-left: 20px;
 } 
-
-.title-mylist { 
-	margin-bottom: 0px; 
-	overflow: hidden;
-	text-overflow:ellipsis;
-	white-space: nowrap;
-}
-
-.icon-mylist {
-	padding-top: 15px;
-	padding-bottom: 15px;  
-}
-
+  
 #thumbnail-new {
 	padding: 0px;
+	padding-bottom: 5px;
 	border-radius: 0px;
 	line-height: 1;
 }

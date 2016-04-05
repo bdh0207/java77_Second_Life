@@ -2,46 +2,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SECOND LIFE</title>
 <link rel="stylesheet" href="../css/mylist.css" type="text/css">
 <link rel="stylesheet" href="../css/needpopup.min.css">
+<link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
-<!-- <link rel="stylesheet" href="../lib/bootflat/css/site.min.css"> -->
-<link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
+<link rel="stylesheet" type="text/css" href="../css/common.css" />
 <style type="text/css">
 	.item{
-		width: 250px;
+		width: 260px;
 	}
-/* 	.gigante{ */
-/* 		width: 350px; */
-/* 		height: 280px; */
-/* 	} */
-/* 	@media (min-width: 1200px){ */
-/* 		.container{ */
-/* 			width: 1170px !important; */
-/* 		} */
-/* 	} */
-	
-/* 	@media (min-width: 992px){ */
-/* 		.container{ */
-/* 			width: 970px; */
-/* 		} */
-/* 	} */
-	
-/* 	@media (min-width: 768px){ */
-/* 		.container{ */
-/* 			width: 750px; */
-/* 		} */
-/* 	} */
-	
-/* 	.container, .container-fluid{ */
-/* 		padding-left: 15px !important; */
-/* 		padding-left: 15px !important; */
-/* 		margin-left: auto !important; */
-/* 		margin-right: auto !important; */
-/* 	} */
 </style>
 
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
@@ -50,13 +22,12 @@
 <script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> <!-- marsonry -->
 <script src="../js/common.js"></script>
 <script src="../js/bootstrap-dialog.js"></script>
-
 <script>
 	$(window).load(function() {
 		var container = document.querySelector('#columns');
 		var $grid = $('#columns').masonry({
 			itemSelector:'.item',
-			columnWidth: 270,
+			columnWidth: 280,
 			isAnimated: true
 		});
 		
@@ -87,15 +58,15 @@
 					div +=	'		<div class="thumbnail" id="thumbnail-new">                                      							   ';
 					div +=	'		<a class="detailLnk" href="#"><img class="img-rounded" reviewNo="'+wish.reviewNo+'" src="'+ afterPath +'"></a>';
 					div +=	'		<div class="caption">                                                           								';
-					div +=	'			<h3 class="title-mylist">'+wish.title+'</h3>                               									 ';
-					div +=	'			<p lang="content-mylist">'+wish.memberId+'</p>                                   						';
-					div +=	'			<p class="text-center icon-mylist">                                         							';
-				    div +=      '     	   		<img src="../images/eye.png" width="15px" height="15px" />'+wish.viewCnt;
-				    div +=      '          	<img src="../images/heart.png" width="15px" height="15px" />' +wish.recomCnt ;
-				    div +=      '          </p>                                                                       ';
-					div +=	'			<p class="text-center">                                                     ';
-					div +=	'				<a id="infoBtn" onclick="getInfo(' + wish.wishNo +','+wish.reviewNo+'); return false;" class="btn btn-warning">정보받기</a>                        ';
-					div +=	'				<a id="deleteBtn" onclick="wishDel('+wish.wishNo+'); return false;" class="btn btn-danger">삭제</a>                             ';
+					div +=	'			<h5 class="ellipsis font-bold">'+wish.title+'</h5>                               									 ';
+					div +=	'			<p lang="content-mylist" style="margin-bottom: 40px;">'+wish.memberId+'</p>                                   						';
+					div +=	'			<span style="line-height: 1.6;">                                         							';
+				    div +=  '     	   		<img src="../images/eye.png" class="smIcon" style="margin-left: 0px;"/>'+wish.viewCnt;
+				    div +=  '          		<img src="../images/heart.png" class="smIcon"/>' +wish.recomCnt ;
+				    div +=  '           </span>                                                                       ';
+					div +=	'			<p style="margin-bottom: 0px; display: inline; position: absolute; right: 9px;">                                                     ';
+					div +=	'				<a id="infoBtn" onclick="getInfo(' + wish.wishNo +','+wish.reviewNo+'); return false;" class="btn btn-default btn-half">정보받기</a>                        ';
+					div +=	'				<a id="deleteBtn" onclick="wishDel('+wish.wishNo+'); return false;" class="btn btn-danger btn-half">삭제</a>                             ';
 					div +=	'			</p>                                                                        ';
 					div +=	'		</div>                                                                          ';
 					div +=	'		</div>                                                                          ';
@@ -218,137 +189,42 @@
 	 
 	<!-- 페이지 소개 -->
 	<div class="container">
-		<div class="title"><hr></div>
-		<div class="title text-center">MY PAGE</div>
-		<div class="title"><hr>	</div>
-	</div>
-	
-	<!-- 본문 -->
-	<div class="container document">
-		<div class="example">
-			<div class="row">
+		<div class="row">
+    		<div class="col-lg-12">	
+	    		<h3 class="page-header-new">MY WISH</h3>
+    		</div>
+	    </div>
+		<div class="row">
+			<div class="col-lg-12">
 				<div class="selectbar selectbar1" onclick="location.href='mylist.html'">USER REVIEW</div>
 				<div class="selectbar selectbar2" onclick="location.href='mylist_event.html'">EVENT</div>
 			</div>
 		</div>
 		
-		<div class="example">
-			<div class="row" id="info">
-				<h1 class="info-text">I’M LOVIN’ IT!</h1>
-		        <h3 class="info-text">YOUR FAVORITE USER REVIEW</h3>
-		        <h4 class="info-text">마음에 드는 후기와<br>병원 정보들을 모아보고,<br>정보를 얻어 체계적인 상담 신청을  해보세요.</h4> 
+		<div class="row" style="margin: 15px 0px;">
+			<div class="col-lg-12" id="info">
+				<h1 class="font-bold">I’M LOVIN’ IT!</h1>
+		        <h3 class="font-basic">YOUR FAVORITE USER REVIEW</h3>
+		        <h4 class="font-basic" style="line-height: 1.4; font-weight: 500;">마음에 드는 후기와<br>병원 정보들을 모아보고,<br>정보를 얻어 체계적인 상담 신청을  해보세요.</h4> 
 			</div>
 		</div>
 		
-		<div id="masonry">
+		<div id="masonry" style="margin-left: 17px;">
 			<div id="columns">
-				<!--
-				<div class="item">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 class="title-mylist">쌍수한지 3달째</h3>
-							<p lang="content-mylist">kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center">
-								<a href="#" class="btn btn-warning">정보받기</a>
-								<a href="#" class="btn btn-danger">삭제</a>
-							</p>
-						</div>
-					</div>
-				</div>
-				
-				<div class="item">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 class="title-mylist">쌍수한지 3달째dfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfg</h3>
-							<p lang="content-mylist">kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center">
-								<a href="#" class="btn btn-warning">정보받기</a>
-								<a href="#" class="btn btn-danger">삭제</a>
-							</p>
-						</div>
-					</div>
-				</div>
-				
-				<div class="item">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 class="title-mylist">쌍수한지 3달째dfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfg</h3>
-							<p lang="content-mylist">kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center">
-								<a href="#" class="btn btn-warning">정보받기</a>
-								<a href="#" class="btn btn-danger">삭제</a>
-							</p>
-						</div>
-					</div>
-				</div>
-				
-				<div class="item">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 class="title-mylist">쌍수한지 3달째dfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfg</h3>
-							<p lang="content-mylist">kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center">
-								<a href="#" class="btn btn-warning">정보받기</a>
-								<a href="#" class="btn btn-danger">삭제</a>
-							</p>
-						</div>
-					</div>
-				</div>
-				
-				<div class="item">
-					<div class="thumbnail" id="thumbnail-new">
-						<img class="img-rounded" src="../images/after2.jpg">
-						<div class="caption">
-							<h3 class="title-mylist">쌍수한지 3달째dfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfg</h3>
-							<p lang="content-mylist">kkokkodaek87</p>
-							<p class="text-center icon-mylist">
-		               	   		<img src="../images/eye.png" width="15px" height="15px" /> 22534
-		                    	<img src="../images/heart.png" width="15px" height="15px" /> 22534
-		                    </p>
-							<p class="text-center">
-								<a href="#" class="btn btn-warning">정보받기</a>
-								<a href="#" class="btn btn-danger">삭제</a>
-							</p>
-						</div>
-					</div>
-				</div>
-				-->
 				
 			</div><!-- columns end -->
 		</div>
-		
-			 
-			<!-- '정보받기' 버튼 클릭시 나타나는 메시지 -->
-			<div id="modal-popup" class="needpopup">
-				<p>
-					수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br/>
-					병원 및 의사 : 에이트 성형외과<br/>
-					수술 가격 : 하트 주시면 정보 드릴게요!!<br>
-					수술 시기 : 11월 10일
-				</p>
-			</div> 
-		</div> 
 	</div>
+	
+	<!-- '정보받기' 버튼 클릭시 나타나는 메시지 -->
+	<div id="modal-popup" class="needpopup">
+		<p>
+			수술부위 및 방법 : 비절개 눈매교정, 뒤트임, 밑트임, 코성형, 퀵광대<br/>
+			병원 및 의사 : 에이트 성형외과<br/>
+			수술 가격 : 하트 주시면 정보 드릴게요!!<br>
+			수술 시기 : 11월 10일
+		</p>
+	</div> 
 
 	<script src="../js/needpopup.min.js"></script>
 	<script>  

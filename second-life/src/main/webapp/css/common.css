@@ -78,3 +78,8 @@ body { margin: 0px }
 .must {
 	color: red;
 }
+
+.btn-half {
+	padding: 4px 12px;
+	font-size: 13px;
+}
