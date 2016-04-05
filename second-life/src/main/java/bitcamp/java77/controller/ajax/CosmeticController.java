@@ -184,7 +184,7 @@ public class CosmeticController {
          
         // 메일 내용
         String recipient = cosmeticConsel.getEmail();
-        String subject   = "상담 신청 메일 발송";
+        String subject   = "SECOND LIFE 상담 신청 왔습니다^^";
          
         //properties 설정
         Properties props = new Properties();
@@ -226,18 +226,18 @@ public class CosmeticController {
 					html += "<img src='"+ req.getParameter("filePath1")+"' width=180px height=240px style='padding: 10px;'>";
 				}
 				if(req.getParameter("filePath2") != null) {
-					html += "<img src='"+ req.getParameter("filePath2")+"' width=180px height=240px style='padding: 10px;>";
+					html += "<img src='"+ req.getParameter("filePath2")+"' width=180px height=240px style='padding: 10px;'>";
 				}
 				if(req.getParameter("filePath3") != null) {
-					html += "<img src='"+ req.getParameter("filePath3")+"' width=180px height=240px style='padding: 10px;>";
+					html += "<img src='"+ req.getParameter("filePath3")+"' width=180px height=240px style='padding: 10px;'>";
 				}
 				if(req.getParameter("filePath4") != null) {
-					html += "<img src='"+ req.getParameter("filePath4")+"' width=180px height=240px style='padding: 10px;>";
+					html += "<img src='"+ req.getParameter("filePath4")+"' width=180px height=240px style='padding: 10px;'>";
 				}
 				if(req.getParameter("filePath5") != null) {
-					html += "<img src='"+ req.getParameter("filePath5")+"' width=180px height=240px style='padding: 10px;>";
+					html += "<img src='"+ req.getParameter("filePath5")+"' width=180px height=240px style='padding: 10px;'>";
 				}
-				html += "</td></tr>/table></body></html>";
+				html += "</td></tr></table></body></html>";
         body.setContent(html, "text/html;charset=UTF-8");
         
         multipart.addBodyPart(body);

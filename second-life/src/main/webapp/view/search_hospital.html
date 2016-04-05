@@ -27,7 +27,7 @@
 	<div class="container">
 		<div class="row">
     		<div class="col-lg-12">	
-	    		<h3 class="page-header-new">SEARCH HOSPITAL</h3>
+	    		<h3 class="page-header-new">COUNSEL</h3>
     		</div>
 	    </div>
 		<div class="row"> 
@@ -41,15 +41,8 @@
 				<div class="mapList" style="width: 100%; height: 375px; overflow: auto;"></div>
 			</div>
 		</div>
-		
-		<!-- 상담신청서 작성 -->
-		<div class="row" style="margin-top: 25px;">
-    		<div class="col-lg-12">	
-	    		<h3 class="page-header-new">COUNSEL</h3>
-    		</div>
-	    </div>
 		<div class="row"><!-- 병원선택 --> 
-			<div class="infobox-resize" style="margin-top: 0px;">
+			<div class="infobox-resize" style="margin-top: 30px;">
 				<span class="info-box-icon bg-red infoboxicon-resize"><i class="fa fa-hospital-o"></i></span>
 				<div class="info-box-content" id="listForm"></div>
 			</div>
@@ -155,8 +148,8 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-12">
-				<button id="counseling" class="btn btn-danger buttonStyle" onclick="sendMail()">Counseling</button>
+			<div class="col-lg-offset-4 col-lg-4">
+				<button id="counseling" class="btn btn-danger buttonStyle glyphicon glyphicon-envelope" onclick="sendMail()">　Counseling</button>
 			</div>
 		</div>
 	</div>
@@ -205,7 +198,7 @@ var hospitalArr = [];
 	    	if($(this).parent().attr("class") == "icheckbox_square-red hover checked") {
 		    	var choice   = $(this).parent().parent().children("label").attr("for");
 		    	var fileHtml = '<div class="list">' 
-							 + '	<div class="X" onclick="close(this)">Close</div>' 
+							 + '	<div class="X" onclick="$(this).parent().remove();">Close</div>' 
 							 + '	<div class="listText">' 
 							 + '		<img class="file-img '+choice+'" id="output" src="http://www.randomlengthsnews.com/wp-content/themes/gonzo/images/no-image-blog-one.png">' 
 							 + '	</div>'
@@ -221,11 +214,7 @@ var hospitalArr = [];
 	    	}
 	    });		
     });
-
-    function close(target) {
-		$(target).parent().remove();
-	}
-	
+ 
 	function openFile(input) {
 	    var reader = new FileReader();
 	  
@@ -265,7 +254,7 @@ var hospitalArr = [];
 			var idx;
 		 	for(idx=0; idx<data.length; idx++){
 		 		$(".mapList").append('<blockquote class="blockquote"><p style="font-size: 15px;" class="font-bold">' + data[idx].name + ' ' +
-		 							 '<button class="btn btn-danger mapPoint" onclick="mapPoint('+ idx +')" style="margin-top: -3px;">지도</button>' + '</p>' +
+		 							 '<button class="btn btn-danger mapPoint" onclick="mapPoint('+ idx +')" style="margin-top: -3px; padding: 0px 2px;">지도</button>' + '</p>' +
 		 				  			 '<small class="font-basic">' + data[idx].addr + '</small>' + 
 		 				  			 '<small class="font-basic">' + data[idx].surgeryPart + '</small>' + 
 		 				  			 '<small class="font-basic">'+ data[idx].tel + '</small>' +
@@ -350,10 +339,10 @@ var hospitalArr = [];
 		if($('#h_'+hospitalArr[idx].hospitalNo).length == 0){
 			$("#listForm").append('<div class="list" id="h_'+ hospitalArr[idx].hospitalNo +'">'+
 								  '<div class="X">Close</div>' +
-								  '<div class="listText ">' + '<div class="bFont" style="font-size: 11pt;">' + hospitalArr[idx].name + '<hr class="listHr"/></div>' +
-								  '<span class="bFont">' + '주소' + '</span>' + '<br />'　+  hospitalArr[idx].addr + '<br /><br />' +
-								  '<span class="bFont">' + '수술부위' + '</span>' + '<br /><div class="partData">' + hospitalArr[idx].surgeryPart + '</div><br /><br />' +
-								  '<span class="bFont">' + '전화번호' + '</span>' + '<br />' + hospitalArr[idx].tel + '<br /><br />' +
+								  '<div class="listText font-basic">' + '<div class="font-bold" style="font-size: 11pt;">' + hospitalArr[idx].name + '<hr class="listHr"/></div>' +
+								  '<span class="font-bold">' + '주소' + '</span>' + '<br />'　+  hospitalArr[idx].addr + '<br /><br />' +
+								  '<span class="font-bold">' + '수술부위' + '</span>' + '<br /><div class="partData">' + hospitalArr[idx].surgeryPart + '</div><br /><br />' +
+								  '<span class="font-bold">' + '전화번호' + '</span>' + '<br />' + hospitalArr[idx].tel + '<br /><br />' +
 								  '</div>'+
 								  '<input type="hidden" name="email" value="'+hospitalArr[idx].email+'">' + 
 								  '<input type="hidden" name="hospitalNo" value="'+hospitalArr[idx].hospitalNo+'">' + 
@@ -388,7 +377,7 @@ var hospitalArr = [];
 				if(searchResult != -1){
 					console.log("성공")
 					$(".mapList").append('<blockquote class="blockquote"><p style="font-size: 15px; font-weight: bold;">' + name + ' ' +
-										 '<button class="btn btn-danger mapPoint" onclick="mapPoint('+ idx +')" style="margin-top: -3px;">지도</button>' + '</p>' +
+										 '<button class="btn btn-danger mapPoint" onclick="mapPoint('+ idx +')" style="margin-top: -3px; padding: 0px 2px;">지도</button>' + '</p>' +
 										 '<small>' + hospitalArr[idx].addr + '</small>' + 
 					  			 		 '<small>' + hospitalArr[idx].surgeryPart + '</small>' + 
 					  					 '<small>' + hospitalArr[idx].tel + '</small>' + 
@@ -473,95 +462,108 @@ var closeClickOverlay = function() {
 
 //상담신청서 메일발송
 function sendMail() {
-	var rootUrl = contextRoot.substring(0, contextRoot.lastIndexOf("/"));
-	console.log($("#listForm").children(".list").size());
+	var rootUrl 	= contextRoot.substring(0, contextRoot.lastIndexOf("/"));
 	var surgeryPart = "";
 	var photoSrc 	= new Array();
 	
-	$("input[type=checkbox]:checked").each(function() {
-		if(surgeryPart == "") {
-			surgeryPart += $(this).val();
-		} else {
-			surgeryPart += (", " + $(this).val());
-		}
-	});
-
-	var formData = new FormData();
-	
-	for(var i=1 ; i<=$("input[type=file]").length ; i++) {
-		formData.append('file'+i, $("input[type=file]")[i-1].files[0]);
-	}
-	formData.append('hospitalNo', $("input[name=hospitalNo]").val());
-	formData.append('name', $("input[name=name]").val());
-	formData.append('age', $("input[name=age]").val());
-	formData.append('surgeryPart', surgeryPart);
-	formData.append('tel', $("input[name=tel]").val());
-	formData.append('content', $("#textArea").val());
-	formData.append('email', $("input[name=email]").val());
-	
-	$.ajax({
-		type: "POST",
-		url: contextRoot + "/cosmetic/ajax/counselAdd.do", 
-		dataType: 'json',
-		processData: false,
-		contentType: false,
-		data: formData
-	}).done(function(resultObj) {
-		for(var list of resultObj.ajaxResult.data) {
-			photoSrc.push(rootUrl + list.filePath);
-		}
-		 
-		$.ajax({
-			type: "POST",
-			url: contextRoot + "/cosmetic/ajax/sendMail.do", 
-			data: {  
-				"name" : $("input[name=name]").val(),
-				"age" : $("input[name=age]").val(),
-				"tel" : $("input[name=tel]").val(),
-				"surgeryPart" : surgeryPart,
-				"content" : $("#textArea").val(),
-				"email" : $("input[name=email]").val(),
-				"filePath1" : photoSrc[0],
-				"filePath2" : photoSrc[1],
-				"filePath3" : photoSrc[2],
-				"filePath4" : photoSrc[3],
-				"filePath5" : photoSrc[4]
-			},
-			dataType: "json",
-			success: function(resultObj) {
-				if(resultObj.ajaxResult.status == 'success'){
-					BootstrapDialog.show({
-					    title: 'Success',
-					    message: '상담 신청서가 발송 되었습니다.' ,
-					    buttons: [{
-					        id: 'btn-ok',
-					        label: 'OK',
-					        cssClass: 'btn-danger', 
-					        autospin: false,
-					        action: function(dialogRef){    
-					            dialogRef.close();
-					            location.href = 'search_hospital.html';
-					        }
-					    }]
-					});
-				} else{
-					BootstrapDialog.show({
-					    title: 'Error',
-					    message: '상담 신청서를 발송하지 못했습니다.' ,
-					    buttons: [{
-					        id: 'btn-ok',  
-					        label: 'OK',
-					        cssClass: 'btn-danger', 
-					        autospin: false,
-					        action: function(dialogRef){    
-					            dialogRef.close();
-					        }
-					    }]
-					});
-				}
+	if($("#listForm").children(".list").size() == 0) {
+		BootstrapDialog.alert('상담 받을 병원을 선택해 주세요.');
+	} else if($("input[type=checkbox]:checked").length == 0) {
+		BootstrapDialog.alert('상담 받을 부위를 선택해 주세요.');
+	} else if($("input[name=name]").val() == "") {
+		BootstrapDialog.alert('이름을 입력해 주세요.');
+	} else if($("input[name=age]").val() == "") {
+		BootstrapDialog.alert('나이를 입력해 주세요.');
+	} else if($("input[name=tel]").val() == "") {
+		BootstrapDialog.alert('연락처를 입력해 주세요.');
+	} else if($("#textArea").val() == "") {
+		BootstrapDialog.alert('상담내용을 입력해 주세요.');
+	} else {
+		$("input[type=checkbox]:checked").each(function() {
+			if(surgeryPart == "") {
+				surgeryPart += $(this).val();
+			} else {
+				surgeryPart += (", " + $(this).val());
 			}
 		});
-	})
+	
+		var formData = new FormData();
+		
+		for(var i=1 ; i<=$("input[type=file]").length ; i++) {
+			formData.append('file'+i, $("input[type=file]")[i-1].files[0]);
+		}
+		formData.append('hospitalNo', $("input[name=hospitalNo]").val());
+		formData.append('name', $("input[name=name]").val());
+		formData.append('age', $("input[name=age]").val());
+		formData.append('surgeryPart', surgeryPart);
+		formData.append('tel', $("input[name=tel]").val());
+		formData.append('content', $("#textArea").val());
+		formData.append('email', $("input[name=email]").val());
+		
+		$.ajax({
+			type: "POST",
+			url: contextRoot + "/cosmetic/ajax/counselAdd.do", 
+			dataType: 'json',
+			processData: false,
+			contentType: false,
+			data: formData
+		}).done(function(resultObj) {
+			for(var list of resultObj.ajaxResult.data) {
+				photoSrc.push(rootUrl + list.filePath);
+			}
+			 
+			$.ajax({
+				type: "POST",
+				url: contextRoot + "/cosmetic/ajax/sendMail.do", 
+				data: {  
+					"name" : $("input[name=name]").val(),
+					"age" : $("input[name=age]").val(),
+					"tel" : $("input[name=tel]").val(),
+					"surgeryPart" : surgeryPart,
+					"content" : $("#textArea").val(),
+					"email" : $("input[name=email]").val(),
+					"filePath1" : photoSrc[0],
+					"filePath2" : photoSrc[1],
+					"filePath3" : photoSrc[2],
+					"filePath4" : photoSrc[3],
+					"filePath5" : photoSrc[4]
+				},
+				dataType: "json",
+				success: function(resultObj) {
+					if(resultObj.ajaxResult.status == 'success'){
+						BootstrapDialog.show({
+						    title: 'Success',
+						    message: '상담 신청서가 발송 되었습니다.' ,
+						    buttons: [{
+						        id: 'btn-ok',
+						        label: 'OK',
+						        cssClass: 'btn-danger', 
+						        autospin: false,
+						        action: function(dialogRef){    
+						            dialogRef.close();
+						            location.href = 'search_hospital.html';
+						        }
+						    }]
+						});
+					} else{
+						BootstrapDialog.show({
+						    title: 'Error',
+						    message: '상담 신청서를 발송하지 못했습니다.' ,
+						    buttons: [{
+						        id: 'btn-ok',  
+						        label: 'OK',
+						        cssClass: 'btn-danger', 
+						        autospin: false,
+						        action: function(dialogRef){    
+						            dialogRef.close();
+						        }
+						    }]
+						});
+					}
+				}
+			});
+		})
+	}
 }
 </script>
 </body>
