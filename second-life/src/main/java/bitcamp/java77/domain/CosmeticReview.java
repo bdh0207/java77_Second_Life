@@ -7,6 +7,7 @@ import java.util.List;
 public class CosmeticReview implements Serializable {
 	protected int reviewNo;
 	protected int memberNo;
+	protected String memberId;
 	protected int hospitalNo;
 	protected String title;
 	protected String content;
@@ -24,6 +25,12 @@ public class CosmeticReview implements Serializable {
 	protected List<CosmeticReviewComment> reviewComment;
 	protected CosmeticMember member;
 	
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 	public int getRecomCnt() {
 		return recomCnt;
 	}

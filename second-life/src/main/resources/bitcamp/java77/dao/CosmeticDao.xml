@@ -199,9 +199,11 @@
  	
  	
  	<select id="selectReviewList" parameterType="CosmeticSearch" resultMap="reviewResultMap">
- 		select a.rno as reviewNo, mno as memberNo, a.hno as hospitalNo, a.title as title, a.cont as content, a.vcnt as viewCnt,(select count(*) from review_recom where rno = a.rno) as recomCnt, a.spart as sugeryPart, a.stat as status,b.fil_path as filePath, a.reg_date as regDate
+ 		select a.rno as reviewNo, a.mno as memberNo,c.id as memberId, a.hno as hospitalNo, a.title as title, a.cont as content, a.vcnt as viewCnt,(select count(*) from review_recom where rno = a.rno) as recomCnt, a.spart as sugeryPart, a.stat as status,b.fil_path as filePath, a.reg_date as regDate
 		from review a inner join review_phot b
 		on a.rno = b.rno
+		inner join member c
+		on a.mno = c.mno
 		<choose>
 			<when test="wordType=='viewCount'">
 				order by a.vcnt desc
@@ -219,6 +221,7 @@
  	<resultMap id="reviewResultMap" type="CosmeticReview">
  		<result property="reviewNo" column="reviewNo" />
  		<result property="memberNo" column="memberNo" />
+ 		<result property="memberId" column="memberId" />
  		<result property="hospitalNo" column="hospitalNo" />
  		<result property="title" column="title"/>
  		<result property="content" column="content" />
