@@ -182,8 +182,14 @@
                 // result will be true if button was click, while it will be false if users close the dialog directly.
                 if(result) {
                 	$.get(contextRoot + '/cosmetic/ajax/deleteSugeryInfo.do?sugeryNo='+sugeryNo, function(resultObj) {
+                		selectCount--;
         				$('#columns').masonry('remove',$('#i_'+sugeryNo));
-        				
+        				$('#tHospital_'+sugeryNo).remove();
+        				$('#tSpart_'+sugeryNo).remove();
+        				$('#tSway_'+sugeryNo).remove();
+        				$('#tDoctor_'+sugeryNo).remove();
+        				$('#tPrice_'+sugeryNo).remove();
+        				$('#tSdate_'+sugeryNo).remove();
         				$('#columns').imagesLoaded(function() {
         					$('#columns').masonry();
         				});
