@@ -3,22 +3,16 @@
 <head>
 <meta charset="utf-8">
 <title>MY PAGE - INFORMATION</title>
-<link rel="stylesheet" href="../css/mylist.css" type="text/css">
 <link rel="stylesheet" type="text/css" href="../css/masonry-docs.css" />
 <link rel="stylesheet" href="../css/needpopup.min.css">
 <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="../css/AdminLTE.min.css">
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
-<!-- <link rel="stylesheet" href="../lib/bootflat/css/site.min.css"> -->
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
-
-<style type="text/css">
-	.temp{
-		overflow: hidden;
-		text-overflow:ellipsis;
-		white-space:nowrap;
-	}
-</style>
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../css/mylist.css" type="text/css">
+<link rel="stylesheet" href="../css/common.css" type="text/css">
+ 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- jQuery 최신버전 -->
 <script src="../js/bootstrap.min.js" type="text/javascript"></script>
 <script src="../js/masonry-docs.min.js" type="text/javascript"></script>
@@ -46,6 +40,22 @@
 			window.location.href='login.html';
 		});
 	    
+	    $(window).load(function() {
+			$('#columns').masonry({
+				itemSelector:'.item',
+				columnWidth: 380,
+					percentPosition: true
+			});
+			$('#columns').imagesLoaded(function() {
+				
+				
+			});
+			
+			$('#myModal').on('shown.bs.modal', function () {
+				  $('#myInput').focus()
+			});
+		});
+	    
 	    $.getJSON(contextRoot + '/cosmetic/ajax/searchSurgeryInfo.do',function(resultObj){
 	 		console.log(resultObj);
 	 		
@@ -57,22 +67,39 @@
 				var days = formattedDate.getDate();
 				var regDate = years + '.' + months +'.'+ days;
 	 			
-	 			var div = '<div class="item" id="i_'+info.sugeryNo+'">';
-					div +=		 '<div class="col-sm-6 col-md-4" style="width: 270px;">';
-					div +=		    '<div class="thumbnail" onclick="changeBorder(this,'+info.sugeryNo+')">';
-					div +=		    '<button type="button" class="close" onclick="delSugery(this,'+info.sugeryNo+');">&times;</button>'; //data-dismiss="alert" aria-hidden="true"
-					div +=		      '<div class="caption">';
-					div +=		        '<h3 id="h_'+info.sugeryNo+'">'+info.hospitalName+'</h3>'
-					div +=		        '<p class="temp">수술부위 :<span id="sp_'+info.sugeryNo+'">'+info.sugeryPart+'</span></p>';
-					div +=		        '<p class="temp">수술방법 :<span id="w_'+info.sugeryNo+'">'+info.sugeryWay+'</span</p>';
-					div +=		        '<p class="temp">담당의사 :<span id="d_'+info.sugeryNo+'">'+info.doctorName+'</span></p>';
-					div +=		        '<p class="temp">수술가격(단위:만원) :<span id="p_'+info.sugeryNo+'">'+info.sugeryPrice+'</p>';
-					div +=		        '<p class="temp">수술시기 :<span id="sd_'+info.sugeryNo+'">'+regDate+'</span></p>';
-					div +=		      '</div>';
-					div +=		    '</div>';
-					div +=		  '</div>';
-					div +=		'</div>';
-					div +=	'</div>';
+// 	 			var div = '<div class="item" id="i_'+info.sugeryNo+'">';
+// 					div +=		 '<div class="col-sm-6 col-md-4" style="width: 270px;">';
+// 					div +=		    '<div class="thumbnail" onclick="changeBorder(this,'+info.sugeryNo+')">';
+// 					div +=		    '<button type="button" class="close" onclick="delSugery(this,'+info.sugeryNo+');">&times;</button>'; //data-dismiss="alert" aria-hidden="true"
+// 					div +=		      '<div class="caption">';
+// 					div +=		        '<h3 id="h_'+info.sugeryNo+'">'+info.hospitalName+'</h3>'
+// 					div +=		        '<p class="ellipsis">수술부위 :<span id="sp_'+info.sugeryNo+'">'+info.sugeryPart+'</span></p>';
+// 					div +=		        '<p class="ellipsis">수술방법 :<span id="w_'+info.sugeryNo+'">'+info.sugeryWay+'</span</p>';
+// 					div +=		        '<p class="ellipsis">담당의사 :<span id="d_'+info.sugeryNo+'">'+info.doctorName+'</span></p>';
+// 					div +=		        '<p class="ellipsis">수술가격(단위:만원) :<span id="p_'+info.sugeryNo+'">'+info.sugeryPrice+'</p>';
+// 					div +=		        '<p class="ellipsis">수술시기 :<span id="sd_'+info.sugeryNo+'">'+regDate+'</span></p>';
+// 					div +=		      '</div>';
+// 					div +=		    '</div>';
+// 					div +=		  '</div>';
+// 					div +=		'</div>';
+// 					div +=	'</div>';
+// 					div += '</div>';
+					
+	 			var div =  '<div class="item info-box" id="i_'+info.sugeryNo+'" style="width: 350px; cursor: pointer;" onclick="changeBorder(this,'+info.sugeryNo+')">';
+					div += '	<span class="info-box-icon info-icon"><i class="fa fa-ambulance" style="color: #fff;"></i></span>';
+					div += '	<div class="info-box-content"> ';
+					div += '		<span class="info-box-text">';
+					div += '			<h4 class="font-bold" id="h_'+info.sugeryNo+'">'+info.hospitalName+'</h4>'
+					div += '			<button type="button" class="close" style="color: #000; position: absolute; top: 5px; right: 10px;" onclick="delSugery(this,'+info.sugeryNo+');">&times;</button>';
+					div += '		</span>';
+					div += '		<span style="font-size: 14px;">';
+					div +=		        '<p class="ellipsis info-content font-bold">수술부위　:　<span id="sp_'+info.sugeryNo+'" style="font-weight: 400;">'+info.sugeryPart+'</span></p>';
+					div +=		        '<p class="ellipsis info-content font-bold">수술방법　:　<span id="w_'+info.sugeryNo+'" style="font-weight: 400;">'+info.sugeryWay+'</span</p>';
+					div +=		        '<p class="ellipsis info-content font-bold">담당의사　:　<span id="d_'+info.sugeryNo+'" style="font-weight: 400;">'+info.doctorName+'</span></p>';
+					div +=		        '<p class="ellipsis info-content font-bold">수술가격(단위:만원)　:　<span id="p_'+info.sugeryNo+'" style="font-weight: 400;"">'+info.sugeryPrice+'</p>';
+					div +=		        '<p class="ellipsis info-content font-bold">수술시기　:　<span id="sd_'+info.sugeryNo+'" style="font-weight: 400;">'+regDate+'</span></p>';
+					div += '		</span>';
+					div += '	</div>';
 					div += '</div>';
 					
 					var $elem = $(div);
@@ -87,27 +114,13 @@
 	 	 });
 	});
 	
-	$(window).load(function() {
-		$('#columns').masonry({
-			itemSelector:'.item',
-			columnWidth: 280,
-				percentPosition: true
-		});
-		$('#columns').imagesLoaded(function() {
-			
-			
-		});
-		
-		$('#myModal').on('shown.bs.modal', function () {
-			  $('#myInput').focus()
-		});
-	});
+	
 	
 	function changeBorder(obj,sugeryNo) {
 		
-		if($(obj).css("background-color")=='rgb(160, 212, 104)'){
+		if($(obj).children(".info-icon").css("background-color") == 'rgb(207, 45, 57)'){
 			selectCount--;
-			$(obj).removeAttr('style');
+			$(obj).children(".info-icon").css("background-color", "#f0c0c3");
 			$('#tHospital_'+sugeryNo).remove();
 			$('#tSpart_'+sugeryNo).remove();
 			$('#tSway_'+sugeryNo).remove();
@@ -135,7 +148,7 @@
 				    }]
 				});
 			}
-			$(obj).css("background-color", "#A0D468");
+			$(obj).children(".info-box-icon").css("background-color", "#cf2d39");
 			
 			var hospitalName = $('#h_'+sugeryNo).text();
 			var sugeryPart = $('#sp_'+sugeryNo).text();
@@ -187,29 +200,36 @@
 	<div id="top"></div>
 	 
 	<!-- 페이지 소개 -->
-	<div class="title-container table-div">
-		<div class="title"><hr></div>
-		<div class="title text-center">MY PAGE - INFORMATION</div>
-		<div class="title"><hr>	</div>
-	</div>
-    
-    <!-- 본문 -->
-	<div class="container documents">
-		<div class="example">
+	<div class="container">
+		<div class="row">
+    		<div class="col-lg-12">	
+	    		<h3 class="page-header-new">SURGERY INFORMATION</h3>
+    		</div>
+	    </div>
+		<div class="row">
+			<div class="col-lg-12">
 				<div id="masonry">
-					<div id="columns">
-					</div>
-			
-			<!-- 
-			<div class="row">
-				<button type="button" class="btn btn-danger btn-block" data-needpopup-show="#modal-popup">비교하기</button>
+					<div id="columns"></div>
+				</div>
 			</div>
-			-->
-			<!-- '비교하기' 버튼 클릭시 나타나는 메시지 -->
-			<!--
-			<div id="modal-popup" class="needpopup">
+		</div>
+		<div class="row">
+    		<div class="col-lg-12">	
+				<button type="button" class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg" style="float: right;">비교하기</button>
+    		</div>
+	    </div>
+	</div>
+
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="padding: 0px 15px;">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
 				<div class="panel panel-danger">
-					<div class="panel-heading">비교하기</div>
+					<div class="panel-heading" style="background-color: #cf2d39; border-color: #cf2d39; text-align: center;">비교하기</div>
 					<table class="table">
 						<thead>
 							<tr id="theadHospital">
@@ -218,69 +238,27 @@
 						</thead>
 						<tbody>
 							<tr id="tbodySpart">
-								<td style="font-weight: bold;">수술부위</td>
+								<td class="font-bold">수술부위</td>
 							</tr>
 							<tr id="tbodySway">
-								<td style="font-weight: bold;">수술방법</td>
+								<td class="font-bold">수술방법</td>
 							</tr>
 							<tr id="tbodyDoctor">
-								<td style="font-weight: bold;">담당의사</td>
+								<td class="font-bold">담당의사</td>
 							</tr>
 							<tr id="tbodyPrice">
-								<td style="font-weight: bold;">가격</td>
+								<td class="font-bold">가격(단위:만원)</td>
 							</tr>
 							<tr id="tbodySdate">
-								<td style="font-weight: bold;">수술시기</td>
+								<td class="font-bold">수술시기</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			-->
-			
-			<button type="button" class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg">비교하기</button>
-			
-			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-			  <div class="modal-dialog modal-lg">
-			    <div class="modal-content">
-			    <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		     </div>
-			      <div class="panel panel-danger">
-					<div class="panel-heading">비교하기</div>
-					<table class="table">
-						<thead>
-							<tr id="theadHospital">
-								<th>구분</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr id="tbodySpart">
-								<td style="font-weight: bold;">수술부위</td>
-							</tr>
-							<tr id="tbodySway">
-								<td style="font-weight: bold;">수술방법</td>
-							</tr>
-							<tr id="tbodyDoctor">
-								<td style="font-weight: bold;">담당의사</td>
-							</tr>
-							<tr id="tbodyPrice">
-								<td style="font-weight: bold;">가격(단위:만원)</td>
-							</tr>
-							<tr id="tbodySdate">
-								<td style="font-weight: bold;">수술시기</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			    </div>
-			  </div>
-			</div>
-			
-			
 		</div>
 	</div>
-	
+ 
 	<script src="../js/needpopup.min.js"></script>
 	<script>
 		needPopup.config.custom = {

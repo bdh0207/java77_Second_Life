@@ -57,3 +57,12 @@
 .needpopup p + p {
 	margin-top: 10px;
 }			
+
+.info-content {
+	margin: 0px;
+	line-height: 1.8;
+}
+.info-icon {
+	background: #f0c0c3;
+	height: 186px;
+}
