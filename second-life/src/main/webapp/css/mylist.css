@@ -32,7 +32,10 @@
 	border-radius: 0px;
 	line-height: 1;
 }
-
+#thumbnail-new > a > img {
+	width: 260px;
+	height: auto;
+}
 #btn-new {
 	background-color: #cf2d39;
 	color: #ffffff;

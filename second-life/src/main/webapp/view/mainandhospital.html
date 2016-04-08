@@ -8,7 +8,9 @@
 
 <!-- Bootflat css  -->
 <link rel="stylesheet" type="text/css" href="../css/bootstrap_yeti.css">
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-dialog.css" />
 <link rel="stylesheet" type="text/css" href="../css/flexslider.css">
+<link rel="stylesheet" type="text/css" href="../css/common.css">
 	
 	<!-- jQuery.js -->
 	<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script>
@@ -18,6 +20,7 @@
 	<script src="../js/isotope-docs.min.js" type="text/javascript"></script>
 	<script src="../js/isotope.pkgd.js" type="text/javascript"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="../js/bootstrap-dialog.js"></script>
 	
 	<!-- 모달창 관련 -->
 	<script src="http://googledrive.com/host/0B-QKv6rUoIcGREtrRTljTlQ3OTg"></script><!-- ie10-viewport-bug-workaround.js -->
@@ -32,7 +35,7 @@
 			
 			$('#columns').masonry({
 				itemSelector:'.item',
-				columnWidth: 290,
+				columnWidth: 285,
  				percentPosition: true
 			});
 			$('#columns').imagesLoaded(function() {
@@ -58,40 +61,25 @@
 				var num    = 0;
 				
 				for(var list of resultObj.eventList) {
-// 					imgObj.src = list.photoURL;
-					
-// 					var height = imgObj.naturalHeight;
-// 					num = num + 1;
-// 					if(height > 400) {
-// 						$("#thumbDiv"+num).css("height", "400");
-// 						alert("big");
-// 					} else {
-// 						$("#thumbDiv"+num).css("height", height);
-// 						alert("small");
-// 					}
-					
 					var div  = '<div class="item">';
 						div += '<figure>';
-						div += '		<div id="thumbDiv" style="width: 250px;"><a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" id="thumbnail" onclick="viewCntAdd(' + list.eventNo + ',this)" /></a></div> ';
-						div += '		<figcaption>                                                                              ';
-						div += '			<div class="hReview">                                                                 ';
-						div += '				<a onclick="getHospitalNo('+list.hospitalNo+')" data-toggle="modal" data-target="#myModal" href="#myModal">                    ';
-						div += '					<h4 class="title-click">' + list.hospitalName + '</h4>						  ';
-						div += '				</a>                          													  ';
-						div += '				<h5>' + list.title + '</h5>						  		  	  					  ';
-						div += '			</div>                                                                                ';
-						div += '			<hr class="hr-new" />                                                                 ';
-						div += '			<div class="masonry-footer">                                                          ';
-						div += '				<div class="row" style="margin-bottom: 0px;">                                     ';
-						div += '					<div class="viewCount" id="viewCnt' + list.eventNo + '">                                                   	  ';
-						div += '						<img src="../images/조회수.png" width="17" height="17" alt="조회수" />' + list.viewCnt;
-						div += '					</div>                                                                    ';
-						div += '					<div class="wish">                                                        ';
-						div += '						<a href="#none" class="btn-danger btn-new" onclick="zzim(this, ' + list.eventNo + ')" id="wish' + list.eventNo + '">찜</a>        ';
-						div += '					</div>                                                                    ';
-						div += '				</div>                                                                            ';
-						div += '			</div>                                                                                ';
-						div += '		</figcaption>                                                                             ';
+						div += '	<div id="thumbDiv"><a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" id="thumbnail" onclick="viewCntAdd('+list.pageURL+', targer)"/></a></div> ';
+						div += '	<figcaption>                                                                              ';
+						div += '		<div class="hReview">                                                                 ';
+						div += '			<a onclick="getHospitalNo('+list.hospitalNo+')" data-toggle="modal" data-target="#myModal" href="#myModal">                    ';
+						div += '				<h4 class="title-click ellipsis font-bold">' + list.hospitalName + '</h4>						  ';
+						div += '			</a>                          													  ';
+						div += '			<h5 class="ellipsis font-basic">' + list.title + '</h5>						  		  	  					  ';
+						div += '		</div>                                                                                ';
+						div += '		<div class="row" style="margin-bottom: 0px;">                                     ';
+						div += '			<div class="viewCount" id="viewCnt' + list.eventNo + '">                                                   	  ';
+						div += '				<img src="../images/조회수.png" class="smIcon" style="margin-left: 0px;"/>' + list.viewCnt;
+						div += '			</div>                                                                    ';
+						div += '			<div class="wish">                                                        ';
+						div += '				<a href="javascript:void(0);" class="btn btn-danger btn-half" onclick="zzim(this, ' + list.eventNo + ')" id="wish' + list.eventNo + '">찜</a>        ';
+						div += '			</div>                                                                    ';
+						div += '		</div>                                                                            ';
+						div += '	</figcaption>                                                                             ';
 						div += '</figure>                                                                                      	  ';
 						div += '</div>                                                                                         	  '; 
 							
@@ -116,28 +104,25 @@
 							
 							var div  = '<div class="item">';
 								div += '<figure>';
-								div += '		<div id="thumbDiv" style="width: 250px;"><a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" id="thumbnail" onclick="viewCntAdd(' + list.eventNo + ',this)" /></a></div> ';
-								div += '		<figcaption>                                                                              ';
-								div += '			<div class="hReview">                                                                 ';
-								div += '				<a data-toggle="modal" data-target="#myModal" href="#myModal">                    ';
-								div += '					<h4 class="title-click">' + list.hospitalName + '</h4>						  ';
-								div += '				</a>                          													  ';
-								div += '				<h5>' + list.title + '</h5>						  		  	  					  ';
-								div += '			</div>                                                                                ';
-								div += '			<hr class="hr-new" />                                                                                ';
-								div += '			<div class="masonry-footer">                                                          ';
-								div += '				<div class="row" style="margin-bottom: 0px;">                                                                 ';
-								div += '					<div class="viewCount">                                                   		';
-								div += '						<img src="../images/조회수.png" width="17" height="17" alt="조회수" />'+list.viewCnt;
-								div += '					</div>                                                                    ';
-								div += '					<div class="wish">                                                        ';
-								div += '						<a href="#none" class="btn-danger btn-new" onclick="zzim(this, ' + list.eventNo + ')">찜</a>        ';
-								div += '					</div>                                                                    ';
-								div += '				</div>                                                                            ';
-								div += '			</div>                                                                                ';
-								div += '		</figcaption>                                                                             ';
+								div += '	<div id="thumbDiv"><a href="' + list.pageURL + '" target="_blank"><img src="' + list.photoURL + '" id="thumbnail"/></a></div> ';
+								div += '	<figcaption>                                                                              ';
+								div += '		<div class="hReview">                                                                 ';
+								div += '			<a onclick="getHospitalNo('+list.hospitalNo+')" data-toggle="modal" data-target="#myModal" href="#myModal">                    ';
+								div += '				<h4 class="title-click ellipsis font-bold">' + list.hospitalName + '</h4>						  ';
+								div += '			</a>                          													  ';
+								div += '			<h5 class="ellipsis font-basic">' + list.title + '</h5>						  		  	  					  ';
+								div += '		</div>                                                                                ';
+								div += '		<div class="row" style="margin-bottom: 0px;">                                     ';
+								div += '			<div class="viewCount" id="viewCnt' + list.eventNo + '">                                                   	  ';
+								div += '				<img src="../images/조회수.png" class="smIcon" style="margin-left: 0px;"/>' + list.viewCnt;
+								div += '			</div>                                                                    ';
+								div += '			<div class="wish">                                                        ';
+								div += '				<a href="#none" class="btn btn-danger btn-half" onclick="zzim(this, ' + list.eventNo + ')" id="wish' + list.eventNo + '">찜</a>        ';
+								div += '			</div>                                                                    ';
+								div += '		</div>                                                                            ';
+								div += '	</figcaption>                                                                             ';
 								div += '</figure>                                                                                      	  ';
-								div += '</div> ';
+								div += '</div>';             
 								
 							var $elem = $(div);
 					    	$('#columns').append($elem).masonry('appended',$elem);
@@ -159,27 +144,18 @@
 	
 	<div class="container">
 		<div class="row">
-			<h1 style="margin-top: 50px; color: #cf2d39; font-weight: bold;">Hospital Event</h1>
-			<hr>
-		</div>
-		
+    		<div class="col-lg-12">	
+	    		<h3 class="page-header-new">HOSPITAL EVENT</h3>
+    		</div>
+	    </div>
 
 		<!-- masonry -->
 		<div class="row">
-		<div id="masonry">
-			<div id="columns"></div>
-		</div>
-		</div>
-		<!-- masonry end-->	
-				 
-		<div id="body-right">
-			<h3 class="ui-widget-header">Hospital Wish Items</h3>
-			<div class="ui-widget-content">
-				<ol>
-					<li class="placeholder">Add your items here</li>
-				</ol>
+			<div id="masonry" class="col-lg-12">
+				<div id="columns"></div>
 			</div>
 		</div>
+		<!-- masonry end-->	
 	</div> <!-- body-content end -->
 	
 	<!-- 병원소개 Modal -->
@@ -253,7 +229,6 @@ function viewCntAdd(eventNo, targer) {
 		var viewCnt = resultObj.ajaxResult.data;
 		var imgObj = new Image();
 		imgObj.src = $(targer).attr("src");
-		alert(imgObj.src);
 		$("#viewCnt"+eventNo).html(viewCnt);
 		alert(imgObj.naturalHeight);
 	});
@@ -261,13 +236,9 @@ function viewCntAdd(eventNo, targer) {
 
 // 찜하기
 function zzim(target, eventNo) {
-	if($(target).css("opacity") == "0.4") {
-		$.getJSON(contextRoot + '/cosmetic/ajax/wishEventAdd.do', { eventNo : eventNo }, function(resultObj) {
-			$(target).css("opacity", "1");
-		});
-	} else {
-		$(target).css("opacity", "0.4");
-	}
+	$.getJSON(contextRoot + '/cosmetic/ajax/wishEventAdd.do', { eventNo : eventNo }, function(resultObj) {
+		BootstrapDialog.alert('위시리스트에 추가되었습니다.');
+	});
 }
 
 // 병원정보 나타내기

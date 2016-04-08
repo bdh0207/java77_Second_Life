@@ -1,24 +1,14 @@
 @CHARSET "UTF-8";
  
 .item{
-	width : 270px;
+	width : 265px;
     margin : 10px;
-	float: left;
+	border: 1px solid #ddd;
 }
-
-div#columns figure {
-	width:275px;
-	background: #fefefe;
-	border: 2px solid #fcfcfc;
-	box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
-	padding: 10px;
-	transition: opacity .4s ease-in-out;
-	column-break-inside: avoid;
-	display: inline-block;
-}
-
+ 
 #thumbnail {
-	width: 250px;
+	width: 100%;
+	height: auto;
 	margin-bottom: 10px;
 }
  
@@ -65,11 +55,9 @@ div#columns figure figcaption.wish {
 	margin-right: 15px;
 	float: right;	
 }
-.wish > img {
-	opacity: 0.4;
-}
-div#columns:hover figure:not(:hover) {
-	opacity: 0.4;
+ 
+div#columns:hover figure:hover {
+	border: 1px solid #cf2d39;
 }
 
 .hr-new {
@@ -222,3 +210,8 @@ a:hover {
 	-moz-box-shadow:    7px 7px 5px 0px rgba(50, 50, 50, 0.75);
 	box-shadow:         7px 7px 5px 0px rgba(50, 50, 50, 0.75);
 } 
+
+figcaption {
+	padding: 10px;
+	padding-top: 0px;
+}
